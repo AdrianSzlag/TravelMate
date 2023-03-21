@@ -23,18 +23,21 @@ const places = [
     name: "Hotel Wisla",
     description: "Simple hotel.",
     type: "hotel",
+    thumbnail: "hotel.png",
   },
   {
     id: 2,
     name: "Hotel Heron",
     description: "Simple hotel.",
     type: "hotel",
+    thumbnail: "hotel.png",
   },
   {
     id: 3,
     name: "Beef Bar",
     description: "Simple Bar.",
     type: "bar",
+    thumbnail: "hotel.png",
   },
 ] as Result[];
 const getRes = (searchQuery: string) => {

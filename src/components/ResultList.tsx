@@ -1,12 +1,17 @@
 import useResults from "../hooks/useResults";
+import Result from "./Result";
 const ResultList = () => {
   const { results } = useResults();
   return (
-    <div>
+    <ul className="flex w-full flex-col gap-4">
       {results.map((result) => {
-        return <div>{result.name}</div>;
+        return (
+          <li>
+            <Result result={result} />
+          </li>
+        );
       })}
-    </div>
+    </ul>
   );
 };
 export default ResultList;

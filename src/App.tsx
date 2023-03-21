@@ -9,7 +9,7 @@ function App() {
     <div className="">
       <Header />
       <ResultsProvider>
-        <div className="flex  md:mt-4 md:gap-4">
+        <div className="flex md:m-4 md:mt-4 md:gap-4">
           <Filters />
           <Results />
         </div>

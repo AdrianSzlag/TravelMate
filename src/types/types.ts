@@ -3,6 +3,7 @@ interface Result {
   name: string;
   description: string;
   type: string;
+  thumbnail: string;
 }
 
 export type { Result };
