@@ -1,3 +1,4 @@
+import React from "react";
 import useResults from "../hooks/useResults";
 import Result from "./Result";
 const ResultList = () => {
@@ -6,7 +7,7 @@ const ResultList = () => {
     <ul className="flex w-full flex-col gap-4">
       {results.map((result) => {
         return (
-          <li>
+          <li key={result.id}>
             <Result result={result} />
           </li>
         );

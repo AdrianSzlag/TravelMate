@@ -1,3 +1,4 @@
+import React from "react";
 import { Result as ResultType } from "../types/types";
 
 interface Props {

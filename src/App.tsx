@@ -1,3 +1,4 @@
+import React from "react";
 import "./App.css";
 import { ResultsProvider } from "./hooks/useResults";
 import Header from "./components/Header";
