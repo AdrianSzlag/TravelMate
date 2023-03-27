@@ -20,6 +20,7 @@
       "extensions": [
         "eamodio.gitlens",
         "GitHub.copilot",
+        "GitHub.vscode-pull-request-github",
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
         "bradlc.vscode-tailwindcss"
