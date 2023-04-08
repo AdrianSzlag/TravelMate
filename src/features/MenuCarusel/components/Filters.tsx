@@ -9,7 +9,7 @@ const Filters = ({ onSubmit }: Props) => {
   const { searchQuery, setSearchQuery } = useResults();
   return (
     <form
-      className="flex h-fit w-full flex-col gap-2 bg-yellow-400 px-4 py-5"
+      className="flex h-full w-full flex-col gap-2 bg-yellow-300 px-4 py-5"
       onSubmit={(e) => {
         e.preventDefault();
         onSubmit();
@@ -25,7 +25,7 @@ const Filters = ({ onSubmit }: Props) => {
         onChange={(e) => setSearchQuery(e.target.value)}
       />
       <button
-        className="mt-20 w-full bg-blue-700 p-2 text-center text-white transition-colors hover:bg-blue-900"
+        className="w-full self-end justify-self-end bg-blue-700 p-2 text-center text-white transition-colors hover:bg-blue-900"
         type="submit"
       >
         Search
