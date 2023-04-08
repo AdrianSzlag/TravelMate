@@ -5,15 +5,15 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { Result } from "../types/types";
+import { PlaceData } from "../types/types";
 
 interface ResultsContextType {
-  results: Result[];
+  results: PlaceData[];
   searchQuery: string;
   setSearchQuery: (search: string) => void;
 }
 
-const ResultsContext = createContext<ResultsContextType>({
+const SearchContext = createContext<ResultsContextType>({
   results: [],
   searchQuery: "",
   setSearchQuery: (search: string) => {},
@@ -45,14 +45,15 @@ const places = [
     type: "bar",
     thumbnail: "hotel.png",
   },
-] as Result[];
+] as PlaceData[];
+
 const getRes = (searchQuery: string) => {
   return places.filter((place) =>
     place.name.toLowerCase().includes(searchQuery)
   );
 };
 
-const ResultsProvider = ({ children }: Props) => {
+const SearchProvider = ({ children }: Props) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const value = useMemo(() => {
@@ -64,10 +65,10 @@ const ResultsProvider = ({ children }: Props) => {
   }, [searchQuery]);
 
   return (
-    <ResultsContext.Provider value={value}>{children}</ResultsContext.Provider>
+    <SearchContext.Provider value={value}>{children}</SearchContext.Provider>
   );
 };
 
-export { ResultsProvider };
-const useResults = () => useContext(ResultsContext);
-export default useResults;
+export { SearchProvider };
+const useSearch = () => useContext(SearchContext);
+export default useSearch;

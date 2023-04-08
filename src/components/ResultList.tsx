@@ -1,5 +1,5 @@
 import React from "react";
-import useResults from "../hooks/useResults";
+import useResults from "../store/search-context";
 import Result from "./Result";
 const ResultList = () => {
   const { results } = useResults();

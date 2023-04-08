@@ -1,20 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
-import { ResultsProvider } from "./hooks/useResults";
-import Header from "./components/Header";
-import Filters from "./components/Filters";
+import { SearchProvider } from "./store/search-context";
+import Header from "./features/Header";
+import Filters from "./features/MenuCarusel/components/Filters";
 import Results from "./components/ResultList";
+import { Menu } from "./features/MenuCarusel";
+import Map from "./features/Map";
 
 function App() {
+  const [slide, setSlide] = useState(2);
+
   return (
-    <div className="">
+    <div className="flex h-full w-full flex-col bg-gray-200">
       <Header />
-      <ResultsProvider>
-        <div className="flex md:m-4 md:mt-4 md:gap-4">
-          <Filters />
-          <Results />
+      <SearchProvider>
+        <div className="flex">
+          <Menu />
+          <Map />
         </div>
-      </ResultsProvider>
+      </SearchProvider>
     </div>
   );
 }

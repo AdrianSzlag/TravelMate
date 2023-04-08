@@ -5,7 +5,7 @@ import { AiOutlineMenu } from "react-icons/ai";
 const Header = () => {
   const [navbarOpen, setNavbarOpen] = useState(false);
   return (
-    <nav className="bg-blue-700 px-2.5 py-2.5 text-white sm:px-4">
+    <nav className="flex-shrink-0 flex-grow-0 bg-blue-700 px-2.5 py-2.5 text-white sm:px-4">
       <div className="container mx-auto flex flex-wrap items-center justify-between">
         <div className="flex items-center whitespace-nowrap text-xl font-semibold">
           <img src="logo.svg" alt="" />

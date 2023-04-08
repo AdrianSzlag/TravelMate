@@ -1,4 +1,4 @@
-interface Result {
+interface PlaceData {
   id: number;
   name: string;
   description: string;
@@ -6,4 +6,4 @@ interface Result {
   thumbnail: string;
 }
 
-export type { Result };
+export type { PlaceData };
