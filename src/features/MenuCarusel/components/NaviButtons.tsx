@@ -15,7 +15,7 @@ const NaviButtons = ({
   toggleMapVisibility,
 }: Props) => {
   return (
-    <div className="flex justify-between">
+    <div className="flex items-center justify-between">
       <button
         onClick={onBack}
         className="flex items-center gap-2 p-2 font-bold text-gray-500 hover:text-gray-800"

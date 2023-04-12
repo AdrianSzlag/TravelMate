@@ -3,23 +3,23 @@ import { IPlace } from "../../../../types/types";
 import useFocus from "../../../../store/focus-context";
 
 interface Props {
-  result: IPlace;
+  onClick: () => void;
+  name: string;
+  description: string;
+  thumbnail: string;
 }
 
-const Result = ({ result }: Props) => {
-  const { setFocused } = useFocus();
-  const onClickHandle = () => {
-    console.log(result);
-    setFocused(result);
-  };
+const Result = ({ onClick, name, description, thumbnail }: Props) => {
   return (
-    <div className="flex rounded-lg border p-1">
-      <img
-        src={result.thumbnail}
-        alt=""
-        className="h-[150px] w-full object-cover"
-        onClick={onClickHandle}
-      />
+    <div
+      className="flex justify-between rounded-lg p-1 text-gray-600 "
+      onClick={onClick}
+    >
+      <div>
+        <div className="text- font-bold text-gray-800">{name}</div>
+        <div>{description}</div>
+      </div>
+      <img src={thumbnail} alt="" className="w-28 rounded-xl object-cover" />
       {/* <div>
         <div className="text-lg font-semibold">{result.name}</div>
         <div>{result.description}</div>

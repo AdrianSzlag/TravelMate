@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Filters from "./Filters";
 import ResultList from "./Results/ResultList";
 import useFocus from "../../../store/focus-context";
@@ -14,17 +14,29 @@ const Menu = () => {
   const [active, setActive] = useState(false);
   const [isMapVisible, setIsMapVisible] = useState(false);
 
+  useEffect(() => {
+    if (results.length > 0) {
+      setActive(true);
+    }
+  }, []);
+
   const toggleMapVisibility = () => {
     setIsMapVisible((prev) => !prev);
   };
 
   return (
-    <Carusel className={` ${isMapVisible ? " h-[40%] xs:h-full " : " "} `}>
-      <CaruselItem>
+    <Carusel
+      className={`bg-white ${
+        isMapVisible && active ? " !h-[40%] xs:!h-full " : " "
+      } ${active ? " xs:w-[400px] lg:w-[656px]  " : " xs:w-[256px] "} ${
+        active && focused ? " lg:!w-[800px] xl:!w-[1056px] " : " "
+      }`}
+    >
+      <CaruselItem className="h-full w-full sm:w-[256px]">
         <Filters onSubmit={() => setActive(true)} />
       </CaruselItem>
       {active && (
-        <CaruselItem>
+        <CaruselItem className="h-full w-full xs:w-[400px]">
           <NaviButtons
             text="Search"
             onBack={() => setActive(false)}
@@ -34,8 +46,8 @@ const Menu = () => {
           <ResultList />
         </CaruselItem>
       )}
-      {active && focused != null && (
-        <CaruselItem>
+      {active && focused && (
+        <CaruselItem className="h-full w-full xs:w-[400px]">
           <NaviButtons
             text="Results"
             onBack={() => setFocused(null)}
