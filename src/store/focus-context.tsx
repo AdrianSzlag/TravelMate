@@ -7,17 +7,17 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { PlaceData } from "../types/types";
+import { IPlace } from "../types/types";
 import useSearch from "./search-context";
 
 interface FocusContextType {
-  focused: PlaceData | null;
-  setFocused: (focused: PlaceData | null) => void;
+  focused: IPlace | null;
+  setFocused: (focused: IPlace | null) => void;
 }
 
 const FocusContext = createContext<FocusContextType>({
   focused: null,
-  setFocused: (focused: PlaceData | null) => {},
+  setFocused: (focused: IPlace | null) => {},
 });
 
 interface Props {
@@ -25,10 +25,10 @@ interface Props {
 }
 
 const FocusProvider = ({ children }: Props) => {
-  const [focusedItem, setFocusedItem] = useState<PlaceData | null>(null);
+  const [focusedItem, setFocusedItem] = useState<IPlace | null>(null);
   const { results } = useSearch();
 
-  const setFocused = (focused: PlaceData | null) => {
+  const setFocused = (focused: IPlace | null) => {
     console.log(focused);
     if (focused && results.includes(focused)) {
       setFocusedItem(focused);

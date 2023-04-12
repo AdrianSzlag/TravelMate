@@ -5,10 +5,10 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { PlaceData } from "../types/types";
+import { IPlace } from "../types/types";
 
 interface ResultsContextType {
-  results: PlaceData[];
+  results: IPlace[];
   searchQuery: string;
   setSearchQuery: (search: string) => void;
 }
@@ -45,7 +45,7 @@ const places = [
     type: "bar",
     thumbnail: "hotel.png",
   },
-] as PlaceData[];
+] as IPlace[];
 
 const getRes = (searchQuery: string) => {
   return places.filter((place) =>

@@ -1,9 +1,9 @@
 import React from "react";
-import { PlaceData } from "../../../../types/types";
+import { IPlace } from "../../../../types/types";
 import useFocus from "../../../../store/focus-context";
 
 interface Props {
-  result: PlaceData;
+  result: IPlace;
 }
 
 const Result = ({ result }: Props) => {

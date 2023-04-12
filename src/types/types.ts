@@ -1,4 +1,4 @@
-interface PlaceData {
+interface IPlace {
   id: number;
   name: string;
   description: string;
@@ -6,4 +6,4 @@ interface PlaceData {
   thumbnail: string;
 }
 
-export type { PlaceData };
+export type { IPlace };
