@@ -20,6 +20,15 @@ const Menu = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (focused) {
+      setIsMapVisible(false);
+      setActive(true);
+    } else {
+      setActive(false);
+    }
+  }, [focused]);
+
   const toggleMapVisibility = () => {
     setIsMapVisible((prev) => !prev);
   };
