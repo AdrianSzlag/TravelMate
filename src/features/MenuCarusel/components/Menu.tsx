@@ -29,8 +29,6 @@ const Menu = () => {
     if (focused) {
       setIsMapVisible(false);
       setActive(true);
-    } else {
-      setActive(false);
     }
   }, [focused]);
 
