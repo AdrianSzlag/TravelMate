@@ -13,7 +13,7 @@ const ResultList = () => {
   };
 
   return (
-    <ul className="flex w-full flex-shrink flex-grow flex-col gap-1 divide-y-2 overflow-auto p-1">
+    <ul className="flex w-full flex-shrink flex-grow flex-col divide-y-2 overflow-auto">
       {results.map((result) => {
         return (
           <li key={result.id}>

@@ -4,6 +4,7 @@ interface IPlace {
   description: string;
   type: string;
   thumbnail: string;
+  coordinates: [number, number];
 }
 
 export type { IPlace };

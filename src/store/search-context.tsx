@@ -30,6 +30,7 @@ const places = [
     description: "Simple hotel.",
     type: "hotel",
     thumbnail: "hotel.png",
+    coordinates: [19.99629671664809, 50.08399993925693],
   },
   {
     id: 2,
@@ -37,6 +38,7 @@ const places = [
     description: "Simple hotel.",
     type: "hotel",
     thumbnail: "hotel.png",
+    coordinates: [19.94173898739982, 50.071942298900524],
   },
   {
     id: 3,
@@ -44,6 +46,7 @@ const places = [
     description: "Simple Bar.",
     type: "bar",
     thumbnail: "hotel.png",
+    coordinates: [19.941015236678783, 50.06301434728838],
   },
 ] as IPlace[];
 
