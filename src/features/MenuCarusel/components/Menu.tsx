@@ -14,6 +14,11 @@ const Menu = () => {
   const [active, setActive] = useState(false);
   const [isMapVisible, setIsMapVisible] = useState(false);
 
+  const onCloseMenuHandler = () => {
+    setActive(false);
+    setFocused(null);
+  };
+
   useEffect(() => {
     if (results.length > 0) {
       setActive(true);
@@ -48,7 +53,7 @@ const Menu = () => {
         <CaruselItem className="h-full w-full xs:w-[400px]">
           <NaviButtons
             text="Search"
-            onBack={() => setActive(false)}
+            onBack={onCloseMenuHandler}
             isMapVisible={isMapVisible}
             toggleMapVisibility={toggleMapVisibility}
           />
