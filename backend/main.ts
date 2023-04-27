@@ -19,8 +19,8 @@ mongoose.connect(mongoURI, {
 
 app.post("/api/auth/register", register);
 app.post("/api/auth/login", login);
-app.get("/api/protected", authMiddleware, (req, res) => {
-  res.send("Protected route");
+app.get("/api/test", authMiddleware, (req, res) => {
+  res.send("test ok");
 });
 
 app.get("/", (req: Request, res: Response) => {
