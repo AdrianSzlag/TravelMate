@@ -19,6 +19,7 @@ export interface IPlace extends Document {
     phone: string;
     email?: string;
   };
+  tags?: string[];
 }
 
 const PlaceSchema: Schema = new Schema({
@@ -42,6 +43,7 @@ const PlaceSchema: Schema = new Schema({
     phone: { type: String, required: true },
     email: String,
   },
+  tags: [String],
 });
 
 export default mongoose.model<IPlace>("Place", PlaceSchema);

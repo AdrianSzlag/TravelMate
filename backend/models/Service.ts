@@ -8,7 +8,6 @@ export interface IService extends Document {
   price: number;
   availableSlots: { from: Date; to: Date }[];
   reservations?: Schema.Types.ObjectId[];
-  tags?: string[];
 }
 
 const ServiceSchema: Schema = new Schema({
@@ -26,7 +25,6 @@ const ServiceSchema: Schema = new Schema({
   reservations: [
     { type: Schema.Types.ObjectId, ref: "Reservation", required: true },
   ],
-  tags: [String],
 });
 
 export default mongoose.model<IService>("Service", ServiceSchema);
