@@ -1,5 +1,7 @@
 import express, { Request, Response } from "express";
 import mongoose, { ConnectOptions } from "mongoose";
+import { register, login } from "./auth/authController";
+import { authMiddleware } from "./auth/authMiddleware";
 import cors from "cors";
 
 const app = express();
@@ -14,6 +16,12 @@ mongoose.connect(mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 } as ConnectOptions);
+
+app.post("/api/auth/register", register);
+app.post("/api/auth/login", login);
+app.get("/api/protected", authMiddleware, (req, res) => {
+  res.send("Protected route");
+});
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello from MERN server with TypeScript!");
