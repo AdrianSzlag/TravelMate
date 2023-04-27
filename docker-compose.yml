@@ -15,6 +15,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/booking
     depends_on:
       - mongo
 
