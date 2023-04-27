@@ -7,7 +7,6 @@ export interface IService extends Document {
   placeId: Schema.Types.ObjectId;
   price: number;
   availableSlots: { from: Date; to: Date }[];
-  reservations?: Schema.Types.ObjectId[];
 }
 
 const ServiceSchema: Schema = new Schema({
@@ -21,9 +20,6 @@ const ServiceSchema: Schema = new Schema({
       from: { type: Date, required: true },
       to: { type: Date, required: true },
     },
-  ],
-  reservations: [
-    { type: Schema.Types.ObjectId, ref: "Reservation", required: true },
   ],
 });
 
