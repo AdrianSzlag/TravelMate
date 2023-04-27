@@ -9,10 +9,10 @@ export interface IReview extends Document {
 }
 
 const ReviewSchema: Schema = new Schema({
-  userId: { type: Schema.Types.ObjectId, ref: "User" },
-  placeId: { type: Schema.Types.ObjectId, ref: "Place" },
-  serviceId: { type: Schema.Types.ObjectId, ref: "Service" },
-  rating: Number,
+  userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  placeId: { type: Schema.Types.ObjectId, ref: "Place", required: true },
+  serviceId: { type: Schema.Types.ObjectId, ref: "Service", required: true },
+  rating: { type: Number, required: true },
   comment: String,
 });
 

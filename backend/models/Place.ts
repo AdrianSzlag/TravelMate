@@ -3,7 +3,7 @@ import mongoose, { Schema, Document } from "mongoose";
 export interface IPlace extends Document {
   name: string;
   type: string;
-  description: string;
+  description?: string;
   address: string;
   location: {
     type: string;
@@ -14,30 +14,32 @@ export interface IPlace extends Document {
   reviews?: Schema.Types.ObjectId[];
   images?: string[];
   createdBy: Schema.Types.ObjectId;
-  reservations: Schema.Types.ObjectId[];
+  reservations?: Schema.Types.ObjectId[];
   contactInfo: {
     phone: string;
-    email: string;
+    email?: string;
   };
 }
 
 const PlaceSchema: Schema = new Schema({
-  name: String,
-  type: String,
+  name: { type: String, required: true },
+  type: { type: String, required: true },
   description: String,
   address: String,
   location: {
-    type: { type: String, default: "Point" },
-    coordinates: { type: [Number], index: "2dsphere" },
+    type: { type: String, default: "Point", required: true },
+    coordinates: { type: [Number], index: "2dsphere", required: true },
   },
-  thumbnail: String,
+  thumbnail: { type: String, required: true },
   rating: Number,
-  reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
+  reviews: [{ type: Schema.Types.ObjectId, ref: "Review", required: true }],
   images: [String],
-  createdBy: { type: Schema.Types.ObjectId, ref: "User" },
-  reservations: [{ type: Schema.Types.ObjectId, ref: "Reservation" }],
+  createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  reservations: [
+    { type: Schema.Types.ObjectId, ref: "Reservation", required: true },
+  ],
   contactInfo: {
-    phone: String,
+    phone: { type: String, required: true },
     email: String,
   },
 });

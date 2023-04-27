@@ -9,14 +9,14 @@ export interface IReservation extends Document {
 }
 
 const ReservationSchema: Schema = new Schema({
-  userId: { type: Schema.Types.ObjectId, ref: "User" },
-  serviceId: { type: Schema.Types.ObjectId, ref: "Service" },
-  placeId: { type: Schema.Types.ObjectId, ref: "Place" },
+  userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  serviceId: { type: Schema.Types.ObjectId, ref: "Service", required: true },
+  placeId: { type: Schema.Types.ObjectId, ref: "Place", required: true },
   reservedSlot: {
-    from: Date,
-    to: Date,
+    from: { type: Date, required: true },
+    to: { type: Date, required: true },
   },
-  status: String,
+  status: { type: String, required: true },
 });
 
 export default mongoose.model<IReservation>("Reservation", ReservationSchema);
