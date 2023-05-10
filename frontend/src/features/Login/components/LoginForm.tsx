@@ -4,20 +4,35 @@ import Form from "./Form";
 import Input from "./Input";
 import Backdrop from "./Backdrop";
 import Button from "./Button";
+import useApi from "../../../hooks/use-api";
 
 interface Props {
   onSignUp: () => void;
+  onSuccess: () => void;
 }
 
-const LoginForm = ({ onSignUp }: Props) => {
+const LoginForm = ({ onSignUp, onSuccess }: Props) => {
+  const { data, loading, error, fetch } = useApi("/api/register", {
+    method: "POST",
+  });
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const validEmail = email.includes("@");
   const validPassword = password.length > 6;
 
+  const formValid = validEmail && validPassword;
+
   const onSubmitHandler = () => {
-    console.log("elo");
+    if (!formValid) return;
+    fetch({
+      email,
+      password,
+    }).then((data) => {
+      console.log(data);
+      onSuccess();
+    });
   };
 
   return (
@@ -43,7 +58,7 @@ const LoginForm = ({ onSignUp }: Props) => {
         title="Password"
         name="password"
       />
-      <Button text={"Sign in"} disabled={!validEmail || !validPassword} />
+      <Button text={"Sign in"} disabled={!formValid} />
       <p className="text-sm font-light text-gray-500 dark:text-gray-400">
         Don’t have an account yet?{" "}
         <a

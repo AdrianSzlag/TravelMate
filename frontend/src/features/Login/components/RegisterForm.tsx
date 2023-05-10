@@ -1,15 +1,18 @@
 import { useState } from "react";
-import Modal from "./Modal";
 import Form from "./Form";
 import Input from "./Input";
-import Backdrop from "./Backdrop";
 import Button from "./Button";
+import useApi from "../../../hooks/use-api";
 
 interface Props {
   onLogIn: () => void;
 }
 
 const RegisterForm = ({ onLogIn }: Props) => {
+  const { data, loading, error, fetch } = useApi("/api/register", {
+    method: "POST",
+  });
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,11 +23,18 @@ const RegisterForm = ({ onLogIn }: Props) => {
   const validPassword = password.length > 6;
   const validConfirmPassword = confirmPassword === password;
 
-  const allInputsValid =
+  const formValid =
     validEmail && validPassword && validConfirmPassword && validName;
 
   const onSubmitHandler = () => {
-    console.log("elo");
+    if (!formValid) return;
+    fetch({
+      name,
+      email,
+      password,
+    }).then((data) => {
+      console.log(data);
+    });
   };
 
   return (
@@ -68,7 +78,7 @@ const RegisterForm = ({ onLogIn }: Props) => {
         title="Confirm Password"
         name="confirm-password"
       />
-      <Button text={"Sign in"} disabled={!allInputsValid} />
+      <Button text={"Sign in"} disabled={!formValid} />
       <p className="text-sm font-light text-gray-500 dark:text-gray-400">
         Allready have an account?{" "}
         <a
