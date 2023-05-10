@@ -3,6 +3,7 @@ import Form from "./Form";
 import Input from "./Input";
 import Button from "./Button";
 import useApi from "../../../hooks/use-api";
+import Spinner from "./Spinner";
 
 interface Props {
   onLogIn: () => void;
@@ -50,6 +51,7 @@ const RegisterForm = ({ onLogIn }: Props) => {
         isValid={validName}
         title="Name"
         name="name"
+        errorMessage="Please enter your name."
       />
       <Input
         type="email"
@@ -59,6 +61,7 @@ const RegisterForm = ({ onLogIn }: Props) => {
         isValid={validEmail}
         title="Email"
         name="email"
+        errorMessage="Please enter a valid email address."
       />
       <Input
         type="password"
@@ -68,6 +71,7 @@ const RegisterForm = ({ onLogIn }: Props) => {
         isValid={validPassword}
         title="Password"
         name="password"
+        errorMessage="Password must be at least 6 characters long."
       />
       <Input
         type="password"
@@ -77,8 +81,9 @@ const RegisterForm = ({ onLogIn }: Props) => {
         isValid={validConfirmPassword}
         title="Confirm Password"
         name="confirm-password"
+        errorMessage="Passwords must match."
       />
-      <Button text={"Sign in"} disabled={!formValid} />
+      <Button text={"Sign in"} disabled={!formValid} loading={loading} />
       <p className="text-sm font-light text-gray-500 dark:text-gray-400">
         Allready have an account?{" "}
         <a

@@ -1,8 +1,8 @@
+import { redirect } from "react-router-dom";
 import Map from "../features/Map";
 import Header from "../features/Header";
 import { Menu } from "../features/MenuCarusel";
-import { FocusProvider } from "../store/focus-context";
-import { SearchProvider } from "../store/search-context";
+import { getToken } from "../utils/auth";
 
 export default function Home() {
   return (
@@ -14,4 +14,12 @@ export default function Home() {
       </div>
     </div>
   );
+}
+
+export function loader() {
+  const token = getToken();
+  if (!token) {
+    return redirect("/login");
+  }
+  return null;
 }

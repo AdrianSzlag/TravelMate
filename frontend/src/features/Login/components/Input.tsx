@@ -4,6 +4,7 @@ interface Props {
   type: string;
   placeholder: string;
   value: string;
+  errorMessage: string;
   title: string;
   onChange: (value: string) => void;
   isValid: boolean;
@@ -15,6 +16,7 @@ const Input = ({
   title,
   placeholder,
   value,
+  errorMessage,
   onChange,
   isValid,
   name,
@@ -45,7 +47,7 @@ const Input = ({
   }, [isTouched, isValid, value]);
 
   return (
-    <div>
+    <div className="pb-1">
       <label
         htmlFor={name}
         className="mb-2 block text-sm font-medium text-gray-900"
@@ -63,6 +65,11 @@ const Input = ({
           error ? "border-red-300" : "border-gray-300"
         } block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-[#2563eb] focus:ring-[#2563eb] sm:text-sm`}
       />
+      <p
+        className={`absolute text-xs text-red-500 ${error ? "" : "invisible"}`}
+      >
+        {errorMessage}
+      </p>
     </div>
   );
 };

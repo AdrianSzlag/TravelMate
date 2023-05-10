@@ -5,6 +5,7 @@ import Input from "./Input";
 import Backdrop from "./Backdrop";
 import Button from "./Button";
 import useApi from "../../../hooks/use-api";
+import Spinner from "./Spinner";
 
 interface Props {
   onSignUp: () => void;
@@ -22,7 +23,7 @@ const LoginForm = ({ onSignUp, onSuccess }: Props) => {
   const validEmail = email.includes("@");
   const validPassword = password.length > 6;
 
-  const formValid = validEmail && validPassword;
+  const formValid = validEmail && validPassword && !loading;
 
   const onSubmitHandler = () => {
     if (!formValid) return;
@@ -37,7 +38,7 @@ const LoginForm = ({ onSignUp, onSuccess }: Props) => {
 
   return (
     <Form onSubmit={onSubmitHandler}>
-      <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900">
+      <h1 className=" text-xl font-bold leading-tight tracking-tight text-gray-900">
         Sign in to your account
       </h1>
       <Input
@@ -48,6 +49,7 @@ const LoginForm = ({ onSignUp, onSuccess }: Props) => {
         isValid={validEmail}
         title="Email"
         name="email"
+        errorMessage="Please enter a valid email address."
       />
       <Input
         type="password"
@@ -57,8 +59,9 @@ const LoginForm = ({ onSignUp, onSuccess }: Props) => {
         isValid={validPassword}
         title="Password"
         name="password"
+        errorMessage="Password must be at least 6 characters long."
       />
-      <Button text={"Sign in"} disabled={!formValid} />
+      <Button text={"Sign in"} disabled={!formValid} loading={loading} />
       <p className="text-sm font-light text-gray-500 dark:text-gray-400">
         Don’t have an account yet?{" "}
         <a

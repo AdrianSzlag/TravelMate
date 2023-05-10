@@ -13,7 +13,7 @@ const Form = ({ children, onSubmit }: FormProps) => {
   return (
     <form
       onSubmit={onSubmitHandler}
-      className="flex flex-col space-y-4 rounded-xl bg-white p-6 shadow-2xl sm:min-w-[320px]"
+      className="flex h-fit flex-col space-y-4 rounded-xl bg-white p-6 shadow-2xl xs:min-w-[320px]"
     >
       {children}
     </form>

@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import fetchApi from "../utils/fetchApi";
 
 const useApi = <T>(path: string, options?: RequestInit) => {

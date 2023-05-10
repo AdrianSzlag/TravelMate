@@ -1,9 +1,12 @@
+import Spinner from "./Spinner";
+
 interface Props {
   text: string;
   disabled?: boolean;
+  loading?: boolean;
 }
 
-const Button = ({ text, disabled }: Props) => {
+const Button = ({ text, disabled, loading }: Props) => {
   return (
     <button
       type="submit"
@@ -15,7 +18,7 @@ const Button = ({ text, disabled }: Props) => {
       } w-full rounded-lg px-5 py-2.5 text-center text-sm font-medium
        text-white hover:bg-[#1d4ed8] focus:outline-none focus:ring-4`}
     >
-      {text}
+      {loading ? <Spinner /> : text}
     </button>
   );
 };
