@@ -4,6 +4,8 @@ import { register, login } from "./auth/authController";
 import { authMiddleware } from "./auth/authMiddleware";
 import cors from "cors";
 
+require("dotenv").config();
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -16,8 +18,8 @@ mongoose.connect(mongoURI, {
   useUnifiedTopology: true,
 } as ConnectOptions);
 
-app.post("/api/auth/register", register);
-app.post("/api/auth/login", login);
+app.post("/api/register", register);
+app.post("/api/login", login);
 app.get("/api/test", authMiddleware, (req, res) => {
   res.send("test ok ok");
 });

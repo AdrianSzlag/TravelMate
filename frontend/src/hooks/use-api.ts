@@ -1,13 +1,16 @@
 import { useState } from "react";
 import fetchApi from "../utils/fetchApi";
+import { json } from "react-router";
 
 const useApi = <T>(path: string, options?: RequestInit) => {
   const [data, setData] = useState<T>();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string | false>(false);
 
   const fetch = async (data?: Object) => {
     setLoading(true);
+    setError(false);
+    setData(undefined);
     let body = {};
     if (options && data) {
       options.body = JSON.stringify(data);
@@ -15,14 +18,14 @@ const useApi = <T>(path: string, options?: RequestInit) => {
       body = { body: JSON.stringify(data) };
     }
     const response = await fetchApi(path, options || body);
+    const json = await response.json();
     if (response.ok) {
-      const json = await response.json();
       setData(json);
     } else {
-      setError(true);
+      setError(json.message ? json.message : "Something went wrong!");
     }
     setLoading(false);
-    return response;
+    return json;
   };
 
   return { data, loading, error, fetch };

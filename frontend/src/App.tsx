@@ -1,13 +1,25 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  RouterProvider,
+  createBrowserRouter,
+  redirect,
+} from "react-router-dom";
 import "./App.css";
-import Home, { loader as HomeLoader } from "./pages/Home";
+import Home from "./pages/Home";
 import { FocusProvider } from "./store/focus-context";
 import { SearchProvider } from "./store/search-context";
-import Login from "./pages/Login";
+import Login, { loader as loginLoader } from "./pages/Login";
+import { removeToken } from "./utils/auth";
+
+const logout = () => {
+  removeToken();
+  return redirect("/login");
+};
 
 const BrowserRouter = createBrowserRouter([
-  { path: "/", element: <Home />, id: "home", loader: HomeLoader },
-  { path: "/login", element: <Login />, id: "login" },
+  { path: "/", element: <Home />, id: "home" },
+  { path: "/login", element: <Login />, id: "login", loader: loginLoader },
+  { path: "/logout", id: "logout", loader: logout},
+  { path: "*", element: <div>Not found</div>, id: "not-found" },
 ]);
 
 function App() {

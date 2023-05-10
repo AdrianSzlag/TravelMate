@@ -16,10 +16,4 @@ export default function Home() {
   );
 }
 
-export function loader() {
-  const token = getToken();
-  if (!token) {
-    return redirect("/login");
-  }
-  return null;
-}
+

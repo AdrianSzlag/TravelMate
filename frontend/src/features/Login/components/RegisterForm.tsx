@@ -3,14 +3,20 @@ import Form from "./Form";
 import Input from "./Input";
 import Button from "./Button";
 import useApi from "../../../hooks/use-api";
-import Spinner from "./Spinner";
+import { setToken } from "../../../utils/auth";
 
 interface Props {
   onLogIn: () => void;
+  onSuccess: () => void;
 }
 
-const RegisterForm = ({ onLogIn }: Props) => {
-  const { data, loading, error, fetch } = useApi("/api/register", {
+interface Response {
+  token?: string;
+  message?: string;
+}
+
+const RegisterForm = ({ onLogIn, onSuccess }: Props) => {
+  const { loading, error, fetch } = useApi<Response>("/api/register", {
     method: "POST",
   });
 
@@ -30,11 +36,16 @@ const RegisterForm = ({ onLogIn }: Props) => {
   const onSubmitHandler = () => {
     if (!formValid) return;
     fetch({
-      name,
+      firstName: name,
       email,
       password,
+      phone: "123456789",
+      dateOfBirth: "1990-01-01",
     }).then((data) => {
-      console.log(data);
+      if (data?.token) {
+        setToken(data.token);
+        onSuccess();
+      }
     });
   };
 
@@ -43,6 +54,11 @@ const RegisterForm = ({ onLogIn }: Props) => {
       <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900">
         Create Your Account
       </h1>
+      {error && (
+        <h2 className="text-base font-bold leading-tight tracking-tight text-red-400">
+          {error}
+        </h2>
+      )}
       <Input
         type="text"
         placeholder="Your Name"
@@ -84,7 +100,7 @@ const RegisterForm = ({ onLogIn }: Props) => {
         errorMessage="Passwords must match."
       />
       <Button text={"Sign in"} disabled={!formValid} loading={loading} />
-      <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+      <p className="text-sm font-light text-gray-500">
         Allready have an account?{" "}
         <a
           className="text-primary-600 dark:text-primary-500 cursor-pointer font-medium hover:underline"

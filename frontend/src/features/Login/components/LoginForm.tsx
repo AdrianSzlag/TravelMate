@@ -6,6 +6,7 @@ import Backdrop from "./Backdrop";
 import Button from "./Button";
 import useApi from "../../../hooks/use-api";
 import Spinner from "./Spinner";
+import { setToken } from "../../../utils/auth";
 
 interface Props {
   onSignUp: () => void;
@@ -13,7 +14,7 @@ interface Props {
 }
 
 const LoginForm = ({ onSignUp, onSuccess }: Props) => {
-  const { data, loading, error, fetch } = useApi("/api/register", {
+  const { data, loading, error, fetch } = useApi("/api/login", {
     method: "POST",
   });
 
@@ -31,7 +32,7 @@ const LoginForm = ({ onSignUp, onSuccess }: Props) => {
       email,
       password,
     }).then((data) => {
-      console.log(data);
+      setToken(data.token);
       onSuccess();
     });
   };
@@ -41,6 +42,11 @@ const LoginForm = ({ onSignUp, onSuccess }: Props) => {
       <h1 className=" text-xl font-bold leading-tight tracking-tight text-gray-900">
         Sign in to your account
       </h1>
+      {error && (
+        <h2 className="text-base font-bold leading-tight tracking-tight text-red-400">
+          {error}
+        </h2>
+      )}
       <Input
         type="email"
         placeholder="Email"
