@@ -54,6 +54,7 @@ export default function Map() {
         {results.map((result) => {
           return (
             <Marker
+              key={result.id}
               width={30}
               anchor={[result.coordinates[1], result.coordinates[0]]}
               onClick={() => setFocused(result)}

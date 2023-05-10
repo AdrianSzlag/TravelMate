@@ -29,7 +29,6 @@ const FocusProvider = ({ children }: Props) => {
   const { results } = useSearch();
 
   const setFocused = (focused: IPlace | null) => {
-    console.log(focused);
     if (focused && results.includes(focused)) {
       setFocusedItem(focused);
     } else {
