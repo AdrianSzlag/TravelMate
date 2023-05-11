@@ -10,6 +10,10 @@ export interface IService extends Document {
   availableSlots: { from: Date; to: Date }[];
 }
 
+export interface IServicePopulated extends IService {
+  placeId: IPlace;
+}
+
 const ServiceSchema: Schema = new Schema({
   name: { type: String, required: true },
   description: String,

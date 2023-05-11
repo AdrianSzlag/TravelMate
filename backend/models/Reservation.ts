@@ -11,6 +11,12 @@ export interface IReservation extends Document {
   status: string;
 }
 
+export interface IReservationPopulated extends IReservation {
+  userId: IUser;
+  serviceId: IService;
+  placeId: IPlace;
+}
+
 const ReservationSchema: Schema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
   serviceId: { type: Schema.Types.ObjectId, ref: "Service", required: true },

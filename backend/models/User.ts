@@ -14,6 +14,10 @@ export interface IUser extends Document {
   reservations?: Schema.Types.ObjectId[] | IReservation[];
 }
 
+export interface IUserPopulated extends IUser {
+  reservations?: IReservation[];
+}
+
 const UserSchema: Schema = new Schema({
   firstName: { type: String, required: true },
   lastName: String,

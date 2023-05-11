@@ -11,6 +11,12 @@ export interface IReview extends Document {
   comment?: string;
 }
 
+export interface IReviewPopulated extends IReview {
+  userId: IUser;
+  placeId: IPlace;
+  serviceId: IService;
+}
+
 const ReviewSchema: Schema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
   placeId: { type: Schema.Types.ObjectId, ref: "Place", required: true },

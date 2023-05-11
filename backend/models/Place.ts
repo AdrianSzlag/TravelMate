@@ -25,6 +25,12 @@ export interface IPlace extends Document {
   tags?: string[];
 }
 
+export interface IPlacePopulated extends IPlace {
+  reviews?: IReview[];
+  createdBy: IUser;
+  reservations?: IReservation[];
+}
+
 const PlaceSchema: Schema = new Schema({
   name: { type: String, required: true },
   type: { type: String, required: true },
