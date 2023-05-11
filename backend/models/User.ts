@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { IReservation } from "./Reservation";
 
 export interface IUser extends Document {
   firstName: string;
@@ -10,7 +11,7 @@ export interface IUser extends Document {
   phone: string;
   address?: string;
   dateOfBirth: Date;
-  reservations?: Schema.Types.ObjectId[];
+  reservations?: Schema.Types.ObjectId[] | IReservation[];
 }
 
 const UserSchema: Schema = new Schema({

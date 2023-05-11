@@ -1,9 +1,12 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { IUser } from "./User";
+import { IPlace } from "./Place";
+import { IService } from "./Service";
 
 export interface IReview extends Document {
-  userId: Schema.Types.ObjectId;
-  placeId: Schema.Types.ObjectId;
-  serviceId: Schema.Types.ObjectId;
+  userId: Schema.Types.ObjectId | IUser;
+  placeId: Schema.Types.ObjectId | IPlace;
+  serviceId: Schema.Types.ObjectId | IService;
   rating: number;
   comment?: string;
 }

@@ -1,10 +1,11 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { IPlace } from "./Place";
 
 export interface IService extends Document {
   name: string;
   description?: string;
   duration: number;
-  placeId: Schema.Types.ObjectId;
+  placeId: Schema.Types.ObjectId | IPlace;
   price: number;
   availableSlots: { from: Date; to: Date }[];
 }

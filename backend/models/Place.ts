@@ -1,4 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { IReview } from "./Review";
+import { IUser } from "./User";
+import { IReservation } from "./Reservation";
 
 export interface IPlace extends Document {
   name: string;
@@ -11,10 +14,10 @@ export interface IPlace extends Document {
   };
   thumbnail: string;
   rating?: number;
-  reviews?: Schema.Types.ObjectId[];
+  reviews?: Schema.Types.ObjectId[] | IReview[];
   images?: string[];
-  createdBy: Schema.Types.ObjectId;
-  reservations?: Schema.Types.ObjectId[];
+  createdBy: Schema.Types.ObjectId | IUser;
+  reservations?: Schema.Types.ObjectId[] | IReservation[];
   contactInfo: {
     phone: string;
     email?: string;
@@ -45,5 +48,11 @@ const PlaceSchema: Schema = new Schema({
   },
   tags: [String],
 });
-
+PlaceSchema.index({
+  name: "text",
+  description: "text",
+  address: "text",
+  type: "text",
+  tags: "text",
+});
 export default mongoose.model<IPlace>("Place", PlaceSchema);

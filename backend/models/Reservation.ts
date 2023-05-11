@@ -1,9 +1,12 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { IUser } from "./User";
+import { IService } from "./Service";
+import { IPlace } from "./Place";
 
 export interface IReservation extends Document {
-  userId: Schema.Types.ObjectId;
-  serviceId: Schema.Types.ObjectId;
-  placeId: Schema.Types.ObjectId;
+  userId: Schema.Types.ObjectId | IUser;
+  serviceId: Schema.Types.ObjectId | IService;
+  placeId: Schema.Types.ObjectId | IPlace;
   reservedSlot: { from: Date; to: Date };
   status: string;
 }
