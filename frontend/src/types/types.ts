@@ -1,10 +1,13 @@
 interface IPlace {
-  id: number;
+  _id: number;
   name: string;
   description: string;
   type: string;
   thumbnail: string;
-  coordinates: [number, number];
+  location: {
+    type: string;
+    coordinates: number[];
+  };
 }
 
 export type { IPlace };

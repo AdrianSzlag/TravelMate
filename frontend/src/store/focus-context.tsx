@@ -29,8 +29,12 @@ const FocusProvider = ({ children }: Props) => {
   const { results } = useSearch();
 
   const setFocused = (focused: IPlace | null) => {
-    if (focused && results.includes(focused)) {
-      setFocusedItem(focused);
+    console.log("setFocused", focused);
+    console.log("results", results);
+
+    const exists = results.filter((result) => result._id === focused?._id);
+    if (exists.length > 0) {
+      setFocusedItem(exists[0]);
     } else {
       setFocusedItem(null);
     }
@@ -47,7 +51,7 @@ const FocusProvider = ({ children }: Props) => {
       focused: focusedItem,
       setFocused,
     };
-  }, [focusedItem]);
+  }, [focusedItem, results]);
 
   return (
     <FocusContext.Provider value={value}>{children}</FocusContext.Provider>

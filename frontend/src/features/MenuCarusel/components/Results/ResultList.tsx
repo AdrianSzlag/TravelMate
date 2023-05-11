@@ -16,7 +16,7 @@ const ResultList = () => {
     <ul className="flex w-full flex-shrink flex-grow flex-col divide-y-2 overflow-auto">
       {results.map((result) => {
         return (
-          <li key={result.id}>
+          <li key={result._id}>
             <Result
               name={result.name}
               description={result.description}

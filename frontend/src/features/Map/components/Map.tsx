@@ -31,7 +31,10 @@ export default function Map() {
 
   useEffect(() => {
     if (focused) {
-      let flyTo = [focused.coordinates[1], focused.coordinates[0]] as Point;
+      let flyTo = [
+        focused.location.coordinates[1],
+        focused.location.coordinates[0],
+      ] as Point;
       setCenter(flyTo);
       setZoom(16);
     } else {
@@ -54,9 +57,12 @@ export default function Map() {
         {results.map((result) => {
           return (
             <Marker
-              key={result.id}
+              key={result._id}
               width={30}
-              anchor={[result.coordinates[1], result.coordinates[0]]}
+              anchor={[
+                result.location.coordinates[1],
+                result.location.coordinates[0],
+              ]}
               onClick={() => setFocused(result)}
             />
           );
