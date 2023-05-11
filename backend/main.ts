@@ -1,7 +1,13 @@
 import express, { Request, Response } from "express";
 import mongoose, { ConnectOptions } from "mongoose";
-import { register, login } from "./auth/authController";
-import { authMiddleware } from "./auth/authMiddleware";
+import User from "./models/User";
+import Review from "./models/Review";
+import Place from "./models/Place";
+import Service from "./models/Service";
+
+import { register, login } from "./controllers/authController";
+import { authMiddleware } from "./middlewares/authMiddleware";
+import { searchPlaces } from "./controllers/placeController";
 import cors from "cors";
 
 require("dotenv").config();
@@ -20,9 +26,7 @@ mongoose.connect(mongoURI, {
 
 app.post("/api/register", register);
 app.post("/api/login", login);
-app.get("/api/test", authMiddleware, (req, res) => {
-  res.send("test ok ok");
-});
+app.post("/api/search", searchPlaces);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello from MERN server with TypeScripts!");
