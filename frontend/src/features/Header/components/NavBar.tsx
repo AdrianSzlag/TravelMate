@@ -1,13 +1,17 @@
-import React from "react";
+import React, { Children } from "react";
 import { useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 
-const Header = () => {
+interface Props {
+  children: React.ReactNode;
+}
+
+const NavBar = ({ children }: Props) => {
   const [navbarOpen, setNavbarOpen] = useState(false);
   return (
     <nav className="flex-shrink-0 flex-grow-0 bg-blue-700 px-2.5 py-2.5 text-white sm:px-4">
       <div className="container mx-auto flex flex-wrap items-center justify-between">
-        <div className="flex items-center whitespace-nowrap text-xl font-semibold">
+        <div className="flex cursor-pointer items-center whitespace-nowrap text-xl font-semibold">
           {/* <img src="logo.svg" alt="" /> */}
           <div>BooKing.com</div>
         </div>
@@ -25,12 +29,7 @@ const Header = () => {
           id="navbar-default"
         >
           <ul className="flex flex-col rounded-lg bg-blue-700 md:flex-row md:space-x-8 ">
-            <li className="mt-2 md:mt-0">
-              <div className="px-2 py-1 text-lg text-white">Home</div>
-            </li>
-            <li className="mt-2 md:mt-0">
-              <div className="px-2 py-1 text-lg text-white">Info</div>
-            </li>
+            {children}
           </ul>
         </div>
       </div>
@@ -38,4 +37,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default NavBar;

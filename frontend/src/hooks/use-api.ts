@@ -1,34 +1,49 @@
 import { useState } from "react";
 import fetchApi from "../utils/fetchApi";
 import { json } from "react-router";
+import { composeWithDevTools } from "@reduxjs/toolkit/dist/devtoolsExtension";
 
 const useApi = <T>(path: string, options?: RequestInit) => {
-  const [data, setData] = useState<T>();
+  const [data, setData] = useState<T | undefined>(undefined);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | false>(false);
+  const [code, setCode] = useState<number | false>(false);
 
   const fetch = async (data?: Object) => {
     setLoading(true);
     setError(false);
     setData(undefined);
-    let body = {};
-    if (options && data) {
-      options.body = JSON.stringify(data);
-    } else if (data) {
-      body = { body: JSON.stringify(data) };
+    setCode(false);
+
+    let requestOptions = (options ? { ...options } : {}) as RequestInit;
+    if (data) requestOptions.body = JSON.stringify(data);
+
+    let response;
+    try {
+      response = await fetchApi(path, requestOptions);
+    } catch (e) {
+      setError("Something went wrong!");
+      setLoading(false);
+      return;
     }
-    const response = await fetchApi(path, options || body);
-    const json = await response.json();
-    if (response.ok) {
-      setData(json);
-    } else {
-      setError(json.message ? json.message : "Something went wrong!");
+    setCode(response.status);
+    if (response.headers.get("Content-Type")?.includes("application/json")) {
+      try {
+        const json = await response.json();
+        if (response.ok) {
+          setData(json);
+        } else {
+          setError(json.message ? json.message : "Something went wrong!");
+        }
+      } catch (e) {
+        setError("Something went wrong!");
+      }
     }
     setLoading(false);
-    return json;
+    return response;
   };
 
-  return { data, loading, error, fetch };
+  return { data, code, loading, error, fetch };
 };
 
 export default useApi;

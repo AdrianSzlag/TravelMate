@@ -16,4 +16,10 @@ export default function Home() {
   );
 }
 
-
+export function loader({ request }: { request: Request }) {
+  const token = getToken();
+  if (!token) {
+    return redirect("/login");
+  }
+  return null;
+}

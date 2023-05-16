@@ -1,27 +1,27 @@
-import { LoginForm } from "../features/Login";
-import { useNavigate, redirect } from "react-router-dom";
+import { RegisterForm } from "../features/Login";
+import { redirect, useNavigate } from "react-router-dom";
 import { getToken } from "../utils/auth";
 import { useEffect } from "react";
 
-const Login = () => {
+const Register = () => {
   const navigate = useNavigate();
 
   const onSuccesHandler = () => {
     navigate("/");
   };
 
-  const onSignUpHandler = () => {
-    navigate("/register");
+  const onLoginHandler = () => {
+    navigate("/login");
   };
 
   return (
     <div className="fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center">
-      <LoginForm onSignUp={onSignUpHandler} onSuccess={onSuccesHandler} />
+      <RegisterForm onLogIn={onLoginHandler} onSuccess={onSuccesHandler} />
     </div>
   );
 };
 
-export default Login;
+export default Register;
 
 export function loader({ request }: { request: Request }) {
   const token = getToken();

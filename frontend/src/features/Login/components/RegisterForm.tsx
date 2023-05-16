@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Form from "./Form";
 import Input from "./Input";
 import Button from "./Button";
@@ -10,15 +10,17 @@ interface Props {
   onSuccess: () => void;
 }
 
-interface Response {
-  token?: string;
+interface RegisterResponse {
   message?: string;
 }
 
 const RegisterForm = ({ onLogIn, onSuccess }: Props) => {
-  const { loading, error, fetch } = useApi<Response>("/api/register", {
-    method: "POST",
-  });
+  const { data, code, loading, error, fetch } = useApi<RegisterResponse>(
+    "/api/register",
+    {
+      method: "POST",
+    }
+  );
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -27,11 +29,15 @@ const RegisterForm = ({ onLogIn, onSuccess }: Props) => {
 
   const validName = name.length > 0;
   const validEmail = email.includes("@");
-  const validPassword = password.length > 6;
+  const validPassword = password.length >= 6;
   const validConfirmPassword = confirmPassword === password;
 
   const formValid =
-    validEmail && validPassword && validConfirmPassword && validName;
+    validEmail &&
+    validPassword &&
+    validConfirmPassword &&
+    validName &&
+    !loading;
 
   const onSubmitHandler = () => {
     if (!formValid) return;
@@ -41,13 +47,17 @@ const RegisterForm = ({ onLogIn, onSuccess }: Props) => {
       password,
       phone: "123456789",
       dateOfBirth: "1990-01-01",
-    }).then((data) => {
-      if (data?.token) {
-        setToken(data.token);
-        onSuccess();
-      }
     });
   };
+
+  useEffect(() => {
+    if (code === 201) {
+      const timeout = setTimeout(() => {
+        onSuccess();
+      }, 1000);
+      return () => clearTimeout(timeout);
+    }
+  }, [code]);
 
   return (
     <Form onSubmit={onSubmitHandler}>
@@ -57,6 +67,11 @@ const RegisterForm = ({ onLogIn, onSuccess }: Props) => {
       {error && (
         <h2 className="text-base font-bold leading-tight tracking-tight text-red-400">
           {error}
+        </h2>
+      )}
+      {data?.message && (
+        <h2 className="text-base font-bold leading-tight tracking-tight text-green-400">
+          {data.message}
         </h2>
       )}
       <Input
@@ -99,7 +114,11 @@ const RegisterForm = ({ onLogIn, onSuccess }: Props) => {
         name="confirm-password"
         errorMessage="Passwords must match."
       />
-      <Button text={"Sign in"} disabled={!formValid} loading={loading} />
+      <Button
+        text={"Sign in"}
+        disabled={!formValid || !!data?.message}
+        loading={loading || !!data?.message}
+      />
       <p className="text-sm font-light text-gray-500">
         Allready have an account?{" "}
         <a

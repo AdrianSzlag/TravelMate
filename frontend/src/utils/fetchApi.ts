@@ -1,8 +1,8 @@
 import { getToken } from "./auth";
 
-const fetchApi = async (path: string, options: RequestInit) => {
+const fetchApi = (path: string, options: RequestInit) => {
   if (!options.headers) {
-    options.headers = {};
+    options.headers = {} as HeadersInit;
   }
   options.headers = {
     ...options.headers,
@@ -10,8 +10,7 @@ const fetchApi = async (path: string, options: RequestInit) => {
     Authentication: `Bearer ${getToken()}`,
   };
   const url = `http://localhost:5000${path}`;
-  const response = await fetch(url, options);
-  return response;
+  return fetch(url, options);
 };
 
 export default fetchApi;

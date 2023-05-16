@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "./Modal";
 import Form from "./Form";
 import Input from "./Input";
@@ -13,8 +13,12 @@ interface Props {
   onSuccess: () => void;
 }
 
+interface TokenResponse {
+  token: string;
+}
+
 const LoginForm = ({ onSignUp, onSuccess }: Props) => {
-  const { data, loading, error, fetch } = useApi("/api/login", {
+  const { data, loading, error, fetch } = useApi<TokenResponse>("/api/login", {
     method: "POST",
   });
 
@@ -22,7 +26,7 @@ const LoginForm = ({ onSignUp, onSuccess }: Props) => {
   const [password, setPassword] = useState("");
 
   const validEmail = email.includes("@");
-  const validPassword = password.length > 6;
+  const validPassword = password.length >= 6;
 
   const formValid = validEmail && validPassword && !loading;
 
@@ -31,11 +35,15 @@ const LoginForm = ({ onSignUp, onSuccess }: Props) => {
     fetch({
       email,
       password,
-    }).then((data) => {
-      setToken(data.token);
-      onSuccess();
     });
   };
+
+  useEffect(() => {
+    if (data) {
+      setToken(data.token);
+      onSuccess();
+    }
+  }, [data]);
 
   return (
     <Form onSubmit={onSubmitHandler}>
