@@ -1,11 +1,9 @@
-import React from "react";
-import useFocus from "../../../../store/focus-context";
 import Rating from "../Rating";
 
 interface Props {
   onClick: () => void;
   name: string;
-  description: string;
+  description?: string;
   thumbnail: string;
   rating: number;
   numberOfReviews: number;
@@ -27,7 +25,7 @@ const Result = ({
       <div>
         <div className="text-lg font-semibold text-gray-800">{name}</div>
         <Rating rating={rating} numberOfReviews={numberOfReviews} />
-        <div>{description}</div>
+        {description && <div>{description}</div>}
       </div>
 
       <img

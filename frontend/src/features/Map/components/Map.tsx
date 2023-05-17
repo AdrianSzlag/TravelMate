@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Map as PigeonMap, Marker, Point, Bounds } from "pigeon-maps";
-import useFocus from "../../../store/focus-context";
-import useSearch from "../../../store/search-context";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux-hooks";
+import { IPlace } from "../../../types/IPlace";
+import { placesActions } from "../../../store/places-slice";
 
 const defaultCenter: Point = [50.06301434728838, 19.941015236678783];
 const defaultZoom: number = 13;
 
 export default function Map() {
+  const dispatch = useAppDispatch();
+  const places = useAppSelector((state) => state.places.places);
+  const focused = useAppSelector((state) => state.places.focused);
+  const setFocused = (place: IPlace | null) =>
+    dispatch(placesActions.setFocused(null));
+
   const [center, setCenter] = useState<Point>(defaultCenter);
   const [bounds, setBounds] = useState<Bounds>();
   const [zoom, setZoom] = useState<number>(defaultZoom);
-  const { focused, setFocused } = useFocus();
-  const { results } = useSearch();
 
   const onBoundariesChangeHandler = ({
     center,
@@ -54,16 +59,16 @@ export default function Map() {
         minZoom={11}
         zoom={zoom}
       >
-        {results.map((result) => {
+        {places.map((place) => {
           return (
             <Marker
-              key={result._id}
+              key={place.id}
               width={30}
               anchor={[
-                result.location.coordinates[1],
-                result.location.coordinates[0],
+                place.location.coordinates[1],
+                place.location.coordinates[0],
               ]}
-              onClick={() => setFocused(result)}
+              onClick={() => setFocused(place)}
             />
           );
         })}

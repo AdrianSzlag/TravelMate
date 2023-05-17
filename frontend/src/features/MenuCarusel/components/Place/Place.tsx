@@ -1,4 +1,4 @@
-import places from "../../../../store/places";
+import places from "../../../../store/places-slice";
 import { IPlace } from "../../../../types/IPlace";
 import Rating from "../Rating";
 

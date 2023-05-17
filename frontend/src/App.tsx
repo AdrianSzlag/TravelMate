@@ -4,8 +4,6 @@ import {
   redirect,
 } from "react-router-dom";
 import "./App.css";
-import { FocusProvider } from "./store/focus-context";
-import { SearchProvider } from "./store/search-context";
 import Home, { loader as homeLoader } from "./pages/Home";
 import Login, { loader as loginLoader } from "./pages/Login";
 import Register, { loader as registerLoader } from "./pages/Registration";
@@ -31,13 +29,7 @@ const BrowserRouter = createBrowserRouter([
 ]);
 
 function App() {
-  return (
-    <SearchProvider>
-      <FocusProvider>
-        <RouterProvider router={BrowserRouter} />
-      </FocusProvider>
-    </SearchProvider>
-  );
+  return <RouterProvider router={BrowserRouter} />;
 }
 
 export default App;

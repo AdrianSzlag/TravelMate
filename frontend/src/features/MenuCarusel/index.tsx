@@ -1,18 +1,24 @@
 import { useEffect, useState } from "react";
 import Filters from "./components/Filters";
 import ResultList from "./components/Results/ResultList";
-import useFocus from "../../store/focus-context";
-import useSearch from "../../store/search-context";
 import Carusel from "./components/Carusel";
 import CaruselItem from "./components/CaruselItem";
 import NaviButtons from "./components/NaviButtons";
 import Place from "./components/Place/Place";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
+import { placesActions } from "../../store/places-slice";
+import { IPlace } from "../../types/IPlace";
 
 const Menu = () => {
-  const { results } = useSearch();
-  const { focused, setFocused } = useFocus();
+  const dispatch = useAppDispatch();
+  const places = useAppSelector((state) => state.places.places);
+  const focused = useAppSelector((state) => state.places.focused);
+
   const [active, setActive] = useState(false);
   const [isMapVisible, setIsMapVisible] = useState(false);
+
+  const setFocused = (place: IPlace | null) =>
+    dispatch(placesActions.setFocused(place));
 
   const onCloseMenuHandler = () => {
     setActive(false);
@@ -20,7 +26,7 @@ const Menu = () => {
   };
 
   useEffect(() => {
-    if (results.length > 0) {
+    if (places.length > 0) {
       setActive(true);
     }
   }, []);
