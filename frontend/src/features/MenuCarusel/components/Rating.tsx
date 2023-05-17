@@ -11,11 +11,11 @@ const Rating = ({ rating, numberOfReviews }: Props) => {
 
   const star = (i: number) => {
     if (roundedToHalf - i >= 1) {
-      return <FaStar key={i} className="text-yellow-500" />;
+      return <FaStar key={i} className="text-yellow-400" />;
     } else if (roundedToHalf - i === 0.5) {
-      return <FaStarHalfAlt key={i} className="text-yellow-500" />;
+      return <FaStarHalfAlt key={i} className="text-yellow-400" />;
     } else {
-      return <FaRegStar key={i} className="text-yellow-500" />;
+      return <FaRegStar key={i} className="text-yellow-400" />;
     }
   };
 
