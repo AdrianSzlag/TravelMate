@@ -4,6 +4,7 @@ interface IPlace {
   description: string;
   type: string;
   thumbnail: string;
+  rating: number;
   location: {
     type: string;
     coordinates: number[];

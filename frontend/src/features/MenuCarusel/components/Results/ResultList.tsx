@@ -21,6 +21,7 @@ const ResultList = () => {
               name={result.name}
               description={result.description}
               thumbnail={result.thumbnail}
+              rating={result.rating}
               onClick={() => onClickHandle(result)}
             />
           </li>
