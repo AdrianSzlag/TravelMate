@@ -1,13 +1,28 @@
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 
 interface Props {
-  rating: number;
+  rating: number | undefined;
   numberOfReviews: number;
+  onClick?: () => void;
 }
 
-const Rating = ({ rating, numberOfReviews }: Props) => {
-  const roundedToHalf = Math.round(rating * 2) / 2;
+const Rating = ({ rating, numberOfReviews, onClick }: Props) => {
+  if (!rating) {
+    return (
+      <div className="flex items-center">
+        <span className="font-semibold text-gray-400">No rating</span>
+      </div>
+    );
+  }
+
+  const onClickHandler = () => {
+    if (onClick) {
+      onClick();
+    }
+  };
+
   const roundedToTenth = Math.round(rating * 10) / 10;
+  const roundedToHalf = Math.round(rating * 2) / 2;
 
   const star = (i: number) => {
     if (roundedToHalf - i >= 1) {
@@ -20,7 +35,7 @@ const Rating = ({ rating, numberOfReviews }: Props) => {
   };
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center" onClick={onClickHandler}>
       <span className="font-semibold text-gray-400">{roundedToTenth}</span>
       <div className="ml-1 flex items-center">
         {[...Array(5)].map((_, i) => star(i))}

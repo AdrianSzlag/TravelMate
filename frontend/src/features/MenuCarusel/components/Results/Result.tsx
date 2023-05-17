@@ -1,5 +1,4 @@
 import React from "react";
-import { IPlace } from "../../../../types/types";
 import useFocus from "../../../../store/focus-context";
 import Rating from "../Rating";
 
@@ -9,17 +8,25 @@ interface Props {
   description: string;
   thumbnail: string;
   rating: number;
+  numberOfReviews: number;
 }
 
-const Result = ({ onClick, name, description, thumbnail, rating }: Props) => {
+const Result = ({
+  onClick,
+  name,
+  description,
+  thumbnail,
+  rating,
+  numberOfReviews,
+}: Props) => {
   return (
     <div
-      className="flex justify-between rounded-lg p-4 text-gray-600 "
+      className="flex cursor-pointer justify-between rounded-lg px-4 py-3  text-gray-600 hover:bg-gray-50"
       onClick={onClick}
     >
       <div>
         <div className="text-lg font-semibold text-gray-800">{name}</div>
-        <Rating rating={rating} numberOfReviews={100} />
+        <Rating rating={rating} numberOfReviews={numberOfReviews} />
         <div>{description}</div>
       </div>
 

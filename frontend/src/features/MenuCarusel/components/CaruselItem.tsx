@@ -10,7 +10,7 @@ const CaruselItem = ({ children, className }: Props) => {
         className ? className : " "
       }`}
     >
-      <div className="absolute top-0 bottom-0 left-0 right-0 overflow-auto bg-transparent">
+      <div className="absolute top-0 bottom-0 left-0 right-0 overflow-auto border-l bg-transparent">
         {children}
       </div>
     </div>

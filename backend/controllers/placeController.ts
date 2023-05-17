@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
-import Review from "../models/Review";
-import Place, { IPlace, IPlacePopulated } from "../models/Place";
-import { IReview } from "../models/Review";
+import Place, { IPlaceSchema, IPlaceSchemaPopulated } from "../schemas/Place";
+import { IPlaceDTO } from "../dtos/PlaceDTO";
 
 export const searchPlaces = async (req: Request, res: Response) => {
   const { searchQuery } = req.body;
@@ -15,9 +14,36 @@ export const searchPlaces = async (req: Request, res: Response) => {
         { type: new RegExp(searchQuery, "i") },
         { description: new RegExp(searchQuery, "i") },
       ],
-    }).populate("reviews", Review);
+    });
 
-    res.status(200).json(places);
+    const placesDTOs: IPlaceDTO[] = places.map((place: IPlaceSchema) => {
+      const { _id, name, description, type, thumbnail, reviews, location } =
+        place;
+
+      let rating;
+      if (reviews) {
+        rating =
+          reviews.reduce((acc, review) => acc + review.rating, 0) /
+          reviews.length;
+      } else {
+        rating = undefined;
+      }
+
+      const id = _id ? _id : "";
+
+      return {
+        id,
+        name,
+        description,
+        type,
+        thumbnail,
+        rating,
+        reviews,
+        location,
+      };
+    });
+
+    res.status(200).json(placesDTOs);
   } catch (error) {
     console.log(error);
     res

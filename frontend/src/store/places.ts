@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { IPlace } from "../types/IPlace";
 
-import { IPlace } from "../types/types";
 
 export interface PlacesState {
   places: IPlace[];

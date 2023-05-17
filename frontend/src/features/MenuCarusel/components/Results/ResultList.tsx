@@ -2,7 +2,7 @@ import React from "react";
 import useResults from "../../../../store/search-context";
 import Result from "./Result";
 import useFocus from "../../../../store/focus-context";
-import { IPlace } from "../../../../types/types";
+import { IPlace } from "../../../../types/IPlace";
 
 const ResultList = () => {
   const { results } = useResults();
@@ -23,6 +23,7 @@ const ResultList = () => {
               thumbnail={result.thumbnail}
               rating={result.rating}
               onClick={() => onClickHandle(result)}
+              numberOfReviews={result.reviews.length}
             />
           </li>
         );

@@ -7,8 +7,8 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { IPlace } from "../types/types";
 import useSearch from "./search-context";
+import { IPlace } from "../types/IPlace";
 
 interface FocusContextType {
   focused: IPlace | null;
@@ -32,7 +32,7 @@ const FocusProvider = ({ children }: Props) => {
     console.log("setFocused", focused);
     console.log("results", results);
 
-    const exists = results.filter((result) => result._id === focused?._id);
+    const exists = results.filter((result) => result.id === focused?.id);
     if (exists.length > 0) {
       setFocusedItem(exists[0]);
     } else {

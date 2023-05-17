@@ -1,9 +1,5 @@
 import express, { Request, Response } from "express";
 import mongoose, { ConnectOptions } from "mongoose";
-import User from "./models/User";
-import Review from "./models/Review";
-import Place from "./models/Place";
-import Service from "./models/Service";
 
 import { register, login } from "./controllers/authController";
 import { authMiddleware } from "./middlewares/authMiddleware";
