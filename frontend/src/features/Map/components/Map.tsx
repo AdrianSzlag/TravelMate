@@ -12,7 +12,7 @@ export default function Map() {
   const places = useAppSelector((state) => state.places.places);
   const focused = useAppSelector((state) => state.places.focused);
   const setFocused = (place: IPlace | null) =>
-    dispatch(placesActions.setFocused(null));
+    dispatch(placesActions.setFocused(place));
 
   const [center, setCenter] = useState<Point>(defaultCenter);
   const [bounds, setBounds] = useState<Bounds>();
