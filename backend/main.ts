@@ -7,6 +7,10 @@ import { searchPlaces } from "./controllers/placeController";
 import cors from "cors";
 
 require("dotenv").config();
+if (!process.env.JWT_SECRET) {
+  console.error("JWT_SECRET is not defined.", process.env.JWT_SECRET);
+  process.exit(1);
+}
 
 const app = express();
 app.use(cors());

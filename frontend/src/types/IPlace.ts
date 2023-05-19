@@ -1,5 +1,6 @@
 import { ILocation } from "./ILocation";
 import { IReview } from "./IReview";
+import IService from "./IService";
 
 export interface IPlace {
   id: string;
@@ -10,4 +11,7 @@ export interface IPlace {
   rating?: number;
   reviews: IReview[];
   location: ILocation;
+  services: IService[];
 }
+
+export default IPlace;

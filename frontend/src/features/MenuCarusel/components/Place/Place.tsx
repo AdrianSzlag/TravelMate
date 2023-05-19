@@ -1,5 +1,6 @@
 import places from "../../../../store/places-slice";
 import { IPlace } from "../../../../types/IPlace";
+import Carousel from "./Carousel";
 import Rating from "../Rating";
 
 interface Props {
@@ -19,7 +20,8 @@ const Place = ({ place }: Props) => {
           {place.name}
         </h1>
         <Rating rating={place.rating} numberOfReviews={place.reviews.length} />
-        <p className="font-semibold text-gray-500">{place.description}</p>
+        <p className="mb-2 font-semibold text-gray-500">{place.description}</p>
+        <Carousel />
       </div>
     </div>
   );

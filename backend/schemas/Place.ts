@@ -34,7 +34,7 @@ const PlaceSchema: Schema = new Schema({
     {
       name: { type: String, required: true },
       description: String,
-      duration: { type: Number, required: true },
+      duration: Number,
       price: { type: Number, required: true },
     },
   ],

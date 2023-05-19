@@ -17,8 +17,16 @@ export const searchPlaces = async (req: Request, res: Response) => {
     });
 
     const placesDTOs: IPlaceDTO[] = places.map((place: IPlaceSchema) => {
-      const { _id, name, description, type, thumbnail, reviews, location } =
-        place;
+      const {
+        _id,
+        name,
+        description,
+        type,
+        thumbnail,
+        reviews,
+        location,
+        services,
+      } = place;
 
       let rating;
       if (reviews) {
@@ -40,6 +48,7 @@ export const searchPlaces = async (req: Request, res: Response) => {
         rating,
         reviews,
         location,
+        services,
       };
     });
 

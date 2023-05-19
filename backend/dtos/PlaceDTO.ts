@@ -1,5 +1,6 @@
 import { ILocation } from "../models/ILocation";
 import { IReview } from "../models/IReview";
+import IServiceDTO from "./ServiceDTO";
 
 export interface IPlaceDTO {
   id: string;
@@ -9,5 +10,8 @@ export interface IPlaceDTO {
   thumbnail: string;
   rating?: number;
   reviews: IReview[];
+  services: IServiceDTO[];
   location: ILocation;
 }
+
+export default IPlaceDTO;

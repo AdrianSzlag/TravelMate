@@ -1,8 +1,8 @@
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 
 interface Props {
-  rating: number | undefined;
-  numberOfReviews: number;
+  rating?: number;
+  numberOfReviews?: number;
   onClick?: () => void;
 }
 
@@ -40,9 +40,11 @@ const Rating = ({ rating, numberOfReviews, onClick }: Props) => {
       <div className="ml-1 flex items-center">
         {[...Array(5)].map((_, i) => star(i))}
       </div>
-      <span className="ml-1  font-semibold text-gray-400">
-        ({numberOfReviews})
-      </span>
+      {numberOfReviews && (
+        <span className="ml-1  font-semibold text-gray-400">
+          ({numberOfReviews})
+        </span>
+      )}
     </div>
   );
 };
