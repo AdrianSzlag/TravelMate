@@ -13,7 +13,7 @@
   // "forwardPorts": [],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "updateContentCommand": "(cd frontend && npm install)",
+  "updateContentCommand": "bash .devcontainer/install.sh",
   //"postStartCommand": "npm run dev",
 
   // Configure tool-specific properties.
