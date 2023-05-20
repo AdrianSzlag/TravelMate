@@ -20,27 +20,33 @@
   "customizations": {
     "vscode": {
       "extensions": [
-		"eamodio.gitlens",
-		"GitHub.copilot",
-		"GitHub.vscode-pull-request-github",
-		"dbaeumer.vscode-eslint",
-		"esbenp.prettier-vscode",
-		"bradlc.vscode-tailwindcss",
-		"ms-azuretools.vscode-docker",
-		"streetsidesoftware.code-spell-checker",
-		"VisualStudioExptTeam.vscodeintellicode",
-		"VisualStudioExptTeam.intellicode-api-usage-examples"
-	]
+        "eamodio.gitlens",
+        "GitHub.copilot",
+        "GitHub.vscode-pull-request-github",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "ms-azuretools.vscode-docker",
+        "streetsidesoftware.code-spell-checker",
+        "VisualStudioExptTeam.vscodeintellicode",
+        "VisualStudioExptTeam.intellicode-api-usage-examples"
+      ]
     }
   },
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {}
-},
-"portsAttributes": {
-	"27018": {
-		"label": "Database"
-	}
-}
+  },
+  "portsAttributes": {
+    "27018": {
+      "label": "Database"
+    },
+    "5000": {
+      "label": "Backend"
+    },
+    "5173": {
+      "label": "Frontend dev"
+    }
+  }
 
   // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
   // "remoteUser": "root"
