@@ -21,8 +21,12 @@ const Rating = ({ rating, numberOfReviews, onClick }: Props) => {
     }
   };
 
-  const roundedToTenth = Math.round(rating * 10) / 10;
   const roundedToHalf = Math.round(rating * 2) / 2;
+  const roundedToTenth = Math.round(rating * 10) / 10;
+  const ratingString =
+    roundedToTenth.toString().length === 1
+      ? roundedToTenth + ".0"
+      : roundedToTenth.toString();
 
   const star = (i: number) => {
     if (roundedToHalf - i >= 1) {
@@ -36,12 +40,16 @@ const Rating = ({ rating, numberOfReviews, onClick }: Props) => {
 
   return (
     <div className="flex items-center" onClick={onClickHandler}>
-      <span className="font-semibold text-gray-400">{roundedToTenth}</span>
+      <div className="relative flex w-5 items-center">
+        <span className="absolute font-semibold text-gray-400">
+          {ratingString}
+        </span>
+      </div>
       <div className="ml-1 flex items-center">
         {[...Array(5)].map((_, i) => star(i))}
       </div>
       {numberOfReviews && (
-        <span className="ml-1  font-semibold text-gray-400">
+        <span className="ml-1 font-semibold text-gray-400">
           ({numberOfReviews})
         </span>
       )}
