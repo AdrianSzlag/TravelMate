@@ -8,28 +8,52 @@ import Place from "./components/Place/Place";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
 import { placesActions } from "../../store/places-slice";
 import { IPlace } from "../../types/IPlace";
+import {
+  useLocation,
+  useNavigate,
+  useNavigation,
+  useParams,
+} from "react-router-dom";
+import { fetchPlace } from "../../store/places-actions";
 
 const Menu = () => {
   const dispatch = useAppDispatch();
-  const places = useAppSelector((state) => state.places.places);
   const focused = useAppSelector((state) => state.places.focused);
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const { placeId } = useParams();
 
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(
+    pathname.startsWith("/search") || pathname.startsWith("/place")
+  );
+
   const [isMapVisible, setIsMapVisible] = useState(false);
 
-  const setFocused = (place: IPlace | null) =>
-    dispatch(placesActions.setFocused(place));
+  useEffect(() => {
+    const path = `/${
+      !active ? "" : focused ? `place/${focused.id}` : "search"
+    }`;
+    navigate(path);
+  }, [active, focused]);
 
-  const onCloseMenuHandler = () => {
-    setActive(false);
+  useEffect(() => {
+    if (placeId) {
+      dispatch(fetchPlace(placeId));
+    }
+  }, []);
+
+  const setFocused = (place: IPlace | null) => {
+    dispatch(placesActions.setFocused(place));
+  };
+
+  const onClosePreviewHandler = () => {
     setFocused(null);
   };
 
-  useEffect(() => {
-    if (places.length > 0) {
-      setActive(true);
-    }
-  }, []);
+  const onCloseResultsHandler = () => {
+    onClosePreviewHandler();
+    setActive(false);
+  };
 
   useEffect(() => {
     if (focused) {
@@ -42,6 +66,10 @@ const Menu = () => {
     setIsMapVisible((prev) => !prev);
   };
 
+  const onSubmitFiltersHandler = () => {
+    setActive(true);
+  };
+
   return (
     <Carusel
       className={`bg-white ${
@@ -51,13 +79,13 @@ const Menu = () => {
       }`}
     >
       <CaruselItem className="h-full w-full sm:w-[256px]">
-        <Filters onSubmit={() => setActive(true)} />
+        <Filters onSubmit={onSubmitFiltersHandler} />
       </CaruselItem>
       {active && (
         <CaruselItem className="h-full w-full xs:w-[400px]">
           <NaviButtons
             text="Search"
-            onBack={onCloseMenuHandler}
+            onBack={onCloseResultsHandler}
             isMapVisible={isMapVisible}
             toggleMapVisibility={toggleMapVisibility}
           />
@@ -68,7 +96,7 @@ const Menu = () => {
         <CaruselItem className="h-full w-full xs:w-[400px]">
           <NaviButtons
             text="Results"
-            onBack={() => setFocused(null)}
+            onBack={onClosePreviewHandler}
             isMapVisible={isMapVisible}
             toggleMapVisibility={toggleMapVisibility}
           />
