@@ -8,20 +8,16 @@ import Place from "./components/Place/Place";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
 import { placesActions } from "../../store/places-slice";
 import { IPlace } from "../../types/IPlace";
-import {
-  useLocation,
-  useNavigate,
-  useNavigation,
-  useParams,
-} from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { fetchPlace } from "../../store/places-actions";
+import { useAppNavigate } from "../../hooks/use-navigate";
 
 const Menu = () => {
   const dispatch = useAppDispatch();
   const focused = useAppSelector((state) => state.places.focused);
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
+  const navigate = useAppNavigate();
   const { placeId } = useParams();
+  const { pathname } = useLocation();
 
   const [active, setActive] = useState(
     pathname.startsWith("/search") || pathname.startsWith("/place")
@@ -33,7 +29,7 @@ const Menu = () => {
     const path = `/${
       !active ? "" : focused ? `place/${focused.id}` : "search"
     }`;
-    navigate(path);
+    navigate(path, {});
   }, [active, focused]);
 
   useEffect(() => {
