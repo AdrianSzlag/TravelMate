@@ -16,22 +16,26 @@ const placesSlice = createSlice({
   initialState,
   reducers: {
     setPlaces(state, action: PayloadAction<IPlace[]>) {
-      console.log(action);
       state.places = action.payload;
-      if (state.focused)
-        state.focused = action.payload.find(
-          (place) => place.id === state.focused?.id
-        )!;
+      if (state.focused) {
+        if (!state.places.find((place) => place.id === state.focused?.id)) {
+          state.places.push(state.focused);
+        }
+      }
     },
     setFocused(state, action: PayloadAction<IPlace | null>) {
+      console.log(action.payload);
       if (!action.payload) {
         state.focused = null;
         return;
       }
+      state.focused = action.payload;
+
       const id = action.payload.id;
       const place = state.places.find((place) => place.id === id);
-      if (place) state.focused = place;
-      else state.focused = null;
+      if (!place) {
+        state.places.push(action.payload);
+      }
     },
   },
 });

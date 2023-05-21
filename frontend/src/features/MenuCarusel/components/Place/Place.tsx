@@ -11,7 +11,7 @@ const Place = ({ place }: Props) => {
   return (
     <div>
       <img
-        src={place.thumbnail}
+        src={`/${place.thumbnail}`}
         alt={place.name}
         className="h-[200px] w-full object-cover"
       />

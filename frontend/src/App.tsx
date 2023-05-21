@@ -4,19 +4,32 @@ import {
   redirect,
 } from "react-router-dom";
 import "./App.css";
-import Home, { loader as homeLoader } from "./pages/Home";
+import Home from "./pages/Home";
 import Login, { loader as loginLoader } from "./pages/Login";
 import Register, { loader as registerLoader } from "./pages/Registration";
 import { removeToken } from "./utils/auth";
+import { getRedirectLoader } from "./utils/redirect";
 
 const logout = () => {
   removeToken();
-  //history.replaceState({}, "login", "/login");
+
   return redirect("/login");
 };
 
 const BrowserRouter = createBrowserRouter([
-  { path: "/", element: <Home />, id: "home", loader: homeLoader },
+  {
+    path: "/",
+    element: <Home />,
+    id: "home",
+    children: [
+      {
+        path: "/search",
+      },
+      {
+        path: "/place/:placeId",
+      },
+    ],
+  },
   { path: "/login", element: <Login />, id: "login", loader: loginLoader },
   {
     path: "/register",

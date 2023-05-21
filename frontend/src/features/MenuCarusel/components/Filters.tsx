@@ -9,6 +9,7 @@ interface Props {
 const Filters = ({ onSubmit }: Props) => {
   const [searchQuery, setSearchQuery] = useState("");
   const dispatch = useAppDispatch();
+  const [firstLoad, setFirstLoad] = useState(true);
 
   const fetch = () => {
     dispatch(fetchPlaces(searchQuery));
@@ -25,6 +26,11 @@ const Filters = ({ onSubmit }: Props) => {
   };
 
   useEffect(() => {
+    if (firstLoad) {
+      setFirstLoad(false);
+      fetch();
+      return;
+    }
     const timeout = setTimeout(() => {
       fetch();
     }, 500);

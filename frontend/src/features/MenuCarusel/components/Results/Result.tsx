@@ -29,7 +29,7 @@ const Result = ({
       </div>
 
       <img
-        src={thumbnail}
+        src={`/${thumbnail}`}
         alt=""
         className="h-24 w-24 rounded-xl object-cover"
       />

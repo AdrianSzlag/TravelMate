@@ -1,13 +1,15 @@
 import { useState } from "react";
 import Services from "./Services";
 import Reviews from "./Reviews";
+import Information from "./Information";
+import { useSearchParams } from "react-router-dom";
 
-interface ButtonPorps {
+interface ButtonProps {
   text: string;
   onClick: () => void;
   active?: boolean;
 }
-const CarouselButton = ({ text, onClick, active }: ButtonPorps) => {
+const CarouselButton = ({ text, onClick, active }: ButtonProps) => {
   return (
     <button
       onClick={onClick}
@@ -25,30 +27,56 @@ const CarouselButton = ({ text, onClick, active }: ButtonPorps) => {
 const pages = ["Services", "Reviews", "Information"] as const;
 
 const Carousel = () => {
-  const [page, setPage] = useState<string>(pages[0]);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const isActive = (pageName: string) => {
-    return page === pageName;
+  const getActivePage = () => {
+    if (!searchParams.has("details")) {
+      return "services";
+    }
+    switch (searchParams.get("details")) {
+      case "reviews":
+        return "reviews";
+      case "information":
+        return "information";
+      default:
+        return "services";
+    }
+  };
+  const activePage = getActivePage();
+
+  const getOnClickPage = (pageName: string) => () => {
+    setSearchParams((params) => {
+      const p = Object.fromEntries(params.entries());
+      return { ...p, details: pageName };
+    });
   };
 
-  const handlePageChange = (pageName: string) => {
-    setPage(pageName);
+  const isActive = (pageName: string) => {
+    return pageName === activePage;
   };
 
   return (
     <div>
       <div className="flex w-full justify-between border-b">
-        {pages.map((pageName) => (
-          <CarouselButton
-            key={pageName}
-            text={pageName}
-            onClick={() => handlePageChange(pageName)}
-            active={isActive(pageName)}
-          />
-        ))}
+        <CarouselButton
+          text={"Services"}
+          onClick={getOnClickPage("services")}
+          active={isActive("services")}
+        />
+        <CarouselButton
+          text={"Reviews"}
+          onClick={getOnClickPage("reviews")}
+          active={isActive("reviews")}
+        />
+        <CarouselButton
+          text={"Information"}
+          onClick={getOnClickPage("information")}
+          active={isActive("information")}
+        />
       </div>
-      {page === "Services" && <Services />}
-      {page === "Reviews" && <Reviews />}
+      {activePage === "services" && <Services />}
+      {activePage === "reviews" && <Reviews />}
+      {activePage === "information" && <Information />}
     </div>
   );
 };
