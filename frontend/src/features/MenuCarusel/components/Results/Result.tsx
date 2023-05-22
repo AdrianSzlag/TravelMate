@@ -24,8 +24,12 @@ const Result = ({
     >
       <div>
         <div className="text-lg font-semibold text-gray-800">{name}</div>
-        {rating && <Rating rating={rating} numberOfReviews={numberOfReviews} />}
-        {!rating && <div className="text-gray-400">No reviews yet!</div>}
+        {rating && !!numberOfReviews && (
+          <Rating rating={rating} numberOfReviews={numberOfReviews} />
+        )}
+        {!numberOfReviews && (
+          <div className="text-gray-400">No reviews yet!</div>
+        )}
         {description && <div>{description}</div>}
       </div>
 
