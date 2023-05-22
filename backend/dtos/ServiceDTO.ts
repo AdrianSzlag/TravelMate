@@ -1,8 +1,6 @@
-interface IServiceDTO {
+export type ServiceDTO = {
   name: string;
   description?: string;
   duration?: number;
   price: number;
-}
-
-export default IServiceDTO;
+};

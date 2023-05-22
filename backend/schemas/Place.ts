@@ -41,7 +41,7 @@ const PlaceSchema: Schema = new Schema({
   reservations: [
     {
       serviceName: { type: String, required: true },
-      userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+      user: { type: Schema.Types.ObjectId, ref: "User", required: true },
       reservationTime: {
         from: { type: Date, required: true },
         to: { type: Date, required: true },
@@ -50,7 +50,7 @@ const PlaceSchema: Schema = new Schema({
   ],
   reviews: [
     {
-      userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+      user: { type: Schema.Types.ObjectId, ref: "User", required: true },
       rating: { type: Number, required: true },
       comment: String,
     },

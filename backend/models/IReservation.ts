@@ -1,10 +1,12 @@
-export interface IReservationTime {
+import { IUser } from "./IUser";
+
+export type IReservationTime = {
   from: Date;
   to: Date;
-}
+};
 
-export interface IReservation {
+export type IReservation = {
   serviceName: string;
-  userId: string;
+  user: string | IUser;
   reservationTime: IReservationTime;
-}
+};

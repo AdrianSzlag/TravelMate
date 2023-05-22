@@ -1,4 +1,4 @@
-export interface ILocation {
+export type ILocation = {
   type: string;
   coordinates: number[];
-}
+};

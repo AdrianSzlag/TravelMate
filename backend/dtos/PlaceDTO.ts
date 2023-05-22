@@ -1,17 +1,16 @@
 import { ILocation } from "../models/ILocation";
-import { IReview } from "../models/IReview";
-import IServiceDTO from "./ServiceDTO";
+import { ReviewDTO } from "./ReviewDTO";
+import { ServiceDTO } from "./ServiceDTO";
+import { UserDTO } from "./UserDTO";
 
-export interface IPlaceDTO {
+export type PlaceDTO = {
   id: string;
   name: string;
   description?: string;
   type: string;
   thumbnail: string;
   rating?: number;
-  reviews: IReview[];
-  services: IServiceDTO[];
+  reviews: ReviewDTO[];
+  services: ServiceDTO[];
   location: ILocation;
-}
-
-export default IPlaceDTO;
+};

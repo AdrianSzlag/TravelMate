@@ -5,6 +5,7 @@ import { register, login } from "./controllers/authController";
 import { authMiddleware } from "./middlewares/authMiddleware";
 import { searchPlaces, getPlace } from "./controllers/placeController";
 import cors from "cors";
+import { deleteReview, putReview } from "./controllers/reviewController";
 
 require("dotenv").config();
 if (!process.env.JWT_SECRET) {
@@ -28,6 +29,8 @@ app.post("/api/register", register);
 app.post("/api/login", login);
 app.post("/api/search", searchPlaces);
 app.get("/api/place/:placeId", getPlace);
+app.post("/api/review", authMiddleware, putReview);
+app.delete("/api/review", authMiddleware, deleteReview);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello from MERN server with TypeScripts!");

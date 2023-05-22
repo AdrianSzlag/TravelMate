@@ -1,4 +1,4 @@
-export interface IContactInfo {
+export type IContactInfo = {
   phone: string;
   email?: string;
-}
+};

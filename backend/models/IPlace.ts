@@ -3,8 +3,9 @@ import { ILocation } from "./ILocation";
 import { IReservation } from "./IReservation";
 import { IReview } from "./IReview";
 import { IService } from "./IService";
+import { IUser } from "./IUser";
 
-export interface IPlace {
+export type IPlace = {
   _id: string;
   name: string;
   type: string;
@@ -13,10 +14,10 @@ export interface IPlace {
   location: ILocation;
   thumbnail: string;
   images?: string[];
-  createdBy: string;
+  createdBy: string | IUser;
   contactInfo: IContactInfo;
   tags?: string[];
   services: IService[];
   reservations: IReservation[];
   reviews: IReview[];
-}
+};

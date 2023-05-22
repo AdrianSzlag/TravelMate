@@ -1,4 +1,4 @@
-export interface IUser extends Document {
+export type IUser = {
   _id: string;
   firstName: string;
   lastName?: string;
@@ -9,4 +9,4 @@ export interface IUser extends Document {
   phone: string;
   address?: string;
   dateOfBirth: Date;
-}
+};

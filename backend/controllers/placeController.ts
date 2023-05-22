@@ -1,22 +1,24 @@
 import { Request, Response } from "express";
 import Place, { IPlaceSchema, IPlaceSchemaPopulated } from "../schemas/Place";
-import { IPlaceDTO } from "../dtos/PlaceDTO";
+import { PlaceDTO } from "../dtos/PlaceDTO";
+import Users from "../schemas/User";
+import { ReviewDTO } from "../dtos/ReviewDTO";
+import { UserDTO } from "../dtos/UserDTO";
+import { IUser } from "../models/IUser";
 
 export const searchPlaces = async (req: Request, res: Response) => {
   const { searchQuery } = req.body;
 
   try {
-    // const places = (await Place.find({
-    //   $text: { $search: searchQuery },
     const places = await Place.find({
       $or: [
         { name: new RegExp(searchQuery, "i") },
         { type: new RegExp(searchQuery, "i") },
         { description: new RegExp(searchQuery, "i") },
       ],
-    });
+    }).populate("reviews.user createdBy");
 
-    const placesDTOs: IPlaceDTO[] = places.map((place: IPlaceSchema) => {
+    const placesDTOs: PlaceDTO[] = places.map((place: IPlaceSchema) => {
       const {
         _id,
         name,
@@ -28,8 +30,22 @@ export const searchPlaces = async (req: Request, res: Response) => {
         services,
       } = place;
 
+      const reviewDTOs: ReviewDTO[] = reviews.map((review) => {
+        review.user = review.user as IUser;
+        return {
+          user: {
+            id: review.user._id,
+            name: `${review.user.firstName} ${review.user.lastName ?? ""}`,
+            profileImage: review.user.profileImage,
+          },
+          comment: review.comment,
+          profileImage: review.user.profileImage,
+          rating: review.rating,
+        };
+      });
+
       let rating;
-      if (reviews) {
+      if (reviewDTOs) {
         rating =
           reviews.reduce((acc, review) => acc + review.rating, 0) /
           reviews.length;
@@ -46,7 +62,7 @@ export const searchPlaces = async (req: Request, res: Response) => {
         type,
         thumbnail,
         rating,
-        reviews,
+        reviews: reviewDTOs,
         location,
         services,
       };
@@ -66,7 +82,7 @@ export const getPlace = async (req: Request, res: Response) => {
 
   try {
     const place = (await Place.findById(placeId).populate(
-      "reviews"
+      "reviews.user createdBy"
     )) as IPlaceSchemaPopulated;
 
     if (!place) {
@@ -84,8 +100,22 @@ export const getPlace = async (req: Request, res: Response) => {
       services,
     } = place;
 
+    const reviewDTOs: ReviewDTO[] = reviews.map((review) => {
+      review.user = review.user as IUser;
+      return {
+        user: {
+          id: review.user._id,
+          name: `${review.user.firstName} ${review.user.lastName ?? ""}`,
+          profileImage: review.user.profileImage,
+        },
+        comment: review.comment,
+        profileImage: review.user.profileImage,
+        rating: review.rating,
+      };
+    });
+
     let rating;
-    if (reviews) {
+    if (reviewDTOs) {
       rating =
         reviews.reduce((acc, review) => acc + review.rating, 0) /
         reviews.length;
@@ -95,14 +125,14 @@ export const getPlace = async (req: Request, res: Response) => {
 
     const id = _id ? _id : "";
 
-    const placeDTO: IPlaceDTO = {
+    const placeDTO: PlaceDTO = {
       id,
       name,
       description,
       type,
       thumbnail,
       rating,
-      reviews,
+      reviews: reviewDTOs,
       location,
       services,
     };
