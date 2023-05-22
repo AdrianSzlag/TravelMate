@@ -10,21 +10,8 @@ const ResultList = () => {
   const dispatch = useAppDispatch();
 
   const onClickHandle = (result: IPlace) => {
-    //setFocused(result);
     dispatch(placesActions.setFocused(result));
   };
-
-  const countRating = (reviews: IReview[]) => {
-    let sum = 0;
-    reviews.forEach((review) => {
-      sum += review.rating;
-    });
-    return sum / reviews.length;
-  };
-
-  useEffect(() => {
-    console.log("results", results);
-  }, [results]);
 
   return (
     <ul className="flex w-full flex-shrink flex-grow flex-col divide-y-2 overflow-auto">
@@ -35,7 +22,7 @@ const ResultList = () => {
               name={result.name}
               description={result.description}
               thumbnail={result.thumbnail}
-              rating={countRating(result.reviews)}
+              rating={result.rating}
               onClick={() => onClickHandle(result)}
               numberOfReviews={result.reviews.length}
             />

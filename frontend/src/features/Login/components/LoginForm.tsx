@@ -6,7 +6,8 @@ import Backdrop from "./Backdrop";
 import Button from "./Button";
 import useApi from "../../../hooks/use-api";
 import Spinner from "./Spinner";
-import { setToken } from "../../../utils/auth";
+import { setAuthData } from "../../../utils/auth";
+import { IUser } from "../../../types/IUser";
 
 interface Props {
   onSignUp: () => void;
@@ -15,6 +16,7 @@ interface Props {
 
 interface TokenResponse {
   token: string;
+  user: IUser;
 }
 
 const LoginForm = ({ onSignUp, onSuccess }: Props) => {
@@ -40,7 +42,7 @@ const LoginForm = ({ onSignUp, onSuccess }: Props) => {
 
   useEffect(() => {
     if (data) {
-      setToken(data.token);
+      setAuthData(data.token, data.user);
       onSuccess();
     }
   }, [data]);

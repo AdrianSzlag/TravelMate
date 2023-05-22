@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useAppSelector } from "../../../../../hooks/redux-hooks";
 import Rating from "../../Rating";
 import UserAvatar from "../../../../../components/UserAvatar";
-import NewReview from "./NewReview";
+import MyReview from "./MyReview";
+import { getUser } from "../../../../../utils/auth";
 
 interface ReviewProps {
   name: string;
@@ -29,43 +30,26 @@ const Review = ({ name, rating, comment }: ReviewProps) => {
 
 const Reviews = () => {
   const reviews = useAppSelector((state) => state.places.focused?.reviews);
-  const [addReview, setAddReview] = useState(false);
+  console.log("reviews", reviews);
 
-  const myReview = () => {
-    return (
-      <>
-        {addReview && <NewReview />}
-        {!addReview && (
-          <div
-            className="cursor-pointer font-semibold text-blue-500"
-            onClick={() => setAddReview(true)}
-          >
-            Add Review
-          </div>
-        )}
-      </>
-    );
-  };
-
-  if (!reviews || reviews.length === 0)
-    return (
-      <div className="w-full pt-4">
-        {myReview()}
-        <div className="w-full text-center text-gray-400">No reviews yet!</div>
-      </div>
-    );
+  const userId = getUser()?.id;
+  const otherReviews = reviews?.filter((review) => review.user.id !== userId);
 
   return (
     <div className="py-1">
-      {myReview()}
-      {reviews?.map((review) => (
+      {userId && <MyReview />}
+      {!userId && <div> Log in to leave a review</div>}
+      {otherReviews?.map((review) => (
         <Review
-          key={review.userId}
-          name={review.userId}
+          key={review.user.id}
+          name={review.user.name}
           rating={review.rating}
           comment={review.comment}
         />
       ))}
+      {!otherReviews && (
+        <div className="w-full text-center text-gray-400">No reviews yet!</div>
+      )}
     </div>
   );
 };

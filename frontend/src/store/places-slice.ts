@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { IPlace } from "../types/IPlace";
+import { IReview } from "../types/IReview";
 
 export interface PlacesState {
   places: IPlace[];
@@ -24,7 +25,6 @@ const placesSlice = createSlice({
       }
     },
     setFocused(state, action: PayloadAction<IPlace | null>) {
-      console.log(action.payload);
       if (!action.payload) {
         state.focused = null;
         return;
@@ -36,6 +36,38 @@ const placesSlice = createSlice({
       if (!place) {
         state.places.push(action.payload);
       }
+    },
+    addReview(
+      state,
+      action: PayloadAction<{ placeId: string; review: IReview }>
+    ) {
+      const place = state.places.find(
+        (place) => place.id === action.payload.placeId
+      );
+      if (!place) return;
+      place.reviews = place.reviews.filter(
+        (review) => review.user.id !== action.payload.review.user.id
+      );
+      if (state.focused?.id === action.payload.placeId) {
+        state.focused = place;
+      }
+      place.reviews.push(action.payload.review);
+    },
+    removeReview(
+      state,
+      action: PayloadAction<{ placeId: string; userId: string }>
+    ) {
+      const place = state.places.find(
+        (place) => place.id === action.payload.placeId
+      );
+      if (!place) return;
+      place.reviews = place.reviews.filter(
+        (review) => review.user.id !== action.payload.userId
+      );
+      if (state.focused?.id === action.payload.placeId) {
+        state.focused = place;
+      }
+      console.log("reviews", place.reviews);
     },
   },
 });

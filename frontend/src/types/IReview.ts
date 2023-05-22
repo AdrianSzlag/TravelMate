@@ -1,5 +1,7 @@
+import { IUser } from "./IUser";
+
 export interface IReview {
-  userId: string;
+  user: IUser;
   rating: number;
   comment?: string;
 }

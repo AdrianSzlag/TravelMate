@@ -1,6 +1,6 @@
 import { RegisterForm } from "../features/Login";
 import { redirect, useNavigate } from "react-router-dom";
-import { getToken } from "../utils/auth";
+import { isLoggedIn } from "../utils/auth";
 import { useEffect } from "react";
 
 const Register = () => {
@@ -24,8 +24,7 @@ const Register = () => {
 export default Register;
 
 export function loader({ request }: { request: Request }) {
-  const token = getToken();
-  if (token) {
+  if (isLoggedIn()) {
     return redirect("/");
   }
   return null;

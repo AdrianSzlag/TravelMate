@@ -5,7 +5,7 @@ interface Props {
   name: string;
   description?: string;
   thumbnail: string;
-  rating: number;
+  rating?: number;
   numberOfReviews: number;
 }
 
@@ -24,7 +24,8 @@ const Result = ({
     >
       <div>
         <div className="text-lg font-semibold text-gray-800">{name}</div>
-        <Rating rating={rating} numberOfReviews={numberOfReviews} />
+        {rating && <Rating rating={rating} numberOfReviews={numberOfReviews} />}
+        {!rating && <div className="text-gray-400">No reviews yet!</div>}
         {description && <div>{description}</div>}
       </div>
 

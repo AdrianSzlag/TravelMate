@@ -7,29 +7,18 @@ import "./App.css";
 import Home from "./pages/Home";
 import Login, { loader as loginLoader } from "./pages/Login";
 import Register, { loader as registerLoader } from "./pages/Registration";
-import { removeToken } from "./utils/auth";
+import { removeAuthData } from "./utils/auth";
 import { getRedirectLoader } from "./utils/redirect";
 
 const logout = () => {
-  removeToken();
-
+  removeAuthData();
   return redirect("/login");
 };
 
 const BrowserRouter = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-    id: "home",
-    children: [
-      {
-        path: "/search",
-      },
-      {
-        path: "/place/:placeId",
-      },
-    ],
-  },
+  { path: "/", element: <Home />, id: "home" },
+  { path: "/search", element: <Home />, id: "search" },
+  { path: "/place/:placeId", element: <Home />, id: "place" },
   { path: "/login", element: <Login />, id: "login", loader: loginLoader },
   {
     path: "/register",

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import fetchApi from "../utils/fetchApi";
+import fetchApi, { ServerResponse } from "../utils/fetchApi";
 
 const useApi = <T>(path: string, options?: RequestInit) => {
   const [data, setData] = useState<T | undefined>(undefined);
@@ -40,6 +40,8 @@ const useApi = <T>(path: string, options?: RequestInit) => {
     setLoading(false);
     return response;
   };
+
+  
 
   return { data, code, loading, error, fetch };
 };

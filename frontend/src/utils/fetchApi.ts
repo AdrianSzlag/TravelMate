@@ -14,3 +14,7 @@ const fetchApi = (path: string, options: RequestInit) => {
 };
 
 export default fetchApi;
+
+export type ServerResponse = {
+  message: string;
+};

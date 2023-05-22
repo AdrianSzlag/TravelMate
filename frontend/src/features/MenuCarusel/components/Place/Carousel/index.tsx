@@ -56,7 +56,7 @@ const Carousel = () => {
   };
 
   return (
-    <div>
+    <>
       <div className="flex w-full justify-between border-b">
         <CarouselButton
           text={"Services"}
@@ -77,7 +77,7 @@ const Carousel = () => {
       {activePage === "services" && <Services />}
       {activePage === "reviews" && <Reviews />}
       {activePage === "information" && <Information />}
-    </div>
+    </>
   );
 };
 
