@@ -3,7 +3,6 @@ import Form from "./Form";
 import Input from "./Input";
 import Button from "./Button";
 import useApi from "../../../hooks/use-api";
-import { setToken } from "../../../utils/auth";
 
 interface Props {
   onLogIn: () => void;
