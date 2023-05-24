@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Form from "./Form";
 import Input from "./Input";
 import Button from "./Button";
-import useApi from "../../../hooks/use-api";
+import useApi from "hooks/use-api";
 
 interface Props {
   onLogIn: () => void;

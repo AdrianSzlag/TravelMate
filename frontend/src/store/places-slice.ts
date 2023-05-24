@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { IPlace } from "../customTypes/IPlace";
-import { IReview } from "../customTypes/IReview";
+import { IPlace } from "../types/IPlace";
+import { IReview } from "../types/IReview";
 
 export interface PlacesState {
   places: IPlace[];

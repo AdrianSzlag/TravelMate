@@ -1,5 +1,5 @@
 import { useState } from "react";
-import fetchApi, { ServerResponse } from "../utils/fetchApi";
+import fetchApi from "utils/fetchApi";
 
 const useApi = <T>(path: string, options?: RequestInit) => {
   const [data, setData] = useState<T | undefined>(undefined);

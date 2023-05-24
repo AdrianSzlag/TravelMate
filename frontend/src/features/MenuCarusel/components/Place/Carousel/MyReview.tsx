@@ -1,17 +1,13 @@
 import { useEffect, useState } from "react";
-import { FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
-import UserAvatar from "../../../../../components/UserAvatar";
-import useApi from "../../../../../hooks/use-api";
-import { ServerResponse } from "../../../../../utils/fetchApi";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "../../../../../hooks/redux-hooks";
-import { getUser } from "../../../../../utils/auth";
+import UserAvatar from "components/UserAvatar";
+import useApi from "hooks/use-api";
+import { ServerResponse } from "utils/fetchApi";
+import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
+import { getUser } from "utils/auth";
 import Rating from "../../Rating";
-import { placesActions } from "../../../../../store/places-slice";
-import { IReview } from "../../../../../customTypes/IReview";
-import { IUser } from "../../../../../customTypes/IUser";
+import { placesActions } from "store/places-slice";
+import { IReview } from "types/IReview";
+import { IUser } from "types/IUser";
 
 const MyReview = () => {
   const { fetch: upload } = useApi<ServerResponse>("/api/review", {

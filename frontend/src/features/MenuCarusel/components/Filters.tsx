@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { fetchPlaces } from "../../../store/places-actions";
-import { useAppDispatch } from "../../../hooks/redux-hooks";
+import React, { useEffect, useState } from "react";
+import { fetchPlaces } from "store/places-actions";
+import { useAppDispatch } from "hooks/redux-hooks";
 
 interface Props {
   onSubmit: () => void;

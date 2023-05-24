@@ -1,4 +1,4 @@
-import { IUser } from "../customTypes/IUser";
+import { IUser } from "types/IUser";
 
 export function getToken() {
   return localStorage.getItem("token");

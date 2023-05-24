@@ -1,9 +1,8 @@
-import { useState } from "react";
-import { useAppSelector } from "../../../../../hooks/redux-hooks";
+import { useAppSelector } from "hooks/redux-hooks";
 import Rating from "../../Rating";
-import UserAvatar from "../../../../../components/UserAvatar";
+import UserAvatar from "components/UserAvatar";
 import MyReview from "./MyReview";
-import { getUser } from "../../../../../utils/auth";
+import { getUser } from "utils/auth";
 
 interface ReviewProps {
   name: string;

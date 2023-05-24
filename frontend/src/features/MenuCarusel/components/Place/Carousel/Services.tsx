@@ -1,4 +1,4 @@
-import { useAppSelector } from "../../../../../hooks/redux-hooks";
+import { useAppSelector } from "hooks/redux-hooks";
 
 interface ServiceProps {
   name: string;

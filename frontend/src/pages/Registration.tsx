@@ -1,7 +1,6 @@
-import { RegisterForm } from "../features/Login";
+import { RegisterForm } from "features/Login";
 import { redirect, useNavigate } from "react-router-dom";
-import { isLoggedIn } from "../utils/auth";
-import { useEffect } from "react";
+import { isLoggedIn } from "utils/auth";
 
 const Register = () => {
   const navigate = useNavigate();

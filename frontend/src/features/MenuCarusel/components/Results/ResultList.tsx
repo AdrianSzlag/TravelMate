@@ -1,9 +1,7 @@
 import Result from "./Result";
-import { IPlace } from "../../../../customTypes/IPlace";
-import { placesActions } from "../../../../store/places-slice";
-import { IReview } from "../../../../customTypes/IReview";
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../../../hooks/redux-hooks";
+import { IPlace } from "types/IPlace";
+import { placesActions } from "store/places-slice";
+import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 
 const ResultList = () => {
   const results = useAppSelector((state) => state.places.places);

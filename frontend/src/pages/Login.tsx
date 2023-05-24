@@ -1,7 +1,6 @@
-import { LoginForm } from "../features/Login";
+import { LoginForm } from "features/Login";
 import { useNavigate, redirect } from "react-router-dom";
-import { isLoggedIn } from "../utils/auth";
-import { useEffect } from "react";
+import { isLoggedIn } from "utils/auth";
 
 const Login = () => {
   const navigate = useNavigate();

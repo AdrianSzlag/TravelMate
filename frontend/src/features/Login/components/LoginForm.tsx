@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import Form from "./Form";
 import Input from "./Input";
 import Button from "./Button";
-import useApi from "@hooks/use-api";
-import { setAuthData } from "@utils/auth";
-import {IUser} from 'customTypes/IUser';
+import useApi from "hooks/use-api";
+import { setAuthData } from "utils/auth";
+import { IUser } from "types/IUser";
 
 interface Props {
   onSignUp: () => void;
@@ -89,4 +89,3 @@ const LoginForm = ({ onSignUp, onSuccess }: Props) => {
 };
 
 export default LoginForm;
-

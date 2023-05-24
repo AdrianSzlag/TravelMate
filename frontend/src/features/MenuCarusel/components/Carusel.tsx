@@ -1,5 +1,3 @@
-import { Children, useEffect, useRef, useState } from "react";
-
 interface Props {
   children: React.ReactNode;
   className?: string;
