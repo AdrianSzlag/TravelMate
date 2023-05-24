@@ -119,7 +119,7 @@ const RegisterForm = ({ onLogIn, onSuccess }: Props) => {
         loading={loading || !!data?.message}
       />
       <p className="text-sm font-light text-gray-500">
-        Allready have an account?{" "}
+        Already have an account?{" "}
         <a
           className="text-primary-600 dark:text-primary-500 cursor-pointer font-medium hover:underline"
           onClick={onLogIn}

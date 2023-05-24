@@ -1,5 +1,5 @@
 import places from "../../../../store/places-slice";
-import { IPlace } from "../../../../types/IPlace";
+import { IPlace } from "../../../../customTypes/IPlace";
 import Carousel from "./Carousel";
 import Rating from "../Rating";
 

@@ -1,7 +1,7 @@
 import Result from "./Result";
-import { IPlace } from "../../../../types/IPlace";
+import { IPlace } from "../../../../customTypes/IPlace";
 import { placesActions } from "../../../../store/places-slice";
-import { IReview } from "../../../../types/IReview";
+import { IReview } from "../../../../customTypes/IReview";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux-hooks";
 

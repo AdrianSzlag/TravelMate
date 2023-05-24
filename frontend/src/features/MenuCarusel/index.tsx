@@ -7,7 +7,7 @@ import NaviButtons from "./components/NaviButtons";
 import Place from "./components/Place/Place";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux-hooks";
 import { placesActions } from "../../store/places-slice";
-import { IPlace } from "../../types/IPlace";
+import { IPlace } from "../../customTypes/IPlace";
 import { useParams, useLocation } from "react-router-dom";
 import { fetchPlace } from "../../store/places-actions";
 import { useAppNavigate } from "../../hooks/use-navigate";

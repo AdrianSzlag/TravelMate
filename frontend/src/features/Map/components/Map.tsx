@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Map as PigeonMap, Marker, Point, Bounds } from "pigeon-maps";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux-hooks";
-import { IPlace } from "../../../types/IPlace";
+import { IPlace } from "../../../customTypes/IPlace";
 import { placesActions } from "../../../store/places-slice";
 
 const defaultCenter: Point = [50.06301434728838, 19.941015236678783];

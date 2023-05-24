@@ -1,5 +1,5 @@
 import { AppThunk } from ".";
-import { IPlace } from "../types/IPlace";
+import { IPlace } from "../customTypes/IPlace";
 import fetchApi from "../utils/fetchApi";
 import { placesActions } from "./places-slice";
 

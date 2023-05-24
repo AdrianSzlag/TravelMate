@@ -10,8 +10,8 @@ import {
 import { getUser } from "../../../../../utils/auth";
 import Rating from "../../Rating";
 import { placesActions } from "../../../../../store/places-slice";
-import { IReview } from "../../../../../types/IReview";
-import { IUser } from "../../../../../types/IUser";
+import { IReview } from "../../../../../customTypes/IReview";
+import { IUser } from "../../../../../customTypes/IUser";
 
 const MyReview = () => {
   const { fetch: upload } = useApi<ServerResponse>("/api/review", {
