@@ -6,5 +6,6 @@
   "editor.tabSize": 2,
   "files.autoSave": "afterDelay",
   "javascript.updateImportsOnFileMove.enabled": "always",
-  "typescript.updateImportsOnFileMove.enabled": "always"
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "prettier.prettierPath": "/usr/local/lib/node_modules/prettier"
 }
