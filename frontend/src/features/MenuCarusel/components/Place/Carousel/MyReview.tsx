@@ -80,35 +80,40 @@ const MyReview = () => {
   };
 
   return (
-    <div className="border-b">
+    <div className="border-b py-2">
       <label className="text-sm font-semibold text-gray-400">
         {edit && "Edit your review"}
-        {!edit && (rating ? "Your review" : "Rate this place")}
+        {!edit && (rating ? "Your review:" : "Rate this place")}
       </label>
-      <div className="flex w-full py-2 ">
+      <div className="flex w-full pt-1">
         <UserAvatar userId={userName ?? ""} />
-        <div className="pl-4">
-          <div>{userName}</div>
+        <div className="pl-2">
+          <div className="font-semibold text-gray-600">{userName}</div>
           <Rating rating={currentRating} setRating={setCurrentRating} />
         </div>
       </div>
       {!edit && (
-        <div className="w-full px-2 pb-2 text-gray-600">{currentComment}</div>
+        <div className="w-full px-1 pt-2 text-gray-600 text-sm font-semibold">
+          {currentComment}
+        </div>
       )}
       {edit && (
         <>
-          <label htmlFor="comment" className="block pb-1 text-gray-600">
+          <label
+            htmlFor="comment"
+            className="block py-1 text-gray-400 text-sm font-semibold"
+          >
             Add a comment:
           </label>
           <textarea
-            className="h-20 w-full resize-none rounded border px-1 text-gray-700"
+            className="h-20 w-full resize-none rounded border px-0.5 text-gray-600 text-sm font-semibold"
             id="comment"
             value={currentComment}
             onChange={onCommentChange}
           />
         </>
       )}
-      <div className="flex justify-end gap-2 pb-2 pr-2 text-blue-700">
+      <div className="flex justify-end gap-2 px-1 pt-1 text-blue-600 text-sm font-semibold">
         {edit && (
           <>
             <button className="cursor-pointer" onClick={onCancelUpdate}>
@@ -121,11 +126,11 @@ const MyReview = () => {
         )}
         {!edit && rating > 0 && (
           <>
-            <button className="cursor-pointer" onClick={onDelete}>
-              Remove
-            </button>
             <button className="cursor-pointer" onClick={() => setEdit(true)}>
               Edit
+            </button>
+            <button className="cursor-pointer" onClick={onDelete}>
+              Remove
             </button>
           </>
         )}

@@ -12,16 +12,18 @@ interface ReviewProps {
 
 const Review = ({ name, rating, comment }: ReviewProps) => {
   return (
-    <div className="border-b">
-      <div className="flex w-full py-2 ">
+    <div className="border-b py-2">
+      <div className="flex w-full">
         <UserAvatar userId={name} />
-        <div className="pl-4">
+        <div className="pl-2 font-semibold text-gray-600">
           <div>{name}</div>
           <Rating rating={rating} />
         </div>
       </div>
       {comment && (
-        <div className="w-full px-2 pb-2 text-gray-600">{comment}</div>
+        <div className="w-full px-1 pt-2 text-gray-600 text-sm font-semibold">
+          {comment}
+        </div>
       )}
     </div>
   );
@@ -37,7 +39,11 @@ const Reviews = () => {
   return (
     <div className="py-1">
       {userId && <MyReview />}
-      {!userId && <div> Log in to leave a review</div>}
+      {!userId && (
+        <div className="text-sm text-gray-400 font-bold cursor-pointer">
+          Log in to leave a review
+        </div>
+      )}
       {otherReviews?.map((review) => (
         <Review
           key={review.user.id}
