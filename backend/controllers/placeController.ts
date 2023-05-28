@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import Place from "../schemas/Place";
 import { PlaceDTO } from "../dtos/PlaceDTO";
-import Users from "../schemas/User";
-import { ReviewDTO } from "../dtos/ReviewDTO";
 import { UserDTO } from "../dtos/UserDTO";
 import { IUser } from "../models/IUser";
 
@@ -30,9 +28,13 @@ export const searchPlaces = async (req: Request, res: Response) => {
         location,
         services,
         createdBy,
+        address,
+        images,
+        contactInfo,
+        tags,
       } = place;
 
-      const reviewDTOs: ReviewDTO[] = reviews.map((review) => {
+      const reviewDTOs = reviews.map((review) => {
         review.user = review.user as IUser;
         return {
           user: {
@@ -78,6 +80,10 @@ export const searchPlaces = async (req: Request, res: Response) => {
         menu,
         services,
         createdBy: creator,
+        address,
+        images,
+        contactInfo,
+        tags,
       };
     });
 
@@ -113,9 +119,13 @@ export const getPlace = async (req: Request, res: Response) => {
       location,
       services,
       createdBy,
+      address,
+      images,
+      contactInfo,
+      tags,
     } = place;
 
-    const reviewDTOs: ReviewDTO[] = reviews.map((review) => {
+    const reviewDTOs = reviews.map((review) => {
       review.user = review.user as IUser;
       return {
         user: {
@@ -161,6 +171,10 @@ export const getPlace = async (req: Request, res: Response) => {
       menu,
       services,
       createdBy: creator,
+      address,
+      images,
+      contactInfo,
+      tags,
     };
 
     res.status(200).json(placeDTO);

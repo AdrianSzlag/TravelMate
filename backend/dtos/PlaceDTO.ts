@@ -1,7 +1,4 @@
 import { ILocation } from "../models/ILocation";
-import { MenuItemDTO } from "./MenuItemDTO";
-import { ReviewDTO } from "./ReviewDTO";
-import { ServiceDTO } from "./ServiceDTO";
 import { UserDTO } from "./UserDTO";
 
 export type PlaceDTO = {
@@ -11,9 +8,29 @@ export type PlaceDTO = {
   type: string;
   thumbnail: string;
   rating?: number;
-  reviews: ReviewDTO[];
-  menu: MenuItemDTO[];
-  services: ServiceDTO[];
+  reviews: {
+    user: string | UserDTO;
+    rating: number;
+    comment?: string;
+  }[];
+  menu: {
+    name: string;
+    description?: string;
+    price: number;
+  }[];
+  services: {
+    name: string;
+    description?: string;
+    duration?: number;
+    price: number;
+  }[];
   location: ILocation;
   createdBy: UserDTO;
+  address?: string;
+  images?: string[];
+  contactInfo: {
+    phone: string;
+    email?: string;
+  };
+  tags?: string[];
 };

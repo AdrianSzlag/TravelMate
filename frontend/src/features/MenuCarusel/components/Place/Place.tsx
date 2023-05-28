@@ -3,7 +3,7 @@ import Rating from "../Rating";
 import { useSearchParams } from "react-router-dom";
 import Services from "./Services";
 import Reviews from "./Reviews";
-import Information from "./Information";
+import Overview from "./Overview";
 import { useMemo } from "react";
 import Menu from "./Menu";
 
@@ -77,6 +77,11 @@ const Place = ({ place }: Props) => {
         {!place.rating && <div className="text-gray-400">No reviews yet!</div>}
         <p className="mb-2 font-semibold text-gray-500">{place.description}</p>
         <div className="flex w-full justify-evenly border-b">
+          <CarouselButton
+            text={"Overview"}
+            onClick={getOnClickPageHandler("overview")}
+            active={isActive("overview")}
+          />
           {isMenuAvailable && (
             <CarouselButton
               text={"Menu"}
@@ -96,16 +101,11 @@ const Place = ({ place }: Props) => {
             onClick={getOnClickPageHandler("reviews")}
             active={isActive("reviews")}
           />
-          <CarouselButton
-            text={"Information"}
-            onClick={getOnClickPageHandler("overview")}
-            active={isActive("overview")}
-          />
         </div>
         {activePage === "menu" && <Menu />}
         {activePage === "services" && <Services />}
         {activePage === "reviews" && <Reviews />}
-        {activePage === "overview" && <Information />}
+        {activePage === "overview" && <Overview />}
       </div>
     </div>
   );

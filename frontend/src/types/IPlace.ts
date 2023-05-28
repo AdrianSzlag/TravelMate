@@ -1,7 +1,4 @@
-import { ILocation } from "./ILocation";
-import IMenuItem from "./IMenuItem";
 import { IReview } from "./IReview";
-import IService from "./IService";
 import { IUser } from "./IUser";
 
 export interface IPlace {
@@ -11,11 +8,30 @@ export interface IPlace {
   type: string;
   thumbnail: string;
   rating?: number;
+  address?: string;
   reviews: IReview[];
-  location: ILocation;
-  services: IService[];
-  menu: IMenuItem[];
+  location: {
+    type: string;
+    coordinates: number[];
+  };
+  services: {
+    name: string;
+    description?: string;
+    duration?: number;
+    price: number;
+  }[];
+  menu: {
+    name: string;
+    description?: string;
+    price: number;
+  }[];
   createdBy: IUser;
+  images: string[];
+  contactInfo: {
+    phone: string;
+    email?: string;
+  };
+  tags?: string[];
 }
 
 export default IPlace;
