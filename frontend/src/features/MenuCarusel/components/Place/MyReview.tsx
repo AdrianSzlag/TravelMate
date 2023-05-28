@@ -4,7 +4,7 @@ import useApi from "hooks/use-api";
 import { ServerResponse } from "utils/fetchApi";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { getUser } from "utils/auth";
-import Rating from "../../Rating";
+import Rating from "../Rating";
 import { placesActions } from "store/places-slice";
 import { IReview } from "types/IReview";
 import { IUser } from "types/IUser";

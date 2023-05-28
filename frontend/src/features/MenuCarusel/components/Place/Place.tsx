@@ -1,9 +1,9 @@
 import { IPlace } from "types/IPlace";
 import Rating from "../Rating";
 import { useSearchParams } from "react-router-dom";
-import Services from "./Carousel/Services";
-import Reviews from "./Carousel/Reviews";
-import Information from "./Carousel/Information";
+import Services from "./Services";
+import Reviews from "./Reviews";
+import Information from "./Information";
 
 interface ButtonProps {
   text: string;
