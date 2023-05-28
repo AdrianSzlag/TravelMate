@@ -1,6 +1,7 @@
 import Map from "features/Map";
 import Header from "features/Header";
 import { Menu } from "features/MenuCarusel";
+import BookingModal from "features/BookingModal";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
         <Menu />
         <Map />
       </div>
+      <BookingModal />
     </div>
   );
 }

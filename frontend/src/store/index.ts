@@ -1,9 +1,10 @@
 import { AnyAction, ThunkAction, configureStore } from "@reduxjs/toolkit";
 
 import placesReducer from "./places-slice";
+import bookSlice from "./book-slice";
 
 const store = configureStore({
-  reducer: { places: placesReducer },
+  reducer: { places: placesReducer, book: bookSlice },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
