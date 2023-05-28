@@ -37,7 +37,7 @@ const Reviews = () => {
   const otherReviews = reviews?.filter((review) => review.user.id !== userId);
 
   return (
-    <div className="py-1">
+    <div className="">
       {userId && <MyReview />}
       {!userId && (
         <div className="text-sm text-gray-400 font-bold cursor-pointer">

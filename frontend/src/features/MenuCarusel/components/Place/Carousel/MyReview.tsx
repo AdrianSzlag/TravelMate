@@ -92,7 +92,7 @@ const MyReview = () => {
           <Rating rating={currentRating} setRating={setCurrentRating} />
         </div>
       </div>
-      {!edit && (
+      {!edit && currentComment && (
         <div className="w-full px-1 pt-2 text-gray-600 text-sm font-semibold">
           {currentComment}
         </div>
