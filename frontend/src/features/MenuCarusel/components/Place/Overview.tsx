@@ -7,15 +7,15 @@ const Overview = () => {
   const place = useAppSelector((state) => state.places.focused);
 
   const address = place?.address;
-  const images = place?.images;
+  const images = place?.images && place.images.length > 0 ? place.images : null;
   const phone = place?.contactInfo.phone;
   const email = place?.contactInfo.email;
   const tags = place?.tags;
 
   return (
-    <div className="py-4">
+    <div className="py-2">
       {images && (
-        <div className="flex gap-2">
+        <div className="flex gap-2 py-2">
           {images.map((image) => {
             return (
               <img
@@ -28,7 +28,7 @@ const Overview = () => {
         </div>
       )}
       {address && (
-        <div className="flex items-center py-2 mt-2 cursor-pointer">
+        <div className="flex items-center py-2 cursor-pointer">
           <RiMapPin2Line className="inline-block mr-4 text-xl text-blue-500" />
           <span className="text-gray-500 font-semibold">{address}</span>
         </div>

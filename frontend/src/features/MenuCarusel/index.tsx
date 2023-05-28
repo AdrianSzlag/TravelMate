@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Filters from "./components/Filters";
-import ResultList from "./components/Results/ResultList";
+import ResultsList from "./components/ResultsList";
 import Carusel from "./components/Carusel";
 import CaruselItem from "./components/CaruselItem";
 import NaviButtons from "./components/NaviButtons";
@@ -85,7 +85,7 @@ const Menu = () => {
             isMapVisible={isMapVisible}
             toggleMapVisibility={toggleMapVisibility}
           />
-          <ResultList />
+          <ResultsList />
         </CaruselItem>
       )}
       {active && focused && (
