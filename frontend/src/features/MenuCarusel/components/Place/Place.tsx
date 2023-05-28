@@ -44,7 +44,7 @@ const Place = ({ place }: Props) => {
     if (page === "services" && areServicesAvailable) return "services";
     if (page === "reviews") return "reviews";
     return "overview";
-  }, [searchParams]);
+  }, [searchParams, place]);
 
   const getOnClickPageHandler = (pageName: string) => () => {
     setSearchParams((params) => {

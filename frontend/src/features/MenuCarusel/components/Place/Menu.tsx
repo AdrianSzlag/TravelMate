@@ -17,8 +17,12 @@ const MenuItem = ({ name, price, description, image }: MenuItemProps) => {
         )}
       </div>
       {image && (
-        <div className="w-20 h-20 bg-gray-300">
-          <img src={image} alt={name} className="w-full h-full" />
+        <div className="w-20 h-24 ">
+          <img
+            src={`/${image}`}
+            alt={name}
+            className="w-full h-full object-contain"
+          />
         </div>
       )}
     </div>

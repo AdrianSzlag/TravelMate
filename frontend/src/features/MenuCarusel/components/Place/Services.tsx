@@ -8,17 +8,28 @@ interface ServiceProps {
 }
 const Service = ({ name, price, description, image }: ServiceProps) => {
   return (
-    <div className="p-1 flex hover:bg-gray-100 cursor-pointer">
+    <div className="p-1 flex ">
       <div className="flex-1">
         <div className="text-gray-700 text font-semibold">{name}</div>
-        {price && <div className="text-gray-500 text-sm">{price} zl</div>}
+        <div className="flex items-center">
+          {price && (
+            <div className="text-gray-500 text-sm mr-2">{price} zl</div>
+          )}
+          <div className="bg-blue-600 text-white cursor-pointer px-2 rounded-3xl text-sm font-semibold">
+            Book
+          </div>
+        </div>
         {description && (
           <div className="text-gray-400 text-sm">{description}</div>
         )}
       </div>
       {image && (
-        <div className="w-20 h-20 bg-gray-300">
-          <img src={image} alt={name} className="w-full h-full" />
+        <div className="w-24 h-20 p-1 ">
+          <img
+            src={`/${image}`}
+            alt={name}
+            className="w-full h-full object-cover"
+          />
         </div>
       )}
     </div>
@@ -36,6 +47,7 @@ const Services = () => {
           name={service.name}
           price={service.price}
           description={service.description}
+          image={service.image}
         />
       ))}
     </div>

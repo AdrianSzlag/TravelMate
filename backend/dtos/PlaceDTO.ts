@@ -17,12 +17,14 @@ export type PlaceDTO = {
     name: string;
     description?: string;
     price: number;
+    image?: string;
   }[];
   services: {
     name: string;
     description?: string;
     duration?: number;
     price: number;
+    image?: string;
   }[];
   location: ILocation;
   createdBy: UserDTO;

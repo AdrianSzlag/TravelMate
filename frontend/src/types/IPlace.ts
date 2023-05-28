@@ -19,11 +19,13 @@ export interface IPlace {
     description?: string;
     duration?: number;
     price: number;
+    image?: string;
   }[];
   menu: {
     name: string;
     description?: string;
     price: number;
+    image?: string;
   }[];
   createdBy: IUser;
   images: string[];

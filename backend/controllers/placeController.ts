@@ -45,6 +45,7 @@ export const searchPlaces = async (req: Request, res: Response) => {
           comment: review.comment,
           profileImage: review.user.profileImage,
           rating: review.rating,
+          image: review.image,
         };
       });
 
@@ -136,6 +137,7 @@ export const getPlace = async (req: Request, res: Response) => {
         comment: review.comment,
         profileImage: review.user.profileImage,
         rating: review.rating,
+        image: review.image,
       };
     });
 

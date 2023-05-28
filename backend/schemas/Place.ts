@@ -26,6 +26,7 @@ const PlaceSchema: Schema = new Schema({
       description: String,
       duration: Number,
       price: { type: Number, required: true },
+      image: String,
     },
   ],
   menu: [
@@ -33,6 +34,7 @@ const PlaceSchema: Schema = new Schema({
       name: { type: String, required: true },
       description: String,
       price: { type: Number, required: true },
+      image: String,
     },
   ],
   reservations: [
