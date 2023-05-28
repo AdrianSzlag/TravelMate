@@ -1,17 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { IPlace } from "../models/IPlace";
-import { IReservation } from "../models/IReservation";
-import { IReview } from "../models/IReview";
-import { IUser } from "../models/IUser";
 
 export type IPlaceSchema = Document & IPlace;
-
-export type IPlaceSchemaPopulated = Document &
-  IPlace & {
-    createdBy: IUser;
-    reservations: IReservation[];
-    reviews: IReview[];
-  };
 
 const PlaceSchema: Schema = new Schema({
   name: { type: String, required: true },
@@ -35,6 +25,13 @@ const PlaceSchema: Schema = new Schema({
       name: { type: String, required: true },
       description: String,
       duration: Number,
+      price: { type: Number, required: true },
+    },
+  ],
+  menu: [
+    {
+      name: { type: String, required: true },
+      description: String,
       price: { type: Number, required: true },
     },
   ],

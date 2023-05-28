@@ -1,6 +1,8 @@
 import { ILocation } from "./ILocation";
+import IMenuItem from "./IMenuItem";
 import { IReview } from "./IReview";
 import IService from "./IService";
+import { IUser } from "./IUser";
 
 export interface IPlace {
   id: string;
@@ -12,6 +14,8 @@ export interface IPlace {
   reviews: IReview[];
   location: ILocation;
   services: IService[];
+  menu: IMenuItem[];
+  createdBy: IUser;
 }
 
 export default IPlace;

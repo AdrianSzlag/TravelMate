@@ -4,6 +4,7 @@ import { IReservation } from "./IReservation";
 import { IReview } from "./IReview";
 import { IService } from "./IService";
 import { IUser } from "./IUser";
+import { IMenuItem } from "./MenuItem";
 
 export type IPlace = {
   _id: string;
@@ -17,6 +18,7 @@ export type IPlace = {
   createdBy: string | IUser;
   contactInfo: IContactInfo;
   tags?: string[];
+  menu: IMenuItem[];
   services: IService[];
   reservations: IReservation[];
   reviews: IReview[];

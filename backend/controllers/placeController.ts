@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Place, { IPlaceSchema, IPlaceSchemaPopulated } from "../schemas/Place";
+import Place from "../schemas/Place";
 import { PlaceDTO } from "../dtos/PlaceDTO";
 import Users from "../schemas/User";
 import { ReviewDTO } from "../dtos/ReviewDTO";
@@ -18,7 +18,7 @@ export const searchPlaces = async (req: Request, res: Response) => {
       ],
     }).populate("reviews.user createdBy");
 
-    const placesDTOs: PlaceDTO[] = places.map((place: IPlaceSchema) => {
+    const placesDTOs: PlaceDTO[] = places.map((place) => {
       const {
         _id,
         name,
@@ -26,8 +26,10 @@ export const searchPlaces = async (req: Request, res: Response) => {
         type,
         thumbnail,
         reviews,
+        menu,
         location,
         services,
+        createdBy,
       } = place;
 
       const reviewDTOs: ReviewDTO[] = reviews.map((review) => {
@@ -55,6 +57,15 @@ export const searchPlaces = async (req: Request, res: Response) => {
 
       const id = _id ? _id : "";
 
+      const creator: UserDTO =
+        typeof createdBy !== "string"
+          ? {
+              id: createdBy._id,
+              name: `${createdBy.firstName} ${createdBy.lastName ?? ""}`,
+              profileImage: createdBy.profileImage,
+            }
+          : ({} as UserDTO);
+
       return {
         id,
         name,
@@ -64,7 +75,9 @@ export const searchPlaces = async (req: Request, res: Response) => {
         rating,
         reviews: reviewDTOs,
         location,
+        menu,
         services,
+        createdBy: creator,
       };
     });
 
@@ -81,9 +94,9 @@ export const getPlace = async (req: Request, res: Response) => {
   const { placeId } = req.params;
 
   try {
-    const place = (await Place.findById(placeId).populate(
+    const place = await Place.findById(placeId).populate(
       "reviews.user createdBy"
-    )) as IPlaceSchemaPopulated;
+    );
 
     if (!place) {
       return res.status(404).json({ message: "Place not found!" });
@@ -96,8 +109,10 @@ export const getPlace = async (req: Request, res: Response) => {
       type,
       thumbnail,
       reviews,
+      menu,
       location,
       services,
+      createdBy,
     } = place;
 
     const reviewDTOs: ReviewDTO[] = reviews.map((review) => {
@@ -125,6 +140,15 @@ export const getPlace = async (req: Request, res: Response) => {
 
     const id = _id ? _id : "";
 
+    const creator: UserDTO =
+      typeof createdBy !== "string"
+        ? {
+            id: createdBy._id,
+            name: `${createdBy.firstName} ${createdBy.lastName ?? ""}`,
+            profileImage: createdBy.profileImage,
+          }
+        : ({} as UserDTO);
+
     const placeDTO: PlaceDTO = {
       id,
       name,
@@ -134,7 +158,9 @@ export const getPlace = async (req: Request, res: Response) => {
       rating,
       reviews: reviewDTOs,
       location,
+      menu,
       services,
+      createdBy: creator,
     };
 
     res.status(200).json(placeDTO);

@@ -4,6 +4,8 @@ import { useSearchParams } from "react-router-dom";
 import Services from "./Services";
 import Reviews from "./Reviews";
 import Information from "./Information";
+import { useMemo } from "react";
+import Menu from "./Menu";
 
 interface ButtonProps {
   text: string;
@@ -32,22 +34,19 @@ interface Props {
 const Place = ({ place }: Props) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const getActivePage = () => {
-    if (!searchParams.has("details")) {
-      return "services";
-    }
-    switch (searchParams.get("details")) {
-      case "reviews":
-        return "reviews";
-      case "information":
-        return "information";
-      default:
-        return "services";
-    }
-  };
-  const activePage = getActivePage();
+  const isMenuAvailable = place.menu?.length > 0;
+  const areServicesAvailable = place.services?.length > 0;
 
-  const getOnClickPage = (pageName: string) => () => {
+  const activePage = useMemo(() => {
+    const page = searchParams.get("details");
+    if (!page) return "overview";
+    if (page === "menu" && isMenuAvailable) return "menu";
+    if (page === "services" && areServicesAvailable) return "services";
+    if (page === "reviews") return "reviews";
+    return "overview";
+  }, [searchParams]);
+
+  const getOnClickPageHandler = (pageName: string) => () => {
     setSearchParams((params) => {
       const p = Object.fromEntries(params.entries());
       return { ...p, details: pageName };
@@ -77,26 +76,36 @@ const Place = ({ place }: Props) => {
         )}
         {!place.rating && <div className="text-gray-400">No reviews yet!</div>}
         <p className="mb-2 font-semibold text-gray-500">{place.description}</p>
-        <div className="flex w-full justify-between border-b">
-          <CarouselButton
-            text={"Services"}
-            onClick={getOnClickPage("services")}
-            active={isActive("services")}
-          />
+        <div className="flex w-full justify-evenly border-b">
+          {isMenuAvailable && (
+            <CarouselButton
+              text={"Menu"}
+              onClick={getOnClickPageHandler("menu")}
+              active={isActive("menu")}
+            />
+          )}
+          {areServicesAvailable && (
+            <CarouselButton
+              text={"Services"}
+              onClick={getOnClickPageHandler("services")}
+              active={isActive("services")}
+            />
+          )}
           <CarouselButton
             text={"Reviews"}
-            onClick={getOnClickPage("reviews")}
+            onClick={getOnClickPageHandler("reviews")}
             active={isActive("reviews")}
           />
           <CarouselButton
             text={"Information"}
-            onClick={getOnClickPage("information")}
-            active={isActive("information")}
+            onClick={getOnClickPageHandler("overview")}
+            active={isActive("overview")}
           />
         </div>
+        {activePage === "menu" && <Menu />}
         {activePage === "services" && <Services />}
         {activePage === "reviews" && <Reviews />}
-        {activePage === "information" && <Information />}
+        {activePage === "overview" && <Information />}
       </div>
     </div>
   );
