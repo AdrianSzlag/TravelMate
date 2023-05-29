@@ -15,6 +15,7 @@ export interface IPlace {
     coordinates: number[];
   };
   services: {
+    id: string;
     name: string;
     description?: string;
     duration?: number;
@@ -22,6 +23,7 @@ export interface IPlace {
     image?: string;
   }[];
   menu: {
+    id: string;
     name: string;
     description?: string;
     price: number;

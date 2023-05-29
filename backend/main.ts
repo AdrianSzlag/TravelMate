@@ -6,6 +6,7 @@ import { authMiddleware } from "./middlewares/authMiddleware";
 import { searchPlaces, getPlace } from "./controllers/placeController";
 import cors from "cors";
 import { deleteReview, putReview } from "./controllers/reviewController";
+import { getFreeSlotsForService } from "./controllers/reservationController";
 
 require("dotenv").config();
 if (!process.env.JWT_SECRET) {
@@ -31,6 +32,7 @@ app.post("/api/search", searchPlaces);
 app.get("/api/place/:placeId", getPlace);
 app.post("/api/review", authMiddleware, putReview);
 app.delete("/api/review", authMiddleware, deleteReview);
+app.post("/api/reservation/:placeId", authMiddleware, getFreeSlotsForService);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello from MERN server with TypeScripts!");

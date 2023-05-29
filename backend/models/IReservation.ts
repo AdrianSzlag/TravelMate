@@ -6,6 +6,7 @@ export type IReservationTime = {
 };
 
 export type IReservation = {
+  id: string;
   serviceName: string;
   user: string | IUser;
   reservationTime: IReservationTime;

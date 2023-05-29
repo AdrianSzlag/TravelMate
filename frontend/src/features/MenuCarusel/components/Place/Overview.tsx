@@ -19,6 +19,7 @@ const Overview = () => {
           {images.map((image) => {
             return (
               <img
+                key={image}
                 src={`/${image}`}
                 alt="place"
                 className="w-24 h-40 rounded-xl object-cover hover:scale-105 cursor-pointer"

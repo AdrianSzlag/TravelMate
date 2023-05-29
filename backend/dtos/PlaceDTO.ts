@@ -14,12 +14,14 @@ export type PlaceDTO = {
     comment?: string;
   }[];
   menu: {
+    id: string;
     name: string;
     description?: string;
     price: number;
     image?: string;
   }[];
   services: {
+    id: string;
     name: string;
     description?: string;
     duration?: number;
@@ -35,4 +37,9 @@ export type PlaceDTO = {
     email?: string;
   };
   tags?: string[];
+  openingHours: {
+    dayOfWeek: number;
+    from: string;
+    to: string;
+  }[];
 };

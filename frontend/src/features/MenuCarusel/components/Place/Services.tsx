@@ -1,12 +1,26 @@
-import { useAppSelector } from "hooks/redux-hooks";
+import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
+import { showBookingModal } from "store/book-actions";
 
 interface ServiceProps {
+  placeId: string;
+  serviceId: string;
   name: string;
   price?: number;
   description?: string;
   image?: string;
 }
-const Service = ({ name, price, description, image }: ServiceProps) => {
+const Service = ({
+  placeId,
+  serviceId,
+  name,
+  price,
+  description,
+  image,
+}: ServiceProps) => {
+  const dispatch = useAppDispatch();
+  const onClickHandler = () => {
+    dispatch(showBookingModal(placeId, serviceId));
+  };
   return (
     <div className="p-1 flex ">
       <div className="flex-1">
@@ -15,7 +29,10 @@ const Service = ({ name, price, description, image }: ServiceProps) => {
           {price && (
             <div className="text-gray-500 text-sm mr-2">{price} zl</div>
           )}
-          <div className="bg-blue-600 text-white cursor-pointer px-2 rounded-3xl text-sm font-semibold">
+          <div
+            className="bg-blue-600 text-white cursor-pointer px-2 rounded-3xl text-sm font-semibold"
+            onClick={onClickHandler}
+          >
             Book
           </div>
         </div>
@@ -38,12 +55,15 @@ const Service = ({ name, price, description, image }: ServiceProps) => {
 
 const Services = () => {
   const services = useAppSelector((state) => state.places.focused?.services);
+  const placeId = useAppSelector((state) => state.places.focused?.id);
 
   return (
     <div className="py-4">
       {services?.map((service) => (
         <Service
           key={service.name}
+          placeId={placeId!}
+          serviceId={service.id}
           name={service.name}
           price={service.price}
           description={service.description}

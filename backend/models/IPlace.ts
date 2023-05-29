@@ -5,6 +5,7 @@ import { IReview } from "./IReview";
 import { IService } from "./IService";
 import { IUser } from "./IUser";
 import { IMenuItem } from "./MenuItem";
+import { IOpeningHours } from "./OpeningHours";
 
 export type IPlace = {
   _id: string;
@@ -22,4 +23,5 @@ export type IPlace = {
   services: IService[];
   reservations: IReservation[];
   reviews: IReview[];
+  openingHours: IOpeningHours[];
 };

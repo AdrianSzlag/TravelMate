@@ -32,6 +32,7 @@ export const searchPlaces = async (req: Request, res: Response) => {
         images,
         contactInfo,
         tags,
+        openingHours,
       } = place;
 
       const reviewDTOs = reviews.map((review) => {
@@ -85,6 +86,7 @@ export const searchPlaces = async (req: Request, res: Response) => {
         images,
         contactInfo,
         tags,
+        openingHours,
       };
     });
 
@@ -124,6 +126,7 @@ export const getPlace = async (req: Request, res: Response) => {
       images,
       contactInfo,
       tags,
+      openingHours,
     } = place;
 
     const reviewDTOs = reviews.map((review) => {
@@ -177,6 +180,7 @@ export const getPlace = async (req: Request, res: Response) => {
       images,
       contactInfo,
       tags,
+      openingHours,
     };
 
     res.status(200).json(placeDTO);
