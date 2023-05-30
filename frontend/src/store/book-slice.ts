@@ -4,7 +4,7 @@ import { IFreeSlot } from "types/IFreeSlot";
 interface BookState {
   modalOpen: boolean;
   freeSlots: IFreeSlot[];
-  selectedDate?: Date;
+  selectedDate?: string;
   selectedTime?: string;
 }
 
@@ -26,7 +26,7 @@ const bookSlice = createSlice({
       state.freeSlots = action.payload;
       state.modalOpen = true;
     },
-    setDate(state, action: PayloadAction<Date>) {
+    setDate(state, action: PayloadAction<string>) {
       state.selectedDate = action.payload;
     },
     setTime(state, action: PayloadAction<string>) {

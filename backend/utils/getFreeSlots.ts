@@ -19,7 +19,7 @@ const getSlots = (start: Date, stop: Date, duration: number): ISlot[] => {
   while (temp < stopTime) {
     const start = new Date(startTime);
     const end = new Date(temp);
-    start.setMinutes(startTime.getMinutes() + 15);
+    startTime.setMinutes(startTime.getMinutes() + 15);
     temp.setMinutes(temp.getMinutes() + 15);
     slots.push({ start, end });
   }

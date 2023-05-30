@@ -1,8 +1,9 @@
 const today = new Date();
-export default function isToday(date: Date): boolean {
+export default function isToday(date: string): boolean {
+  const d = new Date(date);
   return (
-    date.getDate() === today.getDate() &&
-    date.getMonth() === today.getMonth() &&
-    date.getFullYear() === today.getFullYear()
+    d.getDate() === today.getDate() &&
+    d.getMonth() === today.getMonth() &&
+    d.getFullYear() === today.getFullYear()
   );
 }

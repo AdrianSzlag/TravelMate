@@ -20,15 +20,8 @@ export const showBookingModal = (
       return data;
     };
     try {
-      const slots = (await fetchData()) as {
-        date: string;
-        slots: { start: string; end: string }[];
-      }[];
-      const freeSlots: IFreeSlot[] = slots.map((slot) => ({
-        date: new Date(slot.date),
-        slots: slot.slots,
-      }));
-      dispatch(bookActions.setFreeSlots(freeSlots));
+      const slots = (await fetchData()) as IFreeSlot[];
+      dispatch(bookActions.setFreeSlots(slots));
     } catch (error) {
       console.log(error);
     }

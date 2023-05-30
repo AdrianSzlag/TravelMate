@@ -1,5 +1,5 @@
 export type IFreeSlot = {
-  date: Date;
+  date: string;
   slots: {
     start: string;
     end: string;

@@ -21,7 +21,7 @@ const Option = ({
   };
   return (
     <div
-      className={`${className} ${bgColor} relative rounded-xl border text flex justify-center items-center w-16 h-20 cursor-pointer`}
+      className={`${className} ${bgColor} relative rounded-xl border text flex justify-center items-center w-16 h-20 cursor-pointer flex-shrink-0 flex-grow-0`}
       onClick={onClickHandler}
     >
       <div
