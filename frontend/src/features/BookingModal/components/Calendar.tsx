@@ -111,7 +111,7 @@ const Calendar = () => {
     dispatch(bookActions.setTime(hour));
 
   return (
-    <div className="mt-4 sm:w-[400px] md:w-[700px]">
+    <div className="mt-4">
       <h1 className="flex w-full justify-center text-2xl font-bold text-gray-800 ">
         2023
       </h1>

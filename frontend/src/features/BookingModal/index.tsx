@@ -19,7 +19,7 @@ const BookingForm = () => {
       onClick={onBackdropClickHandler}
     >
       <div
-        className="bg-white shadow-xl border rounded-xl"
+        className="bg-white shadow-xl border sm:rounded-xl sm:w-[550px] md:w-[700px] w-full"
         onClick={onFormClickHandler}
       >
         <Calendar />
