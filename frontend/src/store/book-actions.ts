@@ -22,7 +22,7 @@ export const showBookingModal = (
     try {
       const slots = (await fetchData()) as IFreeSlot[];
       console.log(slots);
-      dispatch(bookActions.setFreeSlots(slots));
+      dispatch(bookActions.showModal({ slots, placeId, serviceId }));
     } catch (error) {
       console.log(error);
     }

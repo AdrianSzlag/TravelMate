@@ -43,18 +43,27 @@ const HourSelector = () => {
     dispatch(bookActions.setTime(hour));
 
   return (
-    <Row>
-      {availableHours.map((hour) => (
-        <Hour
-          key={`${hour}`}
-          hour={hour}
-          isNow={false}
-          isSelected={selectedTime === hour}
-          isDisabled={false}
-          onClick={getOnHourClickHandler(hour)}
-        />
-      ))}
-    </Row>
+    <>
+      {availableHours?.length > 0 && (
+        <Row>
+          {availableHours.map((hour) => (
+            <Hour
+              key={`${hour}`}
+              hour={hour}
+              isNow={false}
+              isSelected={selectedTime === hour}
+              isDisabled={false}
+              onClick={getOnHourClickHandler(hour)}
+            />
+          ))}
+        </Row>
+      )}
+      {availableHours?.length === 0 && (
+        <div className="my-4 mx-8 text-gray-400 font-semibold">
+          Please select a date to continue
+        </div>
+      )}
+    </>
   );
 };
 

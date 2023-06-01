@@ -6,6 +6,8 @@ interface BookState {
   freeSlots: IFreeSlot[];
   selectedDate?: string;
   selectedTime?: string;
+  placeId?: string;
+  serviceId?: string;
 }
 
 const initialState: BookState = {
@@ -13,18 +15,26 @@ const initialState: BookState = {
   freeSlots: [],
   selectedDate: undefined,
   selectedTime: undefined,
+  placeId: undefined,
+  serviceId: undefined,
 };
 
 const bookSlice = createSlice({
   name: "book",
   initialState,
   reducers: {
-    showModal(state) {
+    showModal(
+      state,
+      action: PayloadAction<{
+        slots: IFreeSlot[];
+        placeId: string;
+        serviceId: string;
+      }>
+    ) {
       state.modalOpen = true;
-    },
-    setFreeSlots(state, action: PayloadAction<IFreeSlot[]>) {
-      state.freeSlots = action.payload;
-      state.modalOpen = true;
+      state.freeSlots = action.payload.slots;
+      state.placeId = action.payload.placeId;
+      state.serviceId = action.payload.serviceId;
     },
     setDate(state, action: PayloadAction<string>) {
       state.selectedDate = action.payload;
@@ -38,6 +48,8 @@ const bookSlice = createSlice({
       state.freeSlots = [];
       state.selectedDate = undefined;
       state.selectedTime = undefined;
+      state.placeId = undefined;
+      state.serviceId = undefined;
     },
   },
 });
