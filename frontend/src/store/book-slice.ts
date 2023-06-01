@@ -28,6 +28,7 @@ const bookSlice = createSlice({
     },
     setDate(state, action: PayloadAction<string>) {
       state.selectedDate = action.payload;
+      state.selectedTime = undefined;
     },
     setTime(state, action: PayloadAction<string>) {
       state.selectedTime = action.payload;

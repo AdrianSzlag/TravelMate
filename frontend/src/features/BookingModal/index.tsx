@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { createPortal } from "react-dom";
 import { bookActions } from "store/book-slice";
 import Calendar from "./components/Calendar";
+import ServiceOverview from "./components/ServiceOverview";
 
 const BookingForm = () => {
   const dispatch = useAppDispatch();
@@ -23,6 +24,7 @@ const BookingForm = () => {
         onClick={onFormClickHandler}
       >
         <Calendar />
+        <ServiceOverview />
         <div className="border-b w-full mt-4"></div>
         <div className="mt-4"></div>
       </div>

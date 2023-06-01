@@ -21,6 +21,7 @@ export const showBookingModal = (
     };
     try {
       const slots = (await fetchData()) as IFreeSlot[];
+      console.log(slots);
       dispatch(bookActions.setFreeSlots(slots));
     } catch (error) {
       console.log(error);

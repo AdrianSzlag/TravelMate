@@ -31,20 +31,27 @@ const getTime = (date: Date): string => {
   const minutes = date.getMinutes().toString().padStart(2, "0");
   return `${hours}:${minutes}`;
 };
-
-interface IFreeSlots {
-  start: string;
-  end: string;
-}
+const getDateString = (date: Date): string => {
+  const year = date.getFullYear().toString();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
 
 export const getFreeSlots = (
-  openingHours: IOpeningHours,
+  date: Date,
+  openingHours: IOpeningHours[],
   reservations: IReservation[],
   duration: number
-): IFreeSlots[] => {
-  const slots: IFreeSlots[] = [];
-  const openingTime = new Date(`1970-01-01T${openingHours.from}:00Z`);
-  const closingTime = new Date(`1970-01-01T${openingHours.to}:00Z`);
+): string[] => {
+  const freeSlots: string[] = [];
+  const dateString = getDateString(date);
+  const openingHour = openingHours.find(
+    (openingHour) => openingHour.dayOfWeek === date.getDay() + 1
+  );
+  if (!openingHour) return freeSlots;
+  const openingTime = new Date(`${dateString}T${openingHour.from}:00Z`);
+  const closingTime = new Date(`${dateString}T${openingHour.to}:00Z`);
   const allSlots = getSlots(openingTime, closingTime, duration);
   allSlots.forEach((slot) => {
     const isFree = reservations.every(
@@ -53,10 +60,8 @@ export const getFreeSlots = (
         slot.end.getTime() <= reservation.reservationTime.from.getTime()
     );
     if (isFree) {
-      const start = getTime(slot.start);
-      const end = getTime(slot.end);
-      slots.push({ start, end });
+      freeSlots.push(slot.start.toISOString());
     }
   });
-  return slots;
+  return freeSlots;
 };

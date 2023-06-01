@@ -4,7 +4,6 @@ import { IFreeSlotsDTO } from "../dtos/FreeSlotsDTO";
 import { getFreeSlots } from "../utils/getFreeSlots";
 
 export const getFreeSlotsForService = async (req: Request, res: Response) => {
-  const currentDate = new Date();
   const { placeId } = req.params;
   const { serviceId } = req.body;
 
@@ -31,22 +30,18 @@ export const getFreeSlotsForService = async (req: Request, res: Response) => {
 
     const { reservations, openingHours } = place;
 
+    const currentDate = new Date();
     const freeSlots: IFreeSlotsDTO[] = [];
-    [...Array(7).keys()].forEach((i) => {
-      const day = (currentDate.getDay() + i) % 7;
-      const openingHour = openingHours.find(
-        (openingHour) => openingHour.dayOfWeek === day
-      );
-      if (!openingHour) return;
+    [...Array(14).keys()].forEach((i) => {
+      currentDate.setDate(currentDate.getDate() + 1);
       const freeSlotsForDay = getFreeSlots(
-        openingHour,
+        currentDate,
+        openingHours,
         reservations,
         service.duration ?? 15
       );
       if (freeSlotsForDay.length > 0) {
-        const date = new Date();
-        date.setDate(date.getDate() + i);
-        freeSlots.push({ date, slots: freeSlotsForDay });
+        freeSlots.push(...freeSlotsForDay);
       }
     });
 
