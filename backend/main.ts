@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import mongoose, { ConnectOptions } from "mongoose";
 
-import { register, login } from "./controllers/authController";
+import { register, login, authenticate } from "./controllers/authController";
 import { authMiddleware } from "./middlewares/authMiddleware";
 import { searchPlaces, getPlace } from "./controllers/placeController";
 import cors from "cors";
@@ -31,6 +31,7 @@ mongoose.connect(mongoURI, {
 
 app.post("/api/register", register);
 app.post("/api/login", login);
+app.get("/api/authenticate", authMiddleware, authenticate);
 app.post("/api/search", searchPlaces);
 app.get("/api/place/:placeId", getPlace);
 app.post("/api/review", authMiddleware, putReview);

@@ -3,6 +3,7 @@ import User from "../schemas/User";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { UserDTO } from "../dtos/UserDTO";
+import { IRequest } from "../middlewares/authMiddleware";
 
 export const register = async (req: Request, res: Response) => {
   const { firstName, phone, dateOfBirth, email, password } = req.body;
@@ -63,6 +64,27 @@ export const login = async (req: Request, res: Response) => {
     };
 
     res.status(200).json({ token, user: userDTO });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server error." });
+  }
+};
+
+export const authenticate = async (req: IRequest, res: Response) => {
+  const userId = req.userId;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+    const userDTO: UserDTO = {
+      id: user._id,
+      name: `${user.firstName} ${user.lastName ?? ""}`,
+      profileImage: user.profileImage,
+    };
+
+    res.status(200).json(userDTO);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server error." });

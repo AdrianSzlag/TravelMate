@@ -2,7 +2,6 @@ import { useAppSelector } from "hooks/redux-hooks";
 import Rating from "../Rating";
 import UserAvatar from "components/UserAvatar";
 import MyReview from "./MyReview";
-import { getUser } from "utils/auth";
 
 interface ReviewProps {
   name: string;
@@ -31,9 +30,10 @@ const Review = ({ name, rating, comment }: ReviewProps) => {
 
 const Reviews = () => {
   const reviews = useAppSelector((state) => state.places.focused?.reviews);
+  const user = useAppSelector((state) => state.auth.user);
   console.log("reviews", reviews);
 
-  const userId = getUser()?.id;
+  const userId = user?.id;
   const otherReviews = reviews?.filter((review) => review.user.id !== userId);
 
   return (

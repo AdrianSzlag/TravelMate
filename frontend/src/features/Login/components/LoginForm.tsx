@@ -2,24 +2,20 @@ import { useEffect, useState } from "react";
 import Form from "./Form";
 import Input from "./Input";
 import Button from "./Button";
-import useApi from "hooks/use-api";
-import { setAuthData } from "utils/auth";
-import { IUser } from "types/IUser";
+import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
+import { login } from "store/auth-actions";
 
 interface Props {
   onSignUp: () => void;
   onSuccess: () => void;
 }
 
-interface TokenResponse {
-  token: string;
-  user: IUser;
-}
-
 const LoginForm = ({ onSignUp, onSuccess }: Props) => {
-  const { data, loading, error, fetch } = useApi<TokenResponse>("/api/login", {
-    method: "POST",
-  });
+  const loading = useAppSelector((state) => state.auth.loading);
+  const user = useAppSelector((state) => state.auth.user);
+  const errorMessage = useAppSelector((state) => state.auth.errorMessage);
+  const message = useAppSelector((state) => state.auth.message);
+  const dispatch = useAppDispatch();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,27 +27,28 @@ const LoginForm = ({ onSignUp, onSuccess }: Props) => {
 
   const onSubmitHandler = () => {
     if (!formValid) return;
-    fetch({
-      email,
-      password,
-    });
+    dispatch(login(email, password));
   };
 
   useEffect(() => {
-    if (data) {
-      setAuthData(data.token, data.user);
+    if (user) {
       onSuccess();
     }
-  }, [data]);
+  }, [user]);
 
   return (
     <Form onSubmit={onSubmitHandler}>
       <h1 className=" text-xl font-bold leading-tight tracking-tight text-gray-900">
         Sign in to your account
       </h1>
-      {error && (
+      {errorMessage && (
         <h2 className="text-base font-bold leading-tight tracking-tight text-red-400">
-          {error}
+          {errorMessage}
+        </h2>
+      )}
+      {message && (
+        <h2 className="text-base font-bold leading-tight tracking-tight text-green-400">
+          {message}
         </h2>
       )}
       <Input

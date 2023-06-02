@@ -3,7 +3,6 @@ import UserAvatar from "components/UserAvatar";
 import useApi from "hooks/use-api";
 import { ServerResponse } from "utils/fetchApi";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
-import { getUser } from "utils/auth";
 import Rating from "../Rating";
 import { placesActions } from "store/places-slice";
 import { IUser } from "types/IUser";
@@ -21,9 +20,10 @@ const MyReview = () => {
   const dispatch = useAppDispatch();
   const reviews = useAppSelector((state) => state.places.focused?.reviews);
   const placeId = useAppSelector((state) => state.places.focused?.id);
+  const user = useAppSelector((state) => state.auth.user);
   const [edit, setEdit] = useState(false);
 
-  const userId = getUser()?.id;
+  const userId = user?.id;
   const myReview = reviews?.find((review) => review.user.id === userId);
   const { rating, comment } = myReview ?? { rating: 0, comment: "" };
 
@@ -37,7 +37,7 @@ const MyReview = () => {
     console.log("rating", rating);
   }, [reviews]);
 
-  const userName = getUser()?.name;
+  const userName = user?.name;
 
   const onCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (e.target.value.length <= 126) setCurrentComment(e.target.value);
@@ -53,7 +53,7 @@ const MyReview = () => {
     const review: IReview = {
       rating: currentRating,
       comment: currentComment,
-      user: getUser() ?? ({} as IUser),
+      user: user ?? ({} as IUser),
     };
     dispatch(placesActions.addReview({ placeId: placeId, review }));
     setEdit(false);
@@ -67,7 +67,7 @@ const MyReview = () => {
     dispatch(
       placesActions.removeReview({
         placeId: placeId,
-        userId: getUser()?.id ?? "",
+        userId: user?.id ?? "",
       })
     );
     setEdit(false);

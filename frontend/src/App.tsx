@@ -7,11 +7,15 @@ import "./App.css";
 import Home from "./pages/Home";
 import Login, { loader as loginLoader } from "./pages/Login";
 import Register, { loader as registerLoader } from "./pages/Registration";
-import { removeAuthData } from "./utils/auth";
-import { getRedirectLoader } from "./utils/redirect";
+import store from "store";
+import { authenticate, logout } from "store/auth-actions";
+import { removeToken } from "utils/auth";
+import { useEffect } from "react";
+import { useAppDispatch } from "hooks/redux-hooks";
 
-const logout = () => {
-  removeAuthData();
+const logoutLoader = () => {
+  removeToken();
+  store.dispatch(logout());
   return redirect("/login");
 };
 
@@ -26,11 +30,15 @@ const BrowserRouter = createBrowserRouter([
     id: "register",
     loader: registerLoader,
   },
-  { path: "/logout", id: "logout", loader: logout },
+  { path: "/logout", id: "logout", loader: logoutLoader },
   { path: "*", element: <div>Not found</div>, id: "not-found" },
 ]);
 
 function App() {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(authenticate());
+  }, []);
   return <RouterProvider router={BrowserRouter} />;
 }
 

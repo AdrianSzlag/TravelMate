@@ -2,24 +2,19 @@ import { useEffect, useState } from "react";
 import Form from "./Form";
 import Input from "./Input";
 import Button from "./Button";
-import useApi from "hooks/use-api";
+import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
+import { register } from "store/auth-actions";
 
 interface Props {
   onLogIn: () => void;
   onSuccess: () => void;
 }
 
-interface RegisterResponse {
-  message?: string;
-}
-
 const RegisterForm = ({ onLogIn, onSuccess }: Props) => {
-  const { data, code, loading, error, fetch } = useApi<RegisterResponse>(
-    "/api/register",
-    {
-      method: "POST",
-    }
-  );
+  const loading = useAppSelector((state) => state.auth.loading);
+  const errorMessage = useAppSelector((state) => state.auth.errorMessage);
+  const message = useAppSelector((state) => state.auth.message);
+  const dispatch = useAppDispatch();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -40,37 +35,31 @@ const RegisterForm = ({ onLogIn, onSuccess }: Props) => {
 
   const onSubmitHandler = () => {
     if (!formValid) return;
-    fetch({
-      firstName: name,
-      email,
-      password,
-      phone: "123456789",
-      dateOfBirth: "1990-01-01",
-    });
+    dispatch(register(email, password, name, "123456789", "1990-01-01"));
   };
 
   useEffect(() => {
-    if (code === 201) {
+    if (message) {
       const timeout = setTimeout(() => {
         onSuccess();
       }, 1000);
       return () => clearTimeout(timeout);
     }
-  }, [code]);
+  }, [message]);
 
   return (
     <Form onSubmit={onSubmitHandler}>
       <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900">
         Create Your Account
       </h1>
-      {error && (
+      {errorMessage && (
         <h2 className="text-base font-bold leading-tight tracking-tight text-red-400">
-          {error}
+          {errorMessage}
         </h2>
       )}
-      {data?.message && (
+      {message && (
         <h2 className="text-base font-bold leading-tight tracking-tight text-green-400">
-          {data.message}
+          {message}
         </h2>
       )}
       <Input
@@ -115,8 +104,8 @@ const RegisterForm = ({ onLogIn, onSuccess }: Props) => {
       />
       <Button
         text={"Sign in"}
-        disabled={!formValid || !!data?.message}
-        loading={loading || !!data?.message}
+        disabled={!formValid || !!message}
+        loading={loading || !!message}
       />
       <p className="text-sm font-light text-gray-500">
         Already have an account?{" "}
