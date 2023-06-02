@@ -1,5 +1,5 @@
 export type IMenuItem = {
-  id: string;
+  _id: string;
   name: string;
   description?: string;
   price: number;

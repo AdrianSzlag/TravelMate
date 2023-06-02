@@ -25,6 +25,7 @@ export const putReview = async (req: IRequest, res: Response) => {
     }
 
     const newReview: IReview = {
+      _id: undefined!,
       user: userId,
       rating: rating,
       comment: comment,
@@ -45,6 +46,7 @@ export const putReview = async (req: IRequest, res: Response) => {
 
     res.status(201).json({ message: "Review created." });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Server error." });
   }
 };

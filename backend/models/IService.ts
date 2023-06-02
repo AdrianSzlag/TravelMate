@@ -1,5 +1,5 @@
 export type IService = {
-  id: string;
+  _id: string;
   name: string;
   description?: string;
   duration?: number;

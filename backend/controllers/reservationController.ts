@@ -23,7 +23,7 @@ export const getFreeSlotsForService = async (req: Request, res: Response) => {
     }
 
     const service = place.services.find(
-      (service) => service.id.toString() === serviceId
+      (service) => service._id.toString() === serviceId
     );
 
     if (!service) {
@@ -80,7 +80,7 @@ export const makeReservation = async (req: IRequest, res: Response) => {
     }
 
     const service = place.services.find(
-      (service) => service.id.toString() === serviceId
+      (service) => service._id.toString() === serviceId
     );
 
     if (!service) {
@@ -112,7 +112,7 @@ export const makeReservation = async (req: IRequest, res: Response) => {
     }
 
     const reservation: IReservation = {
-      id: new Date().getTime().toString(),
+      _id: undefined!,
       serviceId,
       user: req.userId!,
       reservationTime: {

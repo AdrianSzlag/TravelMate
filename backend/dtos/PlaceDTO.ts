@@ -9,6 +9,7 @@ export type PlaceDTO = {
   thumbnail: string;
   rating?: number;
   reviews: {
+    id: string;
     user: string | UserDTO;
     rating: number;
     comment?: string;

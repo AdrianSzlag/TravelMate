@@ -38,6 +38,7 @@ export const searchPlaces = async (req: Request, res: Response) => {
       const reviewDTOs = reviews.map((review) => {
         review.user = review.user as IUser;
         return {
+          id: review._id,
           user: {
             id: review.user._id,
             name: `${review.user.firstName} ${review.user.lastName ?? ""}`,
@@ -70,8 +71,16 @@ export const searchPlaces = async (req: Request, res: Response) => {
             }
           : ({} as UserDTO);
 
+      const menuDTO = menu.map((menuItem) => {
+        return { ...menuItem, id: menuItem._id };
+      });
+
+      const servicesDTO = services.map((service) => {
+        return { ...service, id: service._id };
+      });
+
       return {
-        id,
+        id: _id,
         name,
         description,
         type,
@@ -79,8 +88,8 @@ export const searchPlaces = async (req: Request, res: Response) => {
         rating,
         reviews: reviewDTOs,
         location,
-        menu,
-        services,
+        menu: menuDTO,
+        services: servicesDTO,
         createdBy: creator,
         address,
         images,
@@ -132,6 +141,7 @@ export const getPlace = async (req: Request, res: Response) => {
     const reviewDTOs = reviews.map((review) => {
       review.user = review.user as IUser;
       return {
+        id: review._id,
         user: {
           id: review.user._id,
           name: `${review.user.firstName} ${review.user.lastName ?? ""}`,
@@ -153,8 +163,6 @@ export const getPlace = async (req: Request, res: Response) => {
       rating = undefined;
     }
 
-    const id = _id ? _id : "";
-
     const creator: UserDTO =
       typeof createdBy !== "string"
         ? {
@@ -164,8 +172,16 @@ export const getPlace = async (req: Request, res: Response) => {
           }
         : ({} as UserDTO);
 
+    const menuDTO = menu.map((menuItem) => {
+      return { ...menuItem, id: menuItem._id };
+    });
+
+    const servicesDTO = services.map((service) => {
+      return { ...service, id: service._id };
+    });
+
     const placeDTO: PlaceDTO = {
-      id,
+      id: _id,
       name,
       description,
       type,
@@ -173,8 +189,8 @@ export const getPlace = async (req: Request, res: Response) => {
       rating,
       reviews: reviewDTOs,
       location,
-      menu,
-      services,
+      menu: menuDTO,
+      services: servicesDTO,
       createdBy: creator,
       address,
       images,

@@ -22,7 +22,6 @@ const PlaceSchema: Schema = new Schema({
   tags: [String],
   services: [
     {
-      id: { type: String, required: true, unique: true, dropDups: true },
       name: { type: String, required: true },
       description: String,
       duration: Number,
@@ -32,7 +31,6 @@ const PlaceSchema: Schema = new Schema({
   ],
   menu: [
     {
-      id: { type: String, required: true, unique: true, dropDups: true },
       name: { type: String, required: true },
       description: String,
       price: { type: Number, required: true },
@@ -41,7 +39,6 @@ const PlaceSchema: Schema = new Schema({
   ],
   reservations: [
     {
-      id: { type: String, required: true, unique: true, dropDups: true },
       serviceId: { type: String, required: true },
       user: { type: Schema.Types.ObjectId, ref: "User", required: true },
       reservationTime: {
