@@ -8,6 +8,9 @@ interface BookState {
   selectedTime?: string;
   placeId?: string;
   serviceId?: string;
+  loading: boolean;
+  message?: string;
+  errorMessage?: string;
 }
 
 const initialState: BookState = {
@@ -17,6 +20,9 @@ const initialState: BookState = {
   selectedTime: undefined,
   placeId: undefined,
   serviceId: undefined,
+  loading: false,
+  message: undefined,
+  errorMessage: undefined,
 };
 
 const bookSlice = createSlice({
@@ -35,6 +41,9 @@ const bookSlice = createSlice({
       state.freeSlots = action.payload.slots;
       state.placeId = action.payload.placeId;
       state.serviceId = action.payload.serviceId;
+      state.errorMessage = undefined;
+      state.message = undefined;
+      state.loading = false;
     },
     setDate(state, action: PayloadAction<string>) {
       state.selectedDate = action.payload;
@@ -50,6 +59,15 @@ const bookSlice = createSlice({
       state.selectedTime = undefined;
       state.placeId = undefined;
       state.serviceId = undefined;
+    },
+    setLoading(state, action: PayloadAction<boolean>) {
+      state.loading = action.payload;
+    },
+    setMessage(state, action: PayloadAction<string | undefined>) {
+      state.message = action.payload;
+    },
+    setErrorMessage(state, action: PayloadAction<string | undefined>) {
+      state.errorMessage = action.payload;
     },
   },
 });

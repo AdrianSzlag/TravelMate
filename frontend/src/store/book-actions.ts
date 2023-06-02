@@ -28,3 +28,45 @@ export const showBookingModal = (
     }
   };
 };
+
+export const sendBookingRequest = (): AppThunk => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch(bookActions.setLoading(true));
+      const {
+        book: { selectedDate, selectedTime, placeId, serviceId },
+      } = getState();
+      if (!selectedDate || !selectedTime || !placeId || !serviceId) {
+        throw new Error("Please fill the form again.");
+      }
+      const response = await fetchApi("/api/reservation", {
+        method: "POST",
+        body: JSON.stringify({
+          placeId,
+          serviceId,
+          date: `${selectedDate}T${selectedTime}:00Z`,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error(
+          "Booking failed: The selected time slot is no longer available. Please choose another time slot."
+        );
+      }
+      dispatch(bookActions.setMessage("Booking successful!"));
+      dispatch(bookActions.setErrorMessage(undefined));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      dispatch(bookActions.hideModal());
+    } catch (error) {
+      dispatch(
+        bookActions.setErrorMessage(
+          typeof error === "string"
+            ? error
+            : "There was a problem, please try again later!"
+        )
+      );
+      dispatch(bookActions.setMessage(undefined));
+    }
+
+    dispatch(bookActions.setLoading(false));
+  };
+};

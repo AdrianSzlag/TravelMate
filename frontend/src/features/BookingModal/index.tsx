@@ -3,8 +3,16 @@ import { createPortal } from "react-dom";
 import { bookActions } from "store/book-slice";
 import Calendar from "./components/Calendar";
 import ServiceOverview from "./components/ServiceOverview";
+import { sendBookingRequest } from "store/book-actions";
 
 const BookingForm = () => {
+  const selectedDate = useAppSelector((state) => state.book.selectedDate);
+  const selectedTime = useAppSelector((state) => state.book.selectedTime);
+  const loading = useAppSelector((state) => state.book.loading);
+  const message = useAppSelector((state) => state.book.message);
+  const errorMessage = useAppSelector((state) => state.book.errorMessage);
+  const formValid = !!selectedDate && !!selectedTime && !loading;
+
   const dispatch = useAppDispatch();
   const onBackdropClickHandler = () => {
     dispatch(bookActions.hideModal());
@@ -12,6 +20,17 @@ const BookingForm = () => {
   const onFormClickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   };
+  const onBookClickHandler = () => {
+    if (!formValid) return;
+    dispatch(sendBookingRequest());
+  };
+
+  const ErrorMessage = () => (
+    <div className="mx-6 mt-4 text-red-500 font-semibold">{errorMessage}</div>
+  );
+  const Message = () => (
+    <div className="mx-6 mt-4 text-green-500 font-semibold">{message}</div>
+  );
 
   return (
     <div
@@ -26,8 +45,17 @@ const BookingForm = () => {
         <Calendar />
         <ServiceOverview />
         <div className="border-b w-full mt-4"></div>
-        <div className="mx-4 mt-4 text-white bg-blue-600 box-border text-center py-2 rounded-lg cursor-pointer">
-          Book
+        {errorMessage && <ErrorMessage />}
+        {message && <Message />}
+        <div
+          className={`${
+            formValid
+              ? "bg-blue-600 cursor-pointer"
+              : "bg-blue-300 cursor-not-allowed"
+          } mx-4 mt-4 text-white  box-border text-center py-2 rounded-lg `}
+          onClick={onBookClickHandler}
+        >
+          {!loading ? "Book" : "Booking..."}
         </div>
         <div className="mt-4"></div>
       </div>
