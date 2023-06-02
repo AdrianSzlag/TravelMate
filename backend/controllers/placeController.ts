@@ -3,6 +3,7 @@ import Place from "../schemas/Place";
 import { PlaceDTO } from "../dtos/PlaceDTO";
 import { UserDTO } from "../dtos/UserDTO";
 import { IUser } from "../models/IUser";
+import { IMenuItem } from "../models/MenuItem";
 
 export const searchPlaces = async (req: Request, res: Response) => {
   const { searchQuery } = req.body;
@@ -33,7 +34,7 @@ export const searchPlaces = async (req: Request, res: Response) => {
         contactInfo,
         tags,
         openingHours,
-      } = place;
+      } = place.toObject();
 
       const reviewDTOs = reviews.map((review) => {
         review.user = review.user as IUser;
@@ -136,7 +137,7 @@ export const getPlace = async (req: Request, res: Response) => {
       contactInfo,
       tags,
       openingHours,
-    } = place;
+    } = place.toObject();
 
     const reviewDTOs = reviews.map((review) => {
       review.user = review.user as IUser;
