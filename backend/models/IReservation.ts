@@ -1,3 +1,4 @@
+import { IService } from "./IService";
 import { IUser } from "./IUser";
 
 export type IReservationTime = {
@@ -7,7 +8,7 @@ export type IReservationTime = {
 
 export type IReservation = {
   _id: string;
-  serviceId: string;
+  service: string | IService;
   user: string | IUser;
   reservationTime: IReservationTime;
 };

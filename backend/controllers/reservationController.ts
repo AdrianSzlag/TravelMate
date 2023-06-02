@@ -4,6 +4,9 @@ import { IFreeSlotsDTO } from "../dtos/FreeSlotsDTO";
 import { getFreeSlots } from "../utils/getFreeSlots";
 import { IReservation } from "../models/IReservation";
 import { IRequest } from "../middlewares/authMiddleware";
+import { IUser } from "../models/IUser";
+import { IService } from "../models/IService";
+import { ReservationDTO } from "../dtos/ReservationDTO";
 
 export const getFreeSlotsForService = async (req: Request, res: Response) => {
   const { placeId } = req.params;
@@ -113,7 +116,7 @@ export const makeReservation = async (req: IRequest, res: Response) => {
 
     const reservation: IReservation = {
       _id: undefined!,
-      serviceId,
+      service: serviceId,
       user: req.userId!,
       reservationTime: {
         from: new Date(date),
@@ -126,6 +129,51 @@ export const makeReservation = async (req: IRequest, res: Response) => {
     await place.save();
 
     res.status(200).json({ message: "Reservation created successfully." });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "Error occurred while fetching place", error });
+  }
+};
+
+export const getReservations = async (req: IRequest, res: Response) => {
+  const userId = req.userId;
+
+  try {
+    const places = await Place.find({
+      "reservations.user": userId,
+    }).populate("reservations.user reservations.service");
+
+    const reservations = places.reduce((acc, place) => {
+      place.reservations.forEach((reservation) => {
+        const service = place.services.find(
+          (service) => service._id.toString() === reservation.service.toString()
+        );
+        if (!service) return;
+        const reservationDTO: ReservationDTO = {
+          id: reservation._id,
+          duration: service.duration,
+          date: reservation.reservationTime.from.toISOString(),
+          price: service.price,
+          place: {
+            id: place._id,
+            name: place.name,
+            address: place.address,
+          },
+          service: {
+            id: service._id,
+            name: service.name,
+            description: service.description,
+            image: service.image,
+          },
+        };
+        acc.push(reservationDTO);
+      });
+      return acc;
+    }, [] as ReservationDTO[]);
+
+    res.status(200).json(reservations);
   } catch (error) {
     console.log(error);
     res

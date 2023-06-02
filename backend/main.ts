@@ -8,6 +8,7 @@ import cors from "cors";
 import { deleteReview, putReview } from "./controllers/reviewController";
 import {
   getFreeSlotsForService,
+  getReservations,
   makeReservation,
 } from "./controllers/reservationController";
 
@@ -38,6 +39,7 @@ app.post("/api/review", authMiddleware, putReview);
 app.delete("/api/review", authMiddleware, deleteReview);
 app.post("/api/reservation/:placeId", authMiddleware, getFreeSlotsForService);
 app.post("/api/reservation", authMiddleware, makeReservation);
+app.get("/api/reservations", authMiddleware, getReservations);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello from MERN server with TypeScripts!");

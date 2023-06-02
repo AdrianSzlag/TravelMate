@@ -1,7 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { IFreeSlot } from "types/IFreeSlot";
 import { IUser } from "types/IUser";
-import { loadConfigFromFile } from "vite";
 
 interface AuthSlice {
   modalOpen: boolean;

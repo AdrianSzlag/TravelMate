@@ -39,7 +39,10 @@ const PlaceSchema: Schema = new Schema({
   ],
   reservations: [
     {
-      serviceId: { type: String, required: true },
+      service: {
+        type: Schema.Types.ObjectId,
+        required: true,
+      },
       user: { type: Schema.Types.ObjectId, ref: "User", required: true },
       reservationTime: {
         from: { type: Date, required: true },

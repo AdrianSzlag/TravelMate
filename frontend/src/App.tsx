@@ -11,7 +11,8 @@ import store from "store";
 import { authenticate, logout } from "store/auth-actions";
 import { removeToken } from "utils/auth";
 import { useEffect } from "react";
-import { useAppDispatch } from "hooks/redux-hooks";
+import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
+import { fetchReservations } from "store/reservations-actions";
 
 const logoutLoader = () => {
   removeToken();
@@ -36,9 +37,13 @@ const BrowserRouter = createBrowserRouter([
 
 function App() {
   const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.auth.user);
   useEffect(() => {
     dispatch(authenticate());
   }, []);
+  useEffect(() => {
+    dispatch(fetchReservations());
+  }, [user]);
   return <RouterProvider router={BrowserRouter} />;
 }
 

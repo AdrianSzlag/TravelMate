@@ -2,6 +2,7 @@ import { AppThunk } from "store";
 import { IFreeSlot } from "types/IFreeSlot";
 import fetchApi from "utils/fetchApi";
 import { bookActions } from "./book-slice";
+import { fetchReservations } from "./reservations-actions";
 
 export const showBookingModal = (
   placeId: string,
@@ -60,6 +61,7 @@ export const sendBookingRequest = (): AppThunk => {
       }
       dispatch(bookActions.setMessage("Booking successful!"));
       dispatch(bookActions.setErrorMessage(undefined));
+      dispatch(fetchReservations());
       await new Promise((resolve) => setTimeout(resolve, 1000));
       dispatch(bookActions.hideModal());
     } catch (error: any) {
