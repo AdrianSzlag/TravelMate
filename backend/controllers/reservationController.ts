@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import Place from "../schemas/Place";
 import { IFreeSlotsDTO } from "../dtos/FreeSlotsDTO";
 import { getFreeSlots } from "../utils/getFreeSlots";
+import { IReservation } from "../models/IReservation";
+import { IRequest } from "../middlewares/authMiddleware";
 
 export const getFreeSlotsForService = async (req: Request, res: Response) => {
   const { placeId } = req.params;
@@ -46,6 +48,84 @@ export const getFreeSlotsForService = async (req: Request, res: Response) => {
     });
 
     res.status(200).json(freeSlots);
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "Error occurred while fetching place", error });
+  }
+};
+
+const getEndTime = (startDate: Date, duration: number) => {
+  const endDate = new Date(startDate);
+  endDate.setMinutes(endDate.getMinutes() + duration);
+  return endDate;
+};
+
+export const makeReservation = async (req: IRequest, res: Response) => {
+  const { placeId, serviceId, date } = req.body;
+  const userId = req.userId;
+
+  if (!serviceId || !date || !placeId) {
+    return res.status(400).json({ message: "Invalid data." });
+  }
+
+  try {
+    const place = await Place.findById(placeId).populate(
+      "reviews.user createdBy"
+    );
+
+    if (!place) {
+      return res.status(404).json({ message: "Place not found!" });
+    }
+
+    const service = place.services.find(
+      (service) => service.id.toString() === serviceId
+    );
+
+    if (!service) {
+      return res.status(404).json({ message: "Service not found!" });
+    }
+
+    const { reservations } = place;
+
+    const currentDate = new Date();
+    const freeSlots: IFreeSlotsDTO[] = [];
+    [...Array(14).keys()].forEach((i) => {
+      currentDate.setDate(currentDate.getDate() + 1);
+      const freeSlotsForDay = getFreeSlots(
+        currentDate,
+        place.openingHours,
+        reservations,
+        service.duration ?? 15
+      );
+      if (freeSlotsForDay.length > 0) {
+        freeSlots.push(...freeSlotsForDay);
+      }
+    });
+
+    const dateMs = new Date(date).getTime();
+    const slot = freeSlots.find((slot) => new Date(slot).getTime() === dateMs);
+
+    if (!slot) {
+      return res.status(400).json({ message: "Please choose another time." });
+    }
+
+    const reservation: IReservation = {
+      id: new Date().getTime().toString(),
+      serviceId,
+      user: req.userId!,
+      reservationTime: {
+        from: new Date(date),
+        to: getEndTime(new Date(date), service.duration ?? 15),
+      },
+    };
+
+    place.reservations.push(reservation);
+
+    await place.save();
+
+    res.status(200).json({ message: "Reservation created successfully." });
   } catch (error) {
     console.log(error);
     res

@@ -42,7 +42,7 @@ const PlaceSchema: Schema = new Schema({
   reservations: [
     {
       id: { type: String, required: true, unique: true, dropDups: true },
-      serviceName: { type: String, required: true },
+      serviceId: { type: String, required: true },
       user: { type: Schema.Types.ObjectId, ref: "User", required: true },
       reservationTime: {
         from: { type: Date, required: true },

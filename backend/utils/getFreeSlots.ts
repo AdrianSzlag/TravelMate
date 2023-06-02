@@ -1,7 +1,5 @@
-import { start } from "repl";
 import { IReservation } from "../models/IReservation";
 import { IOpeningHours } from "../models/OpeningHours";
-import { get } from "http";
 
 interface ISlot {
   start: Date;
@@ -50,8 +48,12 @@ export const getFreeSlots = (
     (openingHour) => openingHour.dayOfWeek === date.getDay() + 1
   );
   if (!openingHour) return freeSlots;
-  const openingTime = new Date(`${dateString}T${openingHour.from}:00Z`);
-  const closingTime = new Date(`${dateString}T${openingHour.to}:00Z`);
+  const openingTime = new Date(
+    `${dateString}T${openingHour.from.padStart(5, "0")}:00Z`
+  );
+  const closingTime = new Date(
+    `${dateString}T${openingHour.to.padStart(5, "0")}:00Z`
+  );
   const allSlots = getSlots(openingTime, closingTime, duration);
   allSlots.forEach((slot) => {
     const isFree = reservations.every(

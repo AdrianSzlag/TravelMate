@@ -48,6 +48,12 @@ export const sendBookingRequest = (): AppThunk => {
         }),
       });
       if (!response.ok) {
+        if (response.body) {
+          const data = await response.json();
+          if (data.message) {
+            throw new Error(data.message);
+          }
+        }
         throw new Error(
           "Booking failed: The selected time slot is no longer available. Please choose another time slot."
         );
@@ -56,11 +62,12 @@ export const sendBookingRequest = (): AppThunk => {
       dispatch(bookActions.setErrorMessage(undefined));
       await new Promise((resolve) => setTimeout(resolve, 1000));
       dispatch(bookActions.hideModal());
-    } catch (error) {
+    } catch (error: any) {
+      console.log(error);
       dispatch(
         bookActions.setErrorMessage(
-          typeof error === "string"
-            ? error
+          typeof error.message === "string"
+            ? error.message
             : "There was a problem, please try again later!"
         )
       );
