@@ -143,7 +143,7 @@ export const getReservations = async (req: IRequest, res: Response) => {
   try {
     const places = await Place.find({
       "reservations.user": userId,
-    }).populate("reservations.user reservations.service");
+    }).populate("reservations.user");
 
     const reservations = places.reduce((acc, place) => {
       place.reservations.forEach((reservation) => {
@@ -175,6 +175,52 @@ export const getReservations = async (req: IRequest, res: Response) => {
     }, [] as ReservationDTO[]);
 
     res.status(200).json(reservations);
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "Error occurred while fetching place", error });
+  }
+};
+
+export const cancelReservation = async (req: IRequest, res: Response) => {
+  const { reservationId } = req.params;
+
+  if (!reservationId) {
+    return res.status(400).json({ message: "Invalid data." });
+  }
+
+  try {
+    const place = await Place.findOne({
+      "reservations._id": reservationId,
+    }).populate("reservations.user createdBy");
+
+    if (!place) {
+      return res.status(404).json({ message: "Reservation not found!" });
+    }
+
+    const reservation = place.reservations.find(
+      (reservation) => reservation._id.toString() === reservationId
+    );
+
+    if (!reservation) {
+      return res.status(404).json({ message: "Reservation not found!" });
+    }
+
+    if (
+      (reservation.user as IUser)._id.toString() !== req.userId ||
+      (place.createdBy as IUser)._id.toString() !== req.userId
+    ) {
+      return res.status(401).json({ message: "Unauthorized!" });
+    }
+
+    place.reservations = place.reservations.filter(
+      (reservation) => reservation._id.toString() !== reservationId
+    );
+
+    await place.save();
+
+    res.status(200).json({ message: "Reservation canceled successfully." });
   } catch (error) {
     console.log(error);
     res

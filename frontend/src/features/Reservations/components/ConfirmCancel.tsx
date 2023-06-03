@@ -15,8 +15,8 @@ const ConfirmCancel = () => {
   const selectedReservation = useAppSelector(
     (state) => state.reservations.selected
   );
-  if (!selectedReservation) return null;
   const dispatch = useAppDispatch();
+  if (!selectedReservation) return null;
   const closeModal = () => {
     dispatch(reservationsActions.setSelected(undefined));
   };

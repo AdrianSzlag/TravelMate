@@ -35,7 +35,7 @@ export const cancelSelectedReservation = (): AppThunk => {
       return;
     }
     const fetchData = async () => {
-      const response = await fetchApi(`/api/reservations/${reservationId}`, {
+      const response = await fetchApi(`/api/reservation/${reservationId}`, {
         method: "DELETE",
       });
 
