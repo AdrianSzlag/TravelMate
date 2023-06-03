@@ -1,5 +1,5 @@
 import { getToken } from "./auth";
-const apiURL = "http://localhost:5000";
+const apiURL = "http://192.168.0.59:5000";
 
 const fetchApi = (path: string, options: RequestInit) => {
   if (!options.headers) {

@@ -27,3 +27,32 @@ export const fetchReservations = (): AppThunk => {
     }
   };
 };
+
+export const cancelSelectedReservation = (): AppThunk => {
+  return async (dispatch, getState) => {
+    const reservationId = getState().reservations.selected?.id;
+    if (!reservationId) {
+      return;
+    }
+    const fetchData = async () => {
+      const response = await fetchApi(`/api/reservations/${reservationId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Could not cancel reservation!");
+      }
+
+      const data = await response.json();
+
+      return data;
+    };
+    try {
+      await fetchData();
+      dispatch(reservationsActions.setSelected(undefined));
+      dispatch(fetchReservations());
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
