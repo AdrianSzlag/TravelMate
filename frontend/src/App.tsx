@@ -9,10 +9,11 @@ import Login, { loader as loginLoader } from "./pages/Login";
 import Register, { loader as registerLoader } from "./pages/Registration";
 import store from "store";
 import { authenticate, logout } from "store/auth-actions";
-import { removeToken } from "utils/auth";
+import { isLoggedIn, removeToken } from "utils/auth";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { fetchReservations } from "store/reservations-actions";
+import Reservations from "pages/Reservations";
 
 const logoutLoader = () => {
   removeToken();
@@ -20,10 +21,18 @@ const logoutLoader = () => {
   return redirect("/login");
 };
 
+const redirectIfNotLoggedIn = () => {
+  if (!isLoggedIn()) {
+    return redirect("/");
+  }
+  return null;
+};
+
 const BrowserRouter = createBrowserRouter([
   { path: "/", element: <Home />, id: "home" },
   { path: "/search", element: <Home />, id: "search" },
   { path: "/place/:placeId", element: <Home />, id: "place" },
+  { path: "/reservations", element: <Reservations />, id: "reservations" },
   { path: "/login", element: <Login />, id: "login", loader: loginLoader },
   {
     path: "/register",

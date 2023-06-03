@@ -1,4 +1,3 @@
-import { IUser } from "types/IUser";
 import store from "store";
 
 export function getToken() {
@@ -12,5 +11,5 @@ export function removeToken() {
 }
 
 export function isLoggedIn() {
-  return store.getState().auth.user !== undefined;
+  return store.getState().auth.isLogged;
 }

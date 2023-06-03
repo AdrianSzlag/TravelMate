@@ -21,6 +21,7 @@ export const authenticate = (): AppThunk => {
       console.log(data);
     } catch (error) {
       console.log(error);
+      dispatch(authActions.setUser(undefined));
       removeToken();
     }
   };

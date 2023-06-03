@@ -160,6 +160,7 @@ export const getReservations = async (req: IRequest, res: Response) => {
             id: place._id,
             name: place.name,
             address: place.address,
+            image: place.thumbnail,
           },
           service: {
             id: service._id,

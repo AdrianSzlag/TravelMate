@@ -1,6 +1,20 @@
-
-const months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 export const getMonthName = (month: number): string => months[month - 1];
+export const getMonthNameShort = (month: number): string =>
+  months[month - 1].slice(0, 3);
 export const getDayName = (date: string): string => {
   const dateObj = new Date(date);
   return dateObj.toLocaleString("en-US", { weekday: "short" });

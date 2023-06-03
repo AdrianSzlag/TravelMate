@@ -22,12 +22,16 @@ const Header = () => {
   };
   return (
     <NavBar>
-      <Button
-        text="Reservations"
-        onClick={onReservationsHandler}
-        notifications={noOfReservations}
-      />
-      {user && <Button text="Sign Out" onClick={onSignOutHandler} />}
+      {user && (
+        <>
+          <Button
+            text="Reservations"
+            onClick={onReservationsHandler}
+            notifications={noOfReservations}
+          />
+          <Button text="Sign Out" onClick={onSignOutHandler} />
+        </>
+      )}
       {!user && <Button text="Sign In" onClick={onSignInHandler} />}
     </NavBar>
   );

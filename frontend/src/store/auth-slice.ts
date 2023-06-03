@@ -1,7 +1,9 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { IUser } from "types/IUser";
+import { getToken, isLoggedIn } from "utils/auth";
 
 interface AuthSlice {
+  isLogged: boolean;
   modalOpen: boolean;
   user?: IUser;
   loading: boolean;
@@ -10,6 +12,7 @@ interface AuthSlice {
 }
 
 const initialState: AuthSlice = {
+  isLogged: getToken() !== null,
   modalOpen: false,
   user: undefined,
   loading: false,
@@ -36,6 +39,7 @@ const authSlice = createSlice({
     },
     setUser(state, action: PayloadAction<IUser | undefined>) {
       state.user = action.payload;
+      state.isLogged = action.payload !== undefined;
     },
     setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;

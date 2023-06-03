@@ -13,5 +13,6 @@ export interface IReservation {
     id: string;
     name: string;
     address?: string;
+    image?: string;
   };
 }
