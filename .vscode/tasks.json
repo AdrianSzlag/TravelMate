@@ -1,0 +1,53 @@
+{
+  "version": "2.0.0",
+  "presentation": {
+    "echo": false,
+    "reveal": "always",
+    "focus": false,
+    "panel": "dedicated",
+    "showReuseMessage": false
+  },
+  "tasks": [
+    {
+      "label": "Run dev",
+      "dependsOn": ["Frontend", "Backend"],
+      // Mark as the default build task so cmd/ctrl+shift+b will create them
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Database",
+      "type": "shell",
+      "command": "docker compose start mongo",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "group": "my-group"
+      }
+    },
+    {
+      "label": "Frontend",
+      "type": "shell",
+      "command": "cd frontend && npm run dev",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "group": "my-group"
+      }
+    },
+    {
+      "label": "Backend",
+      "type": "shell",
+      "command": "cd backend && npm start",
+      "isBackground": true,
+      "problemMatcher": [], 
+      "presentation": {
+        "group": "my-group"
+      },
+      "dependsOn": ["Database"],
+      "dependsOrder": "sequence"
+    }
+  ]
+}
