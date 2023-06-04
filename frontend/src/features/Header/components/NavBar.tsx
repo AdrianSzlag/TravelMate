@@ -5,9 +5,10 @@ import { Link } from "react-router-dom";
 
 interface Props {
   children: React.ReactNode;
+  notifications: number;
 }
 
-const NavBar = ({ children }: Props) => {
+const NavBar = ({ children, notifications }: Props) => {
   const [navbarOpen, setNavbarOpen] = useState(false);
   return (
     <nav className="flex-shrink-0 flex-grow-0 bg-blue-700 px-2.5 py-2.5 text-white sm:px-4">
@@ -20,9 +21,14 @@ const NavBar = ({ children }: Props) => {
         </Link>
         <button
           type="button"
-          className="ml-3 flex items-center md:hidden"
+          className="ml-3 flex items-center md:hidden relative"
           onClick={() => setNavbarOpen(!navbarOpen)}
         >
+          {notifications > 0 && (
+            <span className="flex top-0 -right-1 justify-center items-center absolute rounded-full w-4 h-4 bg-green-600 text-white font-semibold text-sm">
+              {notifications}
+            </span>
+          )}
           <AiOutlineMenu className="h-8 w-8" />
         </button>
         <div

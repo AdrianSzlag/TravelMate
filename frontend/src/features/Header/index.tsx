@@ -8,6 +8,7 @@ const Header = () => {
     (state) => state.reservations.reservations
   );
   const noOfReservations = reservations.length;
+  const noOfNotifications = noOfReservations;
 
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.auth.user);
@@ -21,7 +22,7 @@ const Header = () => {
     navigate("/reservations");
   };
   return (
-    <NavBar>
+    <NavBar notifications={noOfNotifications}>
       {user && (
         <>
           <Button
