@@ -3,6 +3,8 @@ import { IFreeSlot } from "types/IFreeSlot";
 import fetchApi from "utils/fetchApi";
 import { bookActions } from "./book-slice";
 import { fetchReservations } from "./reservations-actions";
+import { isLoggedIn } from "utils/auth";
+import { authActions } from "./auth-slice";
 
 export const showBookingModal = (
   placeId: string,
@@ -20,6 +22,10 @@ export const showBookingModal = (
       const data = await response.json();
       return data;
     };
+    if (!isLoggedIn()) {
+      dispatch(authActions.showModal());
+      return;
+    }
     try {
       const slots = (await fetchData()) as IFreeSlot[];
       console.log(slots);
@@ -32,6 +38,10 @@ export const showBookingModal = (
 
 export const sendBookingRequest = (): AppThunk => {
   return async (dispatch, getState) => {
+    if (!isLoggedIn()) {
+      dispatch(authActions.showModal());
+      return;
+    }
     try {
       dispatch(bookActions.setLoading(true));
       const {

@@ -18,7 +18,7 @@ import Reservations from "pages/Reservations";
 const logoutLoader = () => {
   removeToken();
   store.dispatch(logout());
-  return redirect("/login");
+  return redirect("/");
 };
 
 const redirectIfNotLoggedIn = () => {

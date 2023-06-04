@@ -26,13 +26,12 @@ const authSlice = createSlice({
   reducers: {
     showModal(state) {
       state.modalOpen = true;
-      this.clear(state);
+      state.errorMessage = undefined;
+      state.message = undefined;
+      state.loading = false;
     },
     hideModal(state) {
       state.modalOpen = false;
-      this.clear(state);
-    },
-    clear(state) {
       state.errorMessage = undefined;
       state.message = undefined;
       state.loading = false;
@@ -40,6 +39,10 @@ const authSlice = createSlice({
     setUser(state, action: PayloadAction<IUser | undefined>) {
       state.user = action.payload;
       state.isLogged = action.payload !== undefined;
+      state.modalOpen = false;
+      state.errorMessage = undefined;
+      state.message = undefined;
+      state.loading = false;
     },
     setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;

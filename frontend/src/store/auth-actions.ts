@@ -88,7 +88,6 @@ export const register = (
 
 export const logout = (): AppThunk => {
   return async (dispatch, getState) => {
-    dispatch(authActions.clear());
     dispatch(authActions.setUser(undefined));
     removeToken();
   };
