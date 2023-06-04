@@ -1,3 +1,5 @@
+import { ILocation } from "../models/ILocation";
+
 export interface ReservationDTO {
   id: string;
   date?: string;
@@ -14,5 +16,6 @@ export interface ReservationDTO {
     name: string;
     address?: string;
     image?: string;
+    location: ILocation;
   };
 }

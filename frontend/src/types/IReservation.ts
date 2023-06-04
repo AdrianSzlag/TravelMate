@@ -14,5 +14,9 @@ export interface IReservation {
     name: string;
     address?: string;
     image?: string;
+    location: {
+      type: string;
+      coordinates: number[];
+    };
   };
 }

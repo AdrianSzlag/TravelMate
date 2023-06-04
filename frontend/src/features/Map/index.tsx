@@ -1,3 +1,4 @@
 import Map from "./components/Map";
+import ReservationsMap from "./components/ReservationsMap";
 
-export default Map;
+export { Map, ReservationsMap };

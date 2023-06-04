@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { createPortal } from "react-dom";
-import { cancelSelectedReservation } from "store/reservations-actions";
+import { cancelReservation } from "store/reservations-actions";
 import { reservationsActions } from "store/reservations-slice";
 
 interface ModalProps {
@@ -15,15 +15,21 @@ const ConfirmCancel = () => {
   const selectedReservation = useAppSelector(
     (state) => state.reservations.selected
   );
+  const confirmCancelModalOpen = useAppSelector(
+    (state) => state.reservations.cancelModalOpen
+  );
   const dispatch = useAppDispatch();
   if (!selectedReservation) return null;
   const closeModal = () => {
-    dispatch(reservationsActions.setSelected(undefined));
+    dispatch(reservationsActions.closeCancelModal());
   };
+
+  if (!confirmCancelModalOpen) return null;
+
   const onFormClickHandler = (e: React.MouseEvent<HTMLDivElement>) =>
     e.stopPropagation();
   const onConfirmHandler = () => {
-    dispatch(cancelSelectedReservation());
+    dispatch(cancelReservation(selectedReservation.id));
   };
 
   return (
