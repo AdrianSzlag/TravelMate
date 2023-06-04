@@ -28,6 +28,7 @@ const Item = ({
   onCancel,
 }: ItemProps) => {
   const dateObj = date ? new Date(date) : undefined;
+  const isDone = dateObj ? dateObj.getTime() < Date.now() : false;
   const onCancelClickHandler = () => onCancel();
   return (
     <div
@@ -35,6 +36,11 @@ const Item = ({
       onClick={onClick}
     >
       <div className="flex-1 px-4 py-2">
+        {isDone && (
+          <div className="bg-gray-200 text-gray-600 px-2 rounded-3xl text-sm font-semibold inline-block">
+            Ended
+          </div>
+        )}
         <h1 className="font-semibold text-lg text-gray-800">{title}</h1>
         {address && (
           <h6 className="font-semibold text-sm text-gray-400">{address}</h6>
@@ -45,12 +51,14 @@ const Item = ({
           )}
           <h3 className="font-semibold text-gray-600">{name}</h3>
         </div>
-        <button
-          className="px-2 mb-1 py-0.5 bg-red-500 text-white rounded mt-2 font-semibold text-sm"
-          onClick={onCancelClickHandler}
-        >
-          Cancel
-        </button>
+        {!isDone && (
+          <button
+            className="px-2 mb-1 py-0.5 bg-red-500 text-white rounded mt-2 font-semibold text-sm"
+            onClick={onCancelClickHandler}
+          >
+            Cancel
+          </button>
+        )}
       </div>
       {dateObj && (
         <>
@@ -84,6 +92,14 @@ const List = () => {
   const cancelReservationHandler = (reservation: IReservation) => {
     dispatch(reservationsActions.openCancelModal(reservation));
   };
+  const sortedReservations = [...reservations].sort(
+    (a: IReservation, b: IReservation) => {
+      const aDate = new Date(a.date);
+      const bDate = new Date(b.date);
+      return bDate.getTime() - aDate.getTime();
+    }
+  );
+
   return (
     <>
       <div className="relative h-full w-full max-h-full flex-shrink-0 flex-grow-0 sm:w-[400px]">
@@ -96,7 +112,7 @@ const List = () => {
               </Link>
             </h1>
           )}
-          {reservations.map((reservation) => (
+          {sortedReservations.map((reservation) => (
             <Item
               key={reservation.id}
               title={reservation.service.name}

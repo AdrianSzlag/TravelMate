@@ -2,7 +2,7 @@ import { ILocation } from "../models/ILocation";
 
 export interface ReservationDTO {
   id: string;
-  date?: string;
+  date: string;
   duration?: number;
   price: number;
   service: {

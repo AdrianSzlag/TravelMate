@@ -1,6 +1,6 @@
 export interface IReservation {
   id: string;
-  date?: string;
+  date: string;
   duration?: number;
   price: number;
   service: {
