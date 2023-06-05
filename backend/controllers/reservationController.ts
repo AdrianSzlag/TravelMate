@@ -9,7 +9,6 @@ import { ReservationDTO } from "../dtos/ReservationDTO";
 
 export const getFreeSlotsForService = async (req: Request, res: Response) => {
   const { placeId, serviceId } = req.query;
-  console.log(placeId, serviceId);
   if (!serviceId || !placeId) {
     return res.status(400).json({ message: "Invalid request." });
   }
