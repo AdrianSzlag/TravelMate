@@ -8,6 +8,7 @@ import { IReservation } from "types/IReservation";
 import { cancelReservation } from "store/reservations-actions";
 
 interface ItemProps {
+  id: string;
   title: string;
   address?: string;
   name: string;
@@ -19,6 +20,7 @@ interface ItemProps {
 }
 
 const Item = ({
+  id,
   title,
   address,
   name,
@@ -51,14 +53,24 @@ const Item = ({
           )}
           <h3 className="font-semibold text-gray-600">{name}</h3>
         </div>
-        {!isDone && (
-          <button
-            className="px-2 mb-1 py-0.5 bg-red-500 text-white rounded mt-2 font-semibold text-sm"
-            onClick={onCancelClickHandler}
-          >
-            Cancel
-          </button>
-        )}
+        <div className="flex mb-1 mt-2">
+          {!isDone && (
+            <button
+              className="px-2 py-0.5 bg-red-500 text-white rounded font-semibold text-sm"
+              onClick={onCancelClickHandler}
+            >
+              Cancel
+            </button>
+          )}
+          {isDone && (
+            <Link
+              className="px-2 py-0.5 bg-blue-500 text-white rounded font-semibold text-sm"
+              to={`/place/${id}?details=services`}
+            >
+              Book again
+            </Link>
+          )}
+        </div>
       </div>
       {dateObj && (
         <>
@@ -114,6 +126,7 @@ const List = () => {
           )}
           {sortedReservations.map((reservation) => (
             <Item
+              id={reservation.place.id}
               key={reservation.id}
               title={reservation.service.name}
               address={reservation.place.address}

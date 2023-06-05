@@ -29,12 +29,12 @@ const Service = ({
           {price && (
             <div className="text-gray-500 text-sm mr-2">{price} zl</div>
           )}
-          <div
-            className="bg-blue-600 text-white cursor-pointer px-2 rounded-3xl text-sm font-semibold"
+          <button
+            className="px-2 bg-blue-600 text-white rounded font-semibold my-0.5 text-sm"
             onClick={onClickHandler}
           >
             Book
-          </div>
+          </button>
         </div>
         {description && (
           <div className="text-gray-400 text-sm">{description}</div>
