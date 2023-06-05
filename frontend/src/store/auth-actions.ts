@@ -9,7 +9,7 @@ export const authenticate = (): AppThunk => {
       return;
     }
     try {
-      const response = await fetchApi("/api/authenticate", {
+      const response = await fetchApi("/api/auth", {
         method: "GET",
       });
       if (!response.ok) {
@@ -33,7 +33,7 @@ export const login = (email: string, password: string): AppThunk => {
     dispatch(authActions.setMessage(undefined));
     dispatch(authActions.setErrorMessage(undefined));
     try {
-      const response = await fetchApi("/api/login", {
+      const response = await fetchApi("/api/auth/login", {
         method: "POST",
         body: JSON.stringify({ email, password }),
       });
@@ -67,7 +67,7 @@ export const register = (
     dispatch(authActions.setMessage(undefined));
     dispatch(authActions.setErrorMessage(undefined));
     try {
-      const response = await fetchApi("/api/register", {
+      const response = await fetchApi("/api/auth/register", {
         method: "POST",
         body: JSON.stringify({ email, password, name, phone, dateOfBirth }),
       });

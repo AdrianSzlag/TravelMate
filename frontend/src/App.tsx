@@ -51,7 +51,7 @@ function App() {
     dispatch(authenticate());
   }, []);
   useEffect(() => {
-    dispatch(fetchReservations());
+    if (user) dispatch(fetchReservations());
   }, [user]);
   return <RouterProvider router={BrowserRouter} />;
 }

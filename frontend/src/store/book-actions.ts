@@ -12,10 +12,15 @@ export const showBookingModal = (
 ): AppThunk => {
   return async (dispatch, getState) => {
     const fetchData = async () => {
-      const response = await fetchApi(`/api/reservation/${placeId}`, {
-        method: "POST",
-        body: JSON.stringify({ serviceId }),
-      });
+      const searchParams = new URLSearchParams();
+      searchParams.append("serviceId", serviceId);
+      searchParams.append("placeId", placeId);
+      const response = await fetchApi(
+        `/api/reservation/available?${searchParams}`,
+        {
+          method: "GET",
+        }
+      );
       if (!response.ok) {
         throw new Error("Could not fetch service data!");
       }
@@ -85,7 +90,6 @@ export const sendBookingRequest = (): AppThunk => {
       );
       dispatch(bookActions.setMessage(undefined));
     }
-
     dispatch(bookActions.setLoading(false));
   };
 };

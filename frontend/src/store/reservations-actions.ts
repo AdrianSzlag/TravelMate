@@ -6,16 +6,13 @@ import { IReservation } from "types/IReservation";
 export const fetchReservations = (): AppThunk => {
   return async (dispatch, getState) => {
     const fetchData = async () => {
-      const response = await fetchApi("/api/reservations", {
+      const response = await fetchApi("/api/reservation", {
         method: "GET",
       });
-
       if (!response.ok) {
         throw new Error("Could not fetch reservations!");
       }
-
       const data = await response.json();
-
       return data;
     };
     try {

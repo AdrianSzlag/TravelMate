@@ -6,9 +6,9 @@ import { placesActions } from "./places-slice";
 export const fetchPlaces = (searchQuery: string): AppThunk => {
   return async (dispatch, getState) => {
     const fetchData = async () => {
-      const response = await fetchApi("/api/search", {
-        method: "POST",
-        body: JSON.stringify({ searchQuery }),
+      const url = `/api/place/search?search=${searchQuery}`;
+      const response = await fetchApi(url, {
+        method: "GET",
       });
 
       if (!response.ok) {
@@ -21,6 +21,7 @@ export const fetchPlaces = (searchQuery: string): AppThunk => {
     };
     try {
       const placesData = (await fetchData()) as IPlace[];
+      console.log(placesData);
       dispatch(placesActions.setPlaces(placesData));
     } catch (error) {
       dispatch(placesActions.setPlaces([]));

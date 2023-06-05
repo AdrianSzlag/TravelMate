@@ -1,17 +1,11 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import mongoose, { ConnectOptions } from "mongoose";
-
-import { register, login, authenticate } from "./controllers/authController";
-import { authMiddleware } from "./middlewares/authMiddleware";
-import { searchPlaces, getPlace } from "./controllers/placeController";
 import cors from "cors";
-import { deleteReview, putReview } from "./controllers/reviewController";
-import {
-  cancelReservation,
-  getFreeSlotsForService,
-  getReservations,
-  makeReservation,
-} from "./controllers/reservationController";
+import authRouter from "./routers/authRouter";
+import reservationRouter from "./routers/reservationRouter";
+import placeRouter from "./routers/placeRouter";
+import imageRouter from "./routers/imageRouter";
+import reviewRouter from "./routers/reviewRouter";
 
 require("dotenv").config();
 if (!process.env.JWT_SECRET) {
@@ -21,6 +15,7 @@ if (!process.env.JWT_SECRET) {
 
 const app = express();
 app.use(cors());
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 const port = process.env.PORT || 5000;
@@ -31,25 +26,11 @@ mongoose.connect(mongoURI, {
   useUnifiedTopology: true,
 } as ConnectOptions);
 
-app.post("/api/register", register);
-app.post("/api/login", login);
-app.get("/api/authenticate", authMiddleware, authenticate);
-app.post("/api/search", searchPlaces);
-app.get("/api/place/:placeId", getPlace);
-app.post("/api/review", authMiddleware, putReview);
-app.delete("/api/review", authMiddleware, deleteReview);
-app.post("/api/reservation/:placeId", authMiddleware, getFreeSlotsForService);
-app.post("/api/reservation", authMiddleware, makeReservation);
-app.get("/api/reservations", authMiddleware, getReservations);
-app.delete(
-  "/api/reservation/:reservationId",
-  authMiddleware,
-  cancelReservation
-);
-
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello from MERN server with TypeScripts!");
-});
+app.use("/api/auth", authRouter);
+app.use("/api/reservation", reservationRouter);
+app.use("/api/place", placeRouter);
+app.use("/api/review", reviewRouter);
+app.use("/image", imageRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

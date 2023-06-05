@@ -1,13 +1,10 @@
 import { Request, Response } from "express";
 import Place from "../schemas/Place";
 import { PlaceDTO } from "../dtos/PlaceDTO";
-import { UserDTO } from "../dtos/UserDTO";
-import { IUser } from "../models/IUser";
-import { IMenuItem } from "../models/MenuItem";
+import { getPlaceDTO, getReviewDTO, getUserDTO } from "../utils/dtoUtils";
 
 export const searchPlaces = async (req: Request, res: Response) => {
-  const { searchQuery } = req.body;
-
+  const searchQuery = req.query.search as string;
   try {
     const places = await Place.find({
       $or: [
@@ -16,90 +13,30 @@ export const searchPlaces = async (req: Request, res: Response) => {
         { description: new RegExp(searchQuery, "i") },
       ],
     }).populate("reviews.user createdBy");
-
     const placesDTOs: PlaceDTO[] = places.map((place) => {
-      const {
-        _id,
-        name,
-        description,
-        type,
-        thumbnail,
-        reviews,
-        menu,
-        location,
-        services,
-        createdBy,
-        address,
-        images,
-        contactInfo,
-        tags,
-        openingHours,
-      } = place.toObject();
-
-      const reviewDTOs = reviews.map((review) => {
-        review.user = review.user as IUser;
-        return {
-          id: review._id,
-          user: {
-            id: review.user._id,
-            name: `${review.user.firstName} ${review.user.lastName ?? ""}`,
-            profileImage: review.user.profileImage,
-          },
-          comment: review.comment,
-          profileImage: review.user.profileImage,
-          rating: review.rating,
-          image: review.image,
-        };
-      });
-
-      let rating;
-      if (reviewDTOs) {
-        rating =
-          reviews.reduce((acc, review) => acc + review.rating, 0) /
-          reviews.length;
-      } else {
-        rating = undefined;
-      }
-
-      const id = _id ? _id : "";
-
-      const creator: UserDTO =
-        typeof createdBy !== "string"
-          ? {
-              id: createdBy._id,
-              name: `${createdBy.firstName} ${createdBy.lastName ?? ""}`,
-              profileImage: createdBy.profileImage,
-            }
-          : ({} as UserDTO);
-
+      const { _id, reviews, menu, services, createdBy } = place.toObject();
+      const reviewDTOs = reviews.map((review) => getReviewDTO(review));
+      const rating = reviewDTOs?.reduce(
+        (acc, review) => acc + review.rating,
+        0
+      );
+      const creator = getUserDTO(createdBy);
       const menuDTO = menu.map((menuItem) => {
         return { ...menuItem, id: menuItem._id };
       });
-
       const servicesDTO = services.map((service) => {
         return { ...service, id: service._id };
       });
-
-      return {
+      return getPlaceDTO({
+        ...place.toObject(),
         id: _id,
-        name,
-        description,
-        type,
-        thumbnail,
-        rating,
         reviews: reviewDTOs,
-        location,
+        rating,
+        createdBy: creator,
         menu: menuDTO,
         services: servicesDTO,
-        createdBy: creator,
-        address,
-        images,
-        contactInfo,
-        tags,
-        openingHours,
-      };
+      });
     });
-
     res.status(200).json(placesDTOs);
   } catch (error) {
     console.log(error);
@@ -111,95 +48,32 @@ export const searchPlaces = async (req: Request, res: Response) => {
 
 export const getPlace = async (req: Request, res: Response) => {
   const { placeId } = req.params;
-
   try {
     const place = await Place.findById(placeId).populate(
       "reviews.user createdBy"
     );
-
     if (!place) {
       return res.status(404).json({ message: "Place not found!" });
     }
-
-    const {
-      _id,
-      name,
-      description,
-      type,
-      thumbnail,
-      reviews,
-      menu,
-      location,
-      services,
-      createdBy,
-      address,
-      images,
-      contactInfo,
-      tags,
-      openingHours,
-    } = place.toObject();
-
-    const reviewDTOs = reviews.map((review) => {
-      review.user = review.user as IUser;
-      return {
-        id: review._id,
-        user: {
-          id: review.user._id,
-          name: `${review.user.firstName} ${review.user.lastName ?? ""}`,
-          profileImage: review.user.profileImage,
-        },
-        comment: review.comment,
-        profileImage: review.user.profileImage,
-        rating: review.rating,
-        image: review.image,
-      };
-    });
-
-    let rating;
-    if (reviewDTOs) {
-      rating =
-        reviews.reduce((acc, review) => acc + review.rating, 0) /
-        reviews.length;
-    } else {
-      rating = undefined;
-    }
-
-    const creator: UserDTO =
-      typeof createdBy !== "string"
-        ? {
-            id: createdBy._id,
-            name: `${createdBy.firstName} ${createdBy.lastName ?? ""}`,
-            profileImage: createdBy.profileImage,
-          }
-        : ({} as UserDTO);
-
+    const { _id, reviews, menu, services, createdBy } = place.toObject();
+    const reviewDTOs = reviews.map((review) => getReviewDTO(review));
+    const rating = reviewDTOs?.reduce((acc, review) => acc + review.rating, 0);
+    const creator = getUserDTO(createdBy);
     const menuDTO = menu.map((menuItem) => {
       return { ...menuItem, id: menuItem._id };
     });
-
     const servicesDTO = services.map((service) => {
       return { ...service, id: service._id };
     });
-
-    const placeDTO: PlaceDTO = {
+    const placeDTO = getPlaceDTO({
+      ...place.toObject(),
       id: _id,
-      name,
-      description,
-      type,
-      thumbnail,
-      rating,
       reviews: reviewDTOs,
-      location,
+      rating,
+      createdBy: creator,
       menu: menuDTO,
       services: servicesDTO,
-      createdBy: creator,
-      address,
-      images,
-      contactInfo,
-      tags,
-      openingHours,
-    };
-
+    });
     res.status(200).json(placeDTO);
   } catch (error) {
     console.log(error);
