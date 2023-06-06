@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import Menu from "./Menu";
 import Img from "components/Img";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
+import { deletePlace } from "store/places-actions";
 
 interface ButtonProps {
   text: string;
@@ -35,7 +36,10 @@ interface Props {
 
 const Place = ({ place }: Props) => {
   const user = useAppSelector((state) => state.auth.user);
+  const ownerId = useAppSelector((state) => state.places.focused?.createdBy.id);
   const [searchParams, setSearchParams] = useSearchParams();
+  const dispatch = useAppDispatch();
+  const isOwner = user?.id === ownerId;
 
   const isMenuAvailable =
     place.menu?.length > 0 || place.createdBy.id === user?.id;
@@ -62,6 +66,13 @@ const Place = ({ place }: Props) => {
     return pageName === activePage;
   };
 
+  const onDeletePlaceHandler = () => {
+    if (!place.id || !isOwner) return;
+    const confirmed = window.confirm("Are you sure you want to delete place?");
+    if (!confirmed) return;
+    dispatch(deletePlace(place.id));
+  };
+
   return (
     <div>
       <Img
@@ -69,9 +80,17 @@ const Place = ({ place }: Props) => {
         className="h-[200px] w-full object-cover"
       />
       <div className="px-5 py-3 ">
-        <h1 className="pb-2 text-2xl font-semibold text-gray-600">
+        <h1 className="pb-1 text-2xl font-semibold text-gray-600">
           {place.name}
         </h1>
+        {isOwner && (
+          <button
+            className="flex text-blue-600 text-sm font-semibold cursor-pointer"
+            onClick={onDeletePlaceHandler}
+          >
+            Delete service
+          </button>
+        )}
         {!!place.rating && place.reviews.length > 0 && (
           <Rating
             rating={place.rating}

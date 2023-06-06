@@ -156,6 +156,26 @@ export const createPlace = async (req: IRequest, res: Response) => {
   }
 };
 
+export const deletePlace = async (req: IRequest, res: Response) => {
+  const { placeId } = req.params;
+  try {
+    const place = await Place.findById(placeId);
+    if (!place) {
+      return res.status(404).json({ message: "Place not found" });
+    }
+    if (place.createdBy.toString() !== req.userId) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+    place.deleteOne();
+    res.status(200).json({ message: "Place deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "Error occurred while deleting place", error });
+  }
+};
+
 export const addServiceToPlace = async (req: IRequest, res: Response) => {
   const image = req.file as Express.Multer.File;
   const { placeId } = req.params;

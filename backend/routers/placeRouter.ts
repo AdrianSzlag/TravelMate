@@ -3,6 +3,7 @@ import {
   addMenuItemToPlace,
   addServiceToPlace,
   deleteMenuItemFromPlace,
+  deletePlace,
   deleteServiceFromPlace,
   getPlace,
   searchPlaces,
@@ -14,6 +15,7 @@ const placeRouter = express.Router();
 
 placeRouter.get("/search", searchPlaces);
 placeRouter.get("/:placeId", getPlace);
+placeRouter.delete("/:placeId", authMiddleware, deletePlace);
 placeRouter.post(
   "/:placeId/service",
   authMiddleware,

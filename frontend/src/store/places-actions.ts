@@ -97,3 +97,22 @@ export const deleteMenuItem = (
     }
   };
 };
+
+export const deletePlace = (placeId: string): AppThunk => {
+  return async (dispatch, getState) => {
+    try {
+      const response = await fetchApi(`/api/place/${placeId}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("Could not delete place!");
+      }
+      const data = await response.json();
+      //await new Promise((resolve) => setTimeout(resolve, 500));
+      dispatch(placesActions.setFocused(null));
+      dispatch(fetchPlaces(""));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
