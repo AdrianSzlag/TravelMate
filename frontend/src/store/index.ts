@@ -4,6 +4,7 @@ import placesReducer from "./places-slice";
 import bookSlice from "./book-slice";
 import authSlice from "./auth-slice";
 import reservationsSlice from "./reservations-slice";
+import businessSlice from "./business-slice";
 
 const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
     book: bookSlice,
     auth: authSlice,
     reservations: reservationsSlice,
+    business: businessSlice,
   },
 });
 

@@ -1,3 +1,4 @@
+import Img from "components/Img";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { showBookingModal } from "store/book-actions";
 
@@ -42,7 +43,7 @@ const Service = ({
       </div>
       {image && (
         <div className="w-24 h-20 p-1 ">
-          <img
+          <Img
             src={`/${image}`}
             alt={name}
             className="w-full h-full object-cover"

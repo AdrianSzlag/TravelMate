@@ -38,7 +38,8 @@ export const getImage = async (req: IRequest, res: Response) => {
     if (!image) {
       return res.status(404).json({ message: "Image not found." });
     }
-    res.status(200).json(image);
+    res.set("Content-Type", image.img.contentType.toString());
+    res.status(200).send(Buffer.from(image.img.data.buffer));
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server error." });

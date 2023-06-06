@@ -6,6 +6,7 @@ import reservationRouter from "./routers/reservationRouter";
 import placeRouter from "./routers/placeRouter";
 import imageRouter from "./routers/imageRouter";
 import reviewRouter from "./routers/reviewRouter";
+import userRouter from "./routers/userRouter";
 
 require("dotenv").config();
 if (!process.env.JWT_SECRET) {
@@ -31,6 +32,7 @@ app.use("/api/reservation", reservationRouter);
 app.use("/api/place", placeRouter);
 app.use("/api/review", reviewRouter);
 app.use("/image", imageRouter);
+app.use("/api/user", userRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

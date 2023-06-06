@@ -2,11 +2,7 @@ import multer, { FileFilterCallback } from "multer";
 import path from "path";
 import fs from "fs";
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./uploads/");
-  },
-});
+const storage = multer.memoryStorage();
 
 const fileFilter = (
   req: any,
@@ -31,7 +27,6 @@ const upload = multer({
   fileFilter: fileFilter,
 });
 
-const fileMiddleware = upload.single("imageData");
-const fileCleanup = (path: string) => fs.unlinkSync(path);
+const fileCleanup = (path: string) => {}; //fs.unlinkSync(path);
 
-export { fileMiddleware, fileCleanup };
+export { upload, fileCleanup };

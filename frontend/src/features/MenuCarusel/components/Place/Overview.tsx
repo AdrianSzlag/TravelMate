@@ -2,6 +2,7 @@ import { useAppSelector } from "hooks/redux-hooks";
 import { RiMapPin2Line } from "react-icons/ri";
 import { FiPhone } from "react-icons/fi";
 import { AiOutlineMail } from "react-icons/ai";
+import Img from "components/Img";
 
 const Overview = () => {
   const place = useAppSelector((state) => state.places.focused);
@@ -18,10 +19,9 @@ const Overview = () => {
         <div className="flex gap-2 py-2">
           {images.map((image) => {
             return (
-              <img
+              <Img
                 key={image}
                 src={`/${image}`}
-                alt="place"
                 className="w-24 h-40 rounded-xl object-cover hover:scale-105 cursor-pointer"
               />
             );

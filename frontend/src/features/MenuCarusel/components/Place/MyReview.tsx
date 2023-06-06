@@ -10,7 +10,7 @@ import { IReview } from "types/IReview";
 
 const MyReview = () => {
   const { fetch: upload } = useApi<ServerResponse>("/api/review", {
-    method: "POST",
+    method: "PUT",
   });
   const { fetch: remove } = useApi<ServerResponse>("/api/review", {
     method: "DELETE",

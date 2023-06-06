@@ -6,6 +6,7 @@ import { reservationsActions } from "store/reservations-slice";
 import { Link } from "react-router-dom";
 import { IReservation } from "types/IReservation";
 import { cancelReservation } from "store/reservations-actions";
+import Img from "components/Img";
 
 interface ItemProps {
   id: string;
@@ -49,7 +50,7 @@ const Item = ({
         )}
         <div className="flex flex-row items-center mt-2">
           {image && (
-            <img src={image} alt={name} className="w-5 h-5 rounded-full mr-2" />
+            <Img src={image} alt={name} className="w-5 h-5 rounded-full mr-2" />
           )}
           <h3 className="font-semibold text-gray-600">{name}</h3>
         </div>

@@ -6,6 +6,7 @@ import Reviews from "./Reviews";
 import Overview from "./Overview";
 import { useMemo } from "react";
 import Menu from "./Menu";
+import Img from "components/Img";
 
 interface ButtonProps {
   text: string;
@@ -59,9 +60,8 @@ const Place = ({ place }: Props) => {
 
   return (
     <div>
-      <img
+      <Img
         src={`/${place.thumbnail}`}
-        alt={place.name}
         className="h-[200px] w-full object-cover"
       />
       <div className="px-5 py-3 ">

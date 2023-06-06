@@ -1,7 +1,17 @@
 import { Request, Response } from "express";
 import Place from "../schemas/Place";
 import { PlaceDTO } from "../dtos/PlaceDTO";
-import { getPlaceDTO, getReviewDTO, getUserDTO } from "../utils/dtoUtils";
+import {
+  getPlaceDTO,
+  getPlaceFromBusinessDTO,
+  getReviewDTO,
+  getUserDTO,
+} from "../utils/dtoUtils";
+import { IRequest } from "../middlewares/authMiddleware";
+import BusinessDTO from "../dtos/BusinessDTO";
+import { IPlace } from "../models/IPlace";
+import Image from "../schemas/Image";
+import { fileCleanup } from "../middlewares/fileMiddleware";
 
 export const searchPlaces = async (req: Request, res: Response) => {
   const searchQuery = req.query.search as string;
@@ -80,5 +90,45 @@ export const getPlace = async (req: Request, res: Response) => {
     res
       .status(500)
       .json({ message: "Error occurred while fetching place", error });
+  }
+};
+
+export const createPlace = async (req: IRequest, res: Response) => {
+  const userId = req.userId!;
+  const file = req.file;
+  if (!file) {
+    return res.status(400).json({ message: "Missing thumbnail" });
+  }
+  const businessDTO = JSON.parse(req.body.business) as BusinessDTO;
+  const { name, type, location, phone, openingHours } = businessDTO;
+  if (!name || !type || !location || !phone || !openingHours) {
+    console.log(name, type, location, phone, openingHours);
+    fileCleanup(file.path);
+    return res.status(400).json({ message: "Missing required fields" });
+  }
+  try {
+    const thumbnail = Date.now() + file.originalname;
+    const newImage = new Image({
+      name: thumbnail,
+      img: {
+        data: file.buffer,
+        contentType: file.mimetype,
+      },
+    });
+    await newImage.save();
+    fileCleanup(file.path);
+    const placeObject = getPlaceFromBusinessDTO(businessDTO, {
+      userId,
+      thumbnail: thumbnail,
+    });
+    const place = await Place.create(placeObject);
+    fileCleanup(file.path);
+    res.status(201).json({ message: "Place created successfully", place });
+  } catch (error) {
+    console.log(error);
+    fileCleanup(file.path);
+    res
+      .status(500)
+      .json({ message: "Error occurred while creating place", error });
   }
 };

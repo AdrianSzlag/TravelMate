@@ -1,9 +1,11 @@
 import NavBar from "./components/NavBar";
 import Button from "./components/Button";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "hooks/redux-hooks";
+import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
+import { businessActions } from "store/business-slice";
 
 const Header = () => {
+  const dispatch = useAppDispatch();
   const reservations = useAppSelector(
     (state) => state.reservations.reservations
   );
@@ -21,6 +23,10 @@ const Header = () => {
   const onReservationsHandler = () => {
     navigate("/reservations");
   };
+  const onOpenBusinessModalHandler = () => {
+    dispatch(businessActions.showModal());
+  };
+
   return (
     <NavBar notifications={noOfNotifications}>
       {user && (
@@ -30,6 +36,7 @@ const Header = () => {
             onClick={onReservationsHandler}
             notifications={noOfReservations}
           />
+          <Button text="Create Business" onClick={onOpenBusinessModalHandler} />
           <Button text="Sign Out" onClick={onSignOutHandler} />
         </>
       )}

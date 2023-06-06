@@ -1,4 +1,4 @@
-const months = [
+export const months = [
   "January",
   "February",
   "March",
@@ -11,6 +11,15 @@ const months = [
   "October",
   "November",
   "December",
+];
+export const days = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
 ];
 export const getMonthName = (month: number): string => months[month - 1];
 export const getMonthNameShort = (month: number): string =>

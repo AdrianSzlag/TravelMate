@@ -3,6 +3,8 @@ import { PlaceDTO } from "../dtos/PlaceDTO";
 import { UserDTO } from "../dtos/UserDTO";
 import { IReview } from "../models/IReview";
 import { IUser } from "../models/IUser";
+import { IPlace } from "../models/IPlace";
+import BusinessDTO from "../dtos/BusinessDTO";
 
 export const getPlaceDTO = (place: PlaceDTO): PlaceDTO => {
   const placeDTO: PlaceDTO = {
@@ -44,4 +46,30 @@ export const getReviewDTO = (review: IReview) => {
     rating: review.rating,
     image: review.image,
   };
+};
+
+export const getPlaceFromBusinessDTO = (
+  business: BusinessDTO,
+  { thumbnail, userId }: { thumbnail: string; userId: string }
+): IPlace => {
+  const placeObject: IPlace = {
+    _id: undefined!,
+    name: business.name,
+    type: business.type,
+    description: business.description,
+    address: business.address,
+    location: business.location,
+    thumbnail: thumbnail,
+    createdBy: userId,
+    contactInfo: {
+      phone: business.phone,
+    },
+    openingHours: business.openingHours,
+    tags: business.tags,
+    menu: [],
+    services: [],
+    reservations: [],
+    reviews: [],
+  };
+  return placeObject;
 };

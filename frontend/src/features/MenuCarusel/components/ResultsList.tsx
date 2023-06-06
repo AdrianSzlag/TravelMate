@@ -2,6 +2,7 @@ import { IPlace } from "types/IPlace";
 import { placesActions } from "store/places-slice";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import Rating from "./Rating";
+import Img from "components/Img";
 
 interface Props {
   onClick: () => void;
@@ -27,10 +28,10 @@ const Result = ({
     >
       <div>
         <div className="text-lg font-semibold text-gray-800">{name}</div>
-        {rating && !!numberOfReviews && (
+        {rating?.toString() && numberOfReviews > 0 && (
           <Rating rating={rating} numberOfReviews={numberOfReviews} />
         )}
-        {!numberOfReviews && (
+        {numberOfReviews === 0 && (
           <div className="text-gray-400">No reviews yet!</div>
         )}
         {description && (
@@ -39,7 +40,7 @@ const Result = ({
           </div>
         )}
       </div>
-      <img
+      <Img
         src={`/${thumbnail}`}
         alt=""
         className="h-24 w-24 rounded-xl object-cover"

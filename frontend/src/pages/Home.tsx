@@ -3,6 +3,7 @@ import Header from "features/Header";
 import { Menu } from "features/MenuCarusel";
 import BookingModal from "features/BookingModal";
 import { LoginModal } from "features/Login";
+import BusinessModal from "features/BusinessModal";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
         </div>
         <BookingModal />
       </div>
+      <BusinessModal />
       <LoginModal />
     </>
   );

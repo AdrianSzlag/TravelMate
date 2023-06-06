@@ -1,3 +1,4 @@
+import Img from "components/Img";
 import { useAppSelector } from "hooks/redux-hooks";
 
 interface MenuItemProps {
@@ -18,7 +19,7 @@ const MenuItem = ({ name, price, description, image }: MenuItemProps) => {
       </div>
       {image && (
         <div className="w-20 h-24 ">
-          <img
+          <Img
             src={`/${image}`}
             alt={name}
             className="w-full h-full object-contain"

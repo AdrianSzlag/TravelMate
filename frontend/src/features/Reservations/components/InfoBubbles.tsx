@@ -1,3 +1,5 @@
+import Img from "components/Img";
+
 interface BubbleProps {
   image?: string;
   date: Date;
@@ -6,7 +8,7 @@ interface BubbleProps {
 const Bubble = ({ image, date }: BubbleProps) => {
   return (
     <div className="relative border rounded-full w-20 h-20 bg-white overflow-hidden">
-      <img
+      <Img
         src={image}
         alt="Logo"
         className="w-full h-full object-cover contrast-125"

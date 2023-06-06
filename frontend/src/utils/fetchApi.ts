@@ -1,11 +1,12 @@
 import { getToken } from "./auth";
-const apiURL = "http://192.168.0.59:5000";
+
+export const apiURL = "http://192.168.0.59:5000";
 
 const fetchApi = (path: string, options: RequestInit) => {
   if (!options.headers) {
     options.headers = {} as HeadersInit;
   }
-  if (options.body) {
+  if (typeof options.body === "string") {
     options.headers = {
       ...options.headers,
       "Content-Type": "application/json",
