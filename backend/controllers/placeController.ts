@@ -198,6 +198,35 @@ export const addServiceToPlace = async (req: IRequest, res: Response) => {
   }
 };
 
+export const deleteServiceFromPlace = async (req: IRequest, res: Response) => {
+  const { placeId, serviceId } = req.params;
+  if (!placeId || !serviceId) {
+    return res.status(400).json({ message: "Missing data" });
+  }
+  try {
+    const place = await Place.findById(placeId);
+    if (!place) {
+      return res.status(404).json({ message: "Place not found" });
+    }
+    if (place.createdBy.toString() !== req.userId) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+    place.services = place.services.filter(
+      (service) => service._id.toString() !== serviceId
+    );
+    place.reservations = place.reservations.filter(
+      (reservation) => reservation.service.toString() !== serviceId
+    );
+    await place.save();
+    res.status(200).json({ message: "Service deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "Error occurred while deleting service", error });
+  }
+};
+
 export const addMenuItemToPlace = async (req: IRequest, res: Response) => {
   const image = req.file as Express.Multer.File;
   const { placeId } = req.params;
@@ -239,5 +268,29 @@ export const addMenuItemToPlace = async (req: IRequest, res: Response) => {
     res
       .status(500)
       .json({ message: "Error occurred while adding service", error });
+  }
+};
+
+export const deleteMenuItemFromPlace = async (req: IRequest, res: Response) => {
+  const { placeId, menuId } = req.params;
+  if (!placeId || !menuId) {
+    return res.status(400).json({ message: "Missing data" });
+  }
+  try {
+    const place = await Place.findById(placeId);
+    if (!place) {
+      return res.status(404).json({ message: "Place not found" });
+    }
+    if (place.createdBy.toString() !== req.userId) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+    place.menu = place.menu.filter((menu) => menu._id.toString() !== menuId);
+    await place.save();
+    res.status(200).json({ message: "Service deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "Error occurred while deleting service", error });
   }
 };

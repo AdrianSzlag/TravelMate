@@ -2,6 +2,8 @@ import express from "express";
 import {
   addMenuItemToPlace,
   addServiceToPlace,
+  deleteMenuItemFromPlace,
+  deleteServiceFromPlace,
   getPlace,
   searchPlaces,
 } from "../controllers/placeController";
@@ -23,6 +25,16 @@ placeRouter.post(
   authMiddleware,
   upload.single("image"),
   addMenuItemToPlace
+);
+placeRouter.delete(
+  "/:placeId/service/:serviceId",
+  authMiddleware,
+  deleteServiceFromPlace
+);
+placeRouter.delete(
+  "/:placeId/menu/:menuId",
+  authMiddleware,
+  deleteMenuItemFromPlace
 );
 
 export default placeRouter;
