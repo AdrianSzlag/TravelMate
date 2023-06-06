@@ -144,7 +144,10 @@ export const createPlace = async (req: IRequest, res: Response) => {
       images,
     });
     const place = await Place.create(placeObject);
-    res.status(201).json({ message: "Place created successfully", place });
+    res.status(201).json({
+      message: "Place created successfully",
+      placeId: place._id.toString(),
+    });
   } catch (error) {
     console.log(error);
     res

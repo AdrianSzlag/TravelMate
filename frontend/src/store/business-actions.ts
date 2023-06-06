@@ -2,6 +2,7 @@ import fetchApi from "utils/fetchApi";
 import { AppThunk } from ".";
 import IBusiness from "types/IBusiness";
 import { businessActions } from "./business-slice";
+import { fetchPlace } from "./places-actions";
 
 export const postBusiness = (
   business: IBusiness,
@@ -26,7 +27,10 @@ export const postBusiness = (
       if (!response.ok) {
         throw new Error("Something went wrong!");
       }
+      const data = await response.json();
+      const placeId = data.placeId;
       dispatch(businessActions.hideModal());
+      dispatch(fetchPlace(placeId));
     } catch (error) {
       console.log(error);
     }
