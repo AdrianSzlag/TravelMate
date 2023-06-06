@@ -1,6 +1,8 @@
 import Img from "components/Img";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
+import { useState } from "react";
 import { showBookingModal } from "store/book-actions";
+import NewServiceModal from "./NewServiceModal";
 
 interface ServiceProps {
   placeId: string;
@@ -55,11 +57,28 @@ const Service = ({
 };
 
 const Services = () => {
+  const [newServiceModalOpen, setNewServiceModalOpen] = useState(false);
   const services = useAppSelector((state) => state.places.focused?.services);
   const placeId = useAppSelector((state) => state.places.focused?.id);
+  const ownerId = useAppSelector((state) => state.places.focused?.createdBy.id);
+  const user = useAppSelector((state) => state.auth.user);
+  const isOwner = user?.id === ownerId;
 
   return (
     <div className="py-4">
+      {services?.length === 0 && (
+        <div className="text-gray-400 font-semibold">
+          No services available!
+        </div>
+      )}
+      {isOwner && (
+        <button
+          className="rounded text-sm font-semibold text-gray-400 hover:underline"
+          onClick={() => setNewServiceModalOpen(true)}
+        >
+          Click to add new service
+        </button>
+      )}
       {services?.map((service) => (
         <Service
           key={service.name}
@@ -71,6 +90,12 @@ const Services = () => {
           image={service.image}
         />
       ))}
+      {newServiceModalOpen && (
+        <NewServiceModal
+          placeId={placeId!}
+          onClose={() => setNewServiceModalOpen(false)}
+        />
+      )}
     </div>
   );
 };

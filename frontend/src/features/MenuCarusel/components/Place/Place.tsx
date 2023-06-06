@@ -7,6 +7,7 @@ import Overview from "./Overview";
 import { useMemo } from "react";
 import Menu from "./Menu";
 import Img from "components/Img";
+import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 
 interface ButtonProps {
   text: string;
@@ -33,10 +34,13 @@ interface Props {
 }
 
 const Place = ({ place }: Props) => {
+  const user = useAppSelector((state) => state.auth.user);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const isMenuAvailable = place.menu?.length > 0;
-  const areServicesAvailable = place.services?.length > 0;
+  const isMenuAvailable =
+    place.menu?.length > 0 || place.createdBy.id === user?.id;
+  const areServicesAvailable =
+    place.services?.length > 0 || place.createdBy.id === user?.id;
 
   const activePage = useMemo(() => {
     const page = searchParams.get("details");

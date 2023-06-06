@@ -11,6 +11,7 @@ import { IRequest } from "../middlewares/authMiddleware";
 import BusinessDTO from "../dtos/BusinessDTO";
 import { IPlace } from "../models/IPlace";
 import Image from "../schemas/Image";
+import mongoose from "mongoose";
 
 export const searchPlaces = async (req: Request, res: Response) => {
   const searchQuery = req.query.search as string;
@@ -94,17 +95,15 @@ export const getPlace = async (req: Request, res: Response) => {
 
 export const createPlace = async (req: IRequest, res: Response) => {
   const userId = req.userId!;
-
   const files = req.files as any;
-
-  const thumbnailfile = files?.thumbnail
+  const thumbnailFile = files?.thumbnail
     ? (files.thumbnail[0] as Express.Multer.File)
     : undefined;
   const imagesFiles = files?.images
     ? (files.images as Express.Multer.File[])
     : undefined;
 
-  if (!thumbnailfile) {
+  if (!thumbnailFile) {
     return res.status(400).json({ message: "Missing thumbnail" });
   }
   const businessDTO = JSON.parse(req.body.business) as BusinessDTO;
@@ -114,12 +113,12 @@ export const createPlace = async (req: IRequest, res: Response) => {
     return res.status(400).json({ message: "Missing required fields" });
   }
   try {
-    const thumbnail = Date.now() + thumbnailfile.originalname;
+    const thumbnail = Date.now() + thumbnailFile.originalname;
     const newImage = new Image({
       name: thumbnail,
       img: {
-        data: thumbnailfile.buffer,
-        contentType: thumbnailfile.mimetype,
+        data: thumbnailFile.buffer,
+        contentType: thumbnailFile.mimetype,
       },
     });
     await newImage.save();
@@ -150,5 +149,50 @@ export const createPlace = async (req: IRequest, res: Response) => {
     res
       .status(500)
       .json({ message: "Error occurred while creating place", error });
+  }
+};
+
+export const addServiceToPlace = async (req: IRequest, res: Response) => {
+  const image = req.file as Express.Multer.File;
+  const { placeId } = req.params;
+  const { name, description, price, duration } = JSON.parse(req.body.service);
+  if (!placeId || !name || !description || !price || !duration) {
+    return res.status(400).json({ message: "Missing data" });
+  }
+  try {
+    const place = await Place.findById(placeId);
+    if (!place) {
+      return res.status(404).json({ message: "Place not found" });
+    }
+    if (place.createdBy.toString() !== req.userId) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+    let imageName = undefined;
+    if (image) {
+      imageName = Date.now() + image.originalname;
+      const newImage = new Image({
+        name: imageName,
+        img: {
+          data: image.buffer,
+          contentType: image.mimetype,
+        },
+      });
+      await newImage.save();
+    }
+    place.services.push({
+      _id: new mongoose.Types.ObjectId().toString(),
+      name,
+      description,
+      price,
+      duration,
+      image: imageName ? imageName : undefined,
+    });
+    await place.save();
+    res.status(200).json({ message: "Service added successfully" });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "Error occurred while adding service", error });
   }
 };
