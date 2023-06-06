@@ -26,10 +26,9 @@ export const searchPlaces = async (req: Request, res: Response) => {
     const placesDTOs: PlaceDTO[] = places.map((place) => {
       const { _id, reviews, menu, services, createdBy } = place.toObject();
       const reviewDTOs = reviews.map((review) => getReviewDTO(review));
-      const rating = reviewDTOs?.reduce(
-        (acc, review) => acc + review.rating,
-        0
-      );
+      const rating =
+        reviewDTOs?.reduce((acc, review) => acc + review.rating, 0) /
+        reviewDTOs.length;
       const creator = getUserDTO(createdBy);
       const menuDTO = menu.map((menuItem) => {
         return { ...menuItem, id: menuItem._id };
@@ -67,7 +66,9 @@ export const getPlace = async (req: Request, res: Response) => {
     }
     const { _id, reviews, menu, services, createdBy } = place.toObject();
     const reviewDTOs = reviews.map((review) => getReviewDTO(review));
-    const rating = reviewDTOs?.reduce((acc, review) => acc + review.rating, 0);
+    const rating =
+      reviewDTOs?.reduce((acc, review) => acc + review.rating, 0) /
+      reviewDTOs.length;
     const creator = getUserDTO(createdBy);
     const menuDTO = menu.map((menuItem) => {
       return { ...menuItem, id: menuItem._id };
@@ -185,6 +186,50 @@ export const addServiceToPlace = async (req: IRequest, res: Response) => {
       description,
       price,
       duration,
+      image: imageName ? imageName : undefined,
+    });
+    await place.save();
+    res.status(200).json({ message: "Service added successfully" });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "Error occurred while adding service", error });
+  }
+};
+
+export const addMenuItemToPlace = async (req: IRequest, res: Response) => {
+  const image = req.file as Express.Multer.File;
+  const { placeId } = req.params;
+  const { name, description, price } = JSON.parse(req.body.menu);
+  if (!placeId || !name || !description || !price) {
+    return res.status(400).json({ message: "Missing data" });
+  }
+  try {
+    const place = await Place.findById(placeId);
+    if (!place) {
+      return res.status(404).json({ message: "Place not found" });
+    }
+    if (place.createdBy.toString() !== req.userId) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+    let imageName = undefined;
+    if (image) {
+      imageName = Date.now() + image.originalname;
+      const newImage = new Image({
+        name: imageName,
+        img: {
+          data: image.buffer,
+          contentType: image.mimetype,
+        },
+      });
+      await newImage.save();
+    }
+    place.menu.push({
+      _id: new mongoose.Types.ObjectId().toString(),
+      name,
+      description,
+      price,
       image: imageName ? imageName : undefined,
     });
     await place.save();

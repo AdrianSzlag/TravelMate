@@ -30,6 +30,7 @@ export const cancelReservation = (id: string): AppThunk => {
     const fetchData = async () => {
       const response = await fetchApi(`/api/reservation/${id}`, {
         method: "DELETE",
+        body: JSON.stringify({ id }),
       });
       if (!response.ok) {
         throw new Error("Could not cancel reservation!");

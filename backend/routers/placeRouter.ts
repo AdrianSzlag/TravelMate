@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  addMenuItemToPlace,
   addServiceToPlace,
   getPlace,
   searchPlaces,
@@ -12,10 +13,16 @@ const placeRouter = express.Router();
 placeRouter.get("/search", searchPlaces);
 placeRouter.get("/:placeId", getPlace);
 placeRouter.post(
-  "/:placeId",
+  "/:placeId/service",
   authMiddleware,
   upload.single("image"),
   addServiceToPlace
+);
+placeRouter.post(
+  "/:placeId/menu",
+  authMiddleware,
+  upload.single("image"),
+  addMenuItemToPlace
 );
 
 export default placeRouter;

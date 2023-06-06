@@ -50,7 +50,11 @@ const Item = ({
         )}
         <div className="flex flex-row items-center mt-2">
           {image && (
-            <Img src={image} alt={name} className="w-5 h-5 rounded-full mr-2" />
+            <Img
+              src={"/" + image}
+              alt={name}
+              className="w-5 h-5 rounded-full mr-2"
+            />
           )}
           <h3 className="font-semibold text-gray-600">{name}</h3>
         </div>

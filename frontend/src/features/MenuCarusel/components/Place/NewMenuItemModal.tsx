@@ -1,6 +1,6 @@
-import Img from "components/Img";
 import { useState } from "react";
 import { createPortal } from "react-dom";
+import IMenuItem from "types/IMenuItem";
 import IService from "types/IService";
 import fetchApi from "utils/fetchApi";
 
@@ -9,41 +9,38 @@ interface Props {
   onClose: () => void;
 }
 
-const NewServiceModal = ({ placeId, onClose }: Props) => {
+const NewMenuItemModal = ({ placeId, onClose }: Props) => {
   const [loading, setLoading] = useState(false);
   const modalRoot = document.getElementById("business-root") as HTMLElement;
   const [image, setImage] = useState<File | undefined>(undefined);
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
-  const [duration, setDuration] = useState("");
   const [description, setDescription] = useState("");
 
-  const isFormValid =
-    name.length > 0 && price.length > 0 && duration.length > 0 && !loading;
+  const isFormValid = name.length > 0 && price.length > 0 && !loading;
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     setImage(file);
   };
 
-  const handleAddService = async () => {
+  const handleAddMenuItem = async () => {
     if (!isFormValid) {
       return;
     }
     setLoading(true);
-    const service: IService = {
+    const menuItem: IMenuItem = {
       name,
       description,
       price: Number(price),
-      duration: Number(duration),
     };
     try {
       const formData = new FormData();
-      formData.append("service", JSON.stringify(service));
+      formData.append("menu", JSON.stringify(menuItem));
       if (image) {
         formData.append("image", image);
       }
-      const response = await fetchApi(`/api/place/${placeId}/service`, {
+      const response = await fetchApi(`/api/place/${placeId}/menu`, {
         method: "POST",
         body: formData,
       });
@@ -73,7 +70,9 @@ const NewServiceModal = ({ placeId, onClose }: Props) => {
       >
         <div className="p-4 flex w-full gap-4 mb-6">
           <div className="flex-1">
-            <h1 className="font-semibold text-lg text-gray-600">Add service</h1>
+            <h1 className="font-semibold text-lg text-gray-600">
+              Add Menu Item
+            </h1>
             <label className="mb-2 block text-sm font-medium text-gray-900">
               Name
             </label>
@@ -98,15 +97,6 @@ const NewServiceModal = ({ placeId, onClose }: Props) => {
               className="text-gray-500 text-sm mr-2 border py-0.5 px-1 w-full"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-              type="number"
-            />
-            <label className="my-2 block text-sm font-medium text-gray-900">
-              Duration (minutes)
-            </label>
-            <input
-              className="text-gray-500 text-sm mr-2 border py-0.5 px-1 w-full"
-              value={duration}
-              onChange={(e) => setDuration(e.target.value)}
               type="number"
             />
           </div>
@@ -146,7 +136,7 @@ const NewServiceModal = ({ placeId, onClose }: Props) => {
           </button>
           <button
             className="px-2 py-0.5 block text-sm font-medium text-white bg-blue-500 rounded ml-2"
-            onClick={handleAddService}
+            onClick={handleAddMenuItem}
             disabled={!isFormValid}
           >
             {loading ? "Loading..." : "Add"}
@@ -158,4 +148,4 @@ const NewServiceModal = ({ placeId, onClose }: Props) => {
   );
 };
 
-export default NewServiceModal;
+export default NewMenuItemModal;

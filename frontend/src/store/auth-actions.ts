@@ -46,10 +46,10 @@ export const login = (email: string, password: string): AppThunk => {
       setToken(data.token);
       localStorage.setItem("token", data.token);
       dispatch(authActions.setMessage("Login successful!"));
-    } catch (error) {
-      console.log(error);
-      const errorMessage = typeof error === "string" ? error : "Login failed!";
-      dispatch(authActions.setErrorMessage(errorMessage));
+    } catch (error: any) {
+      let message = "Login failed! Please try again.";
+      if (error instanceof Error) message = error.message;
+      dispatch(authActions.setErrorMessage(message));
     }
     dispatch(authActions.setLoading(false));
   };

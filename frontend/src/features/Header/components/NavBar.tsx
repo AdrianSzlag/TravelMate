@@ -1,3 +1,4 @@
+import Logo from "components/Logo";
 import React, { Children } from "react";
 import { useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
@@ -15,8 +16,7 @@ const NavBar = ({ children, notifications }: Props) => {
       <div className="mx-auto flex flex-wrap items-center justify-between">
         <Link to="/">
           <div className="flex cursor-pointer items-center whitespace-nowrap text-xl font-semibold">
-            {/* <img src="logo.svg" alt="" /> */}
-            <div>BooKing.com</div>
+            <Logo className="h-8 w-8" />
           </div>
         </Link>
         <button

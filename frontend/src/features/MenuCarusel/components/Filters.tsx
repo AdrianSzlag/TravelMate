@@ -41,7 +41,7 @@ const Filters = ({ onSubmit }: Props) => {
 
   return (
     <form
-      className="flex h-full w-full flex-col gap-2 bg-yellow-300 px-4 py-5"
+      className="flex h-full w-full flex-col gap-2 bg-gray-100 px-4 py-5"
       onSubmit={onSubmitHandler}
     >
       <h2 className="text-xl font-medium ">Search</h2>

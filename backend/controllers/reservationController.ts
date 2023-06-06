@@ -122,6 +122,8 @@ export const getUserReservations = async (req: IRequest, res: Response) => {
     }).populate("reservations.user");
     const reservations = places.reduce((acc, place) => {
       place.reservations.forEach((reservation) => {
+        const user = reservation.user as IUser;
+        if (user._id.toString() !== userId) return;
         const service = place.services.find(
           (service) => service._id.toString() === reservation.service.toString()
         );
@@ -177,7 +179,7 @@ export const cancelReservation = async (req: IRequest, res: Response) => {
       return res.status(404).json({ message: "Reservation not found!" });
     }
     if (
-      (reservation.user as IUser)._id.toString() !== req.userId ||
+      (reservation.user as IUser)._id.toString() !== req.userId &&
       (place.createdBy as IUser)._id.toString() !== req.userId
     ) {
       return res.status(401).json({ message: "Unauthorized!" });
