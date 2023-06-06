@@ -22,7 +22,7 @@ const MenuItem = ({
   onDelete,
 }: MenuItemProps) => {
   return (
-    <div className="p-1 flex hover:bg-gray-100 cursor-pointer">
+    <div className="p-1 flex ">
       <div className="flex-1">
         <div className="text-gray-700 text font-semibold">{name}</div>
         {price && <div className="text-gray-500 text-sm">{price} zl</div>}
