@@ -9,7 +9,7 @@ const Bubble = ({ image, date }: BubbleProps) => {
   return (
     <div className="relative border rounded-full w-20 h-20 bg-white overflow-hidden">
       <Img
-        src={image}
+        src={image!}
         alt="Logo"
         className="w-full h-full object-cover contrast-125"
       />

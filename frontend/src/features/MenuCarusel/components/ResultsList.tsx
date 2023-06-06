@@ -28,7 +28,7 @@ const Result = ({
     >
       <div>
         <div className="text-lg font-semibold text-gray-800">{name}</div>
-        {rating?.toString() && numberOfReviews > 0 && (
+        {!!rating && numberOfReviews > 0 && (
           <Rating rating={rating} numberOfReviews={numberOfReviews} />
         )}
         {numberOfReviews === 0 && (

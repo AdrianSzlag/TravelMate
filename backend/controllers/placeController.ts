@@ -11,7 +11,6 @@ import { IRequest } from "../middlewares/authMiddleware";
 import BusinessDTO from "../dtos/BusinessDTO";
 import { IPlace } from "../models/IPlace";
 import Image from "../schemas/Image";
-import { fileCleanup } from "../middlewares/fileMiddleware";
 
 export const searchPlaces = async (req: Request, res: Response) => {
   const searchQuery = req.query.search as string;
@@ -95,38 +94,59 @@ export const getPlace = async (req: Request, res: Response) => {
 
 export const createPlace = async (req: IRequest, res: Response) => {
   const userId = req.userId!;
-  const file = req.file;
-  if (!file) {
+
+  const files = req.files as any;
+
+  const thumbnailfile = files?.thumbnail
+    ? (files.thumbnail[0] as Express.Multer.File)
+    : undefined;
+  const imagesFiles = files?.images
+    ? (files.images as Express.Multer.File[])
+    : undefined;
+
+  if (!thumbnailfile) {
     return res.status(400).json({ message: "Missing thumbnail" });
   }
   const businessDTO = JSON.parse(req.body.business) as BusinessDTO;
   const { name, type, location, phone, openingHours } = businessDTO;
   if (!name || !type || !location || !phone || !openingHours) {
     console.log(name, type, location, phone, openingHours);
-    fileCleanup(file.path);
     return res.status(400).json({ message: "Missing required fields" });
   }
   try {
-    const thumbnail = Date.now() + file.originalname;
+    const thumbnail = Date.now() + thumbnailfile.originalname;
     const newImage = new Image({
       name: thumbnail,
       img: {
-        data: file.buffer,
-        contentType: file.mimetype,
+        data: thumbnailfile.buffer,
+        contentType: thumbnailfile.mimetype,
       },
     });
     await newImage.save();
-    fileCleanup(file.path);
+    let images: string[] = [];
+    if (Array.isArray(imagesFiles)) {
+      images = imagesFiles.map((file) => {
+        const name = Date.now() + file.originalname;
+        const newImage = new Image({
+          name,
+          img: {
+            data: file.buffer,
+            contentType: file.mimetype,
+          },
+        });
+        newImage.save();
+        return name;
+      });
+    }
     const placeObject = getPlaceFromBusinessDTO(businessDTO, {
       userId,
       thumbnail: thumbnail,
+      images,
     });
     const place = await Place.create(placeObject);
-    fileCleanup(file.path);
     res.status(201).json({ message: "Place created successfully", place });
   } catch (error) {
     console.log(error);
-    fileCleanup(file.path);
     res
       .status(500)
       .json({ message: "Error occurred while creating place", error });

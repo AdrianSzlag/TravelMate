@@ -17,7 +17,8 @@ const BusinessForm = () => {
     [number, number] | undefined
   >();
   const [name, setName] = useState("");
-  const [image, setImage] = useState<File | undefined>(undefined);
+  const [thumbnail, setThumbnails] = useState<File | undefined>(undefined);
+  const [images, setImages] = useState<File[]>([]);
   const isValidName = name.length > 0;
   const [description, setDescription] = useState("");
   const isValidDescription = description.length > 0;
@@ -36,7 +37,7 @@ const BusinessForm = () => {
     isValidAddress &&
     isValidPhone &&
     isValidTags &&
-    image &&
+    thumbnail &&
     !!coordinates &&
     !loading;
   const [openingHours, setOpeningHours] = useState<IOpeningHours[]>(
@@ -60,9 +61,16 @@ const BusinessForm = () => {
   const setTagsHandler = (value: string) => {
     setTags(value.replace(/[^a-zA-Z0-9 ]/g, ""));
   };
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleThumbnailChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
-    setImage(file);
+    setThumbnails(file);
+  };
+  const handleImagesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!files) setImages([]);
+    else setImages([...files]);
   };
   const onCancelHandler = () => {
     dispatch(businessActions.hideModal());
@@ -85,10 +93,10 @@ const BusinessForm = () => {
       openingHours: hours,
       location: {
         type: "Point",
-        coordinates: coordinates!,
+        coordinates: [coordinates[1], coordinates[0]],
       },
     };
-    dispatch(postBusiness(business, image));
+    dispatch(postBusiness(business, thumbnail, images));
   };
   return (
     <div
@@ -169,25 +177,38 @@ const BusinessForm = () => {
           </div>
         </div>
         <div className="md:w-[350px] flex-grow-0 flex-shrink-0 md:pr-4 md:pt-4">
+          <label className="mb-2 block text-sm font-medium text-gray-900">
+            Choose a thumbnail
+          </label>
           <div className="relative h-40 flex items-center justify-center rounded overflow-hidden">
-            {image && (
+            {thumbnail && (
               <img
-                src={URL.createObjectURL(image)}
+                src={URL.createObjectURL(thumbnail)}
                 alt="business"
                 className="h-full w-full object-cover"
               />
             )}
             <div className="absolute left-0 top-0 w-full h-full bg-[#0000006c] flex items-center justify-center font-bold text-white">
-              Choose a thumbnail
+              Click to select file.
             </div>
             <input
               type="file"
               accept=".jpeg,.jpg,.png,.gif"
-              onChange={handleImageChange}
+              onChange={handleThumbnailChange}
               className="opacity-0 absolute h-full w-full cursor-pointer z-20"
               multiple={false}
             />
           </div>
+          <label className="mt-2 mb-2 block text-sm font-medium text-gray-900">
+            Add some more photos
+          </label>
+          <input
+            type="file"
+            accept=".jpeg,.jpg,.png,.gif"
+            onChange={handleImagesChange}
+            className="w-full cursor-pointer z-20"
+            multiple={true}
+          />
           <label className="mt-2 mb-2 block text-sm font-medium text-gray-900">
             Pick a location
           </label>

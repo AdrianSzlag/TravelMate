@@ -19,14 +19,10 @@ const fileFilter = (
   }
 };
 
-const upload = multer({
+export const upload = multer({
   storage: storage,
   limits: {
     fileSize: 1024 * 1024 * 7, // 7MB
   },
   fileFilter: fileFilter,
 });
-
-const fileCleanup = (path: string) => {}; //fs.unlinkSync(path);
-
-export { upload, fileCleanup };

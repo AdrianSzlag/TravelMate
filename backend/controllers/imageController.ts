@@ -2,7 +2,6 @@ import { IRequest } from "../middlewares/authMiddleware";
 import { Response } from "express";
 import Image from "../schemas/Image";
 import fs from "fs";
-import { fileCleanup } from "../middlewares/fileMiddleware";
 
 export const uploadImage = async (req: IRequest, res: Response) => {
   const userId = req.userId;
@@ -20,7 +19,6 @@ export const uploadImage = async (req: IRequest, res: Response) => {
       },
     });
     await newImage.save();
-    fileCleanup(file.path);
     res.status(201).json({ message: "Image uploaded." });
   } catch (error) {
     console.log(error);

@@ -50,7 +50,11 @@ export const getReviewDTO = (review: IReview) => {
 
 export const getPlaceFromBusinessDTO = (
   business: BusinessDTO,
-  { thumbnail, userId }: { thumbnail: string; userId: string }
+  {
+    thumbnail,
+    userId,
+    images,
+  }: { thumbnail: string; userId: string; images: string[] }
 ): IPlace => {
   const placeObject: IPlace = {
     _id: undefined!,
@@ -70,6 +74,7 @@ export const getPlaceFromBusinessDTO = (
     services: [],
     reservations: [],
     reviews: [],
+    images,
   };
   return placeObject;
 };

@@ -68,7 +68,7 @@ const Place = ({ place }: Props) => {
         <h1 className="pb-2 text-2xl font-semibold text-gray-600">
           {place.name}
         </h1>
-        {place.rating && (
+        {!!place.rating && place.reviews.length > 0 && (
           <Rating
             rating={place.rating}
             numberOfReviews={place.reviews.length}

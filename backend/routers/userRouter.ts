@@ -5,10 +5,18 @@ import { createPlace } from "../controllers/placeController";
 
 const userRouter = express.Router();
 
+userRouter.use(function (err: any, req: any, res: any, next: any) {
+  console.log("This is the invalid field ->", err.field);
+  next(err);
+});
+
 userRouter.post(
   "/business",
   authMiddleware,
-  upload.single("thumbnail"),
+  upload.fields([
+    { name: "thumbnail", maxCount: 1 },
+    { name: "images", maxCount: 10 },
+  ]),
   createPlace
 );
 
