@@ -3,10 +3,26 @@ import { IPlace } from "../types/IPlace";
 import fetchApi from "../utils/fetchApi";
 import { placesActions } from "./places-slice";
 
-export const fetchPlaces = (searchQuery: string): AppThunk => {
+export const fetchPlaces = (
+  searchQuery: string,
+  priceFrom?: string,
+  priceTo?: string,
+  type?: string
+): AppThunk => {
   return async (dispatch, getState) => {
+    const searchParams = new URLSearchParams();
+    searchParams.append("search", searchQuery);
+    if (priceFrom) {
+      searchParams.append("priceFrom", priceFrom.toString());
+    }
+    if (priceTo) {
+      searchParams.append("priceTo", priceTo.toString());
+    }
+    if (type) {
+      searchParams.append("type", type);
+    }
     const fetchData = async () => {
-      const url = `/api/place/search?search=${searchQuery}`;
+      const url = `/api/place/search?${searchParams.toString()}`;
       const response = await fetchApi(url, {
         method: "GET",
       });
@@ -20,6 +36,7 @@ export const fetchPlaces = (searchQuery: string): AppThunk => {
       const placesData = (await fetchData()) as IPlace[];
       console.log(placesData);
       dispatch(placesActions.setPlaces(placesData));
+      dispatch(placesActions.setFocused(null));
     } catch (error) {
       dispatch(placesActions.setPlaces([]));
     }

@@ -15,14 +15,39 @@ import mongoose from "mongoose";
 
 export const searchPlaces = async (req: Request, res: Response) => {
   const searchQuery = req.query.search as string;
+  const { priceFrom, priceTo, type } = req.query;
   try {
-    const places = await Place.find({
-      $or: [
-        { name: new RegExp(searchQuery, "i") },
-        { type: new RegExp(searchQuery, "i") },
-        { description: new RegExp(searchQuery, "i") },
+    const filters: any = {
+      $and: [
+        {
+          $or: [
+            { name: new RegExp(searchQuery, "i") },
+            { type: new RegExp(searchQuery, "i") },
+            { description: new RegExp(searchQuery, "i") },
+          ],
+        },
       ],
-    }).populate("reviews.user createdBy");
+    };
+    if (priceFrom) {
+      filters.$and.push({
+        $or: [
+          { "menu.price": { $gte: priceFrom } },
+          { "services.price": { $gte: priceFrom } },
+        ],
+      });
+    }
+    if (priceTo) {
+      filters.$and.push({
+        $or: [
+          { "menu.price": { $lte: priceTo } },
+          { "services.price": { $lte: priceTo } },
+        ],
+      });
+    }
+    if (type) {
+      filters.$and.push({ type: type });
+    }
+    const places = await Place.find(filters).populate("reviews.user createdBy");
     const placesDTOs: PlaceDTO[] = places.map((place) => {
       const { _id, reviews, menu, services, createdBy } = place.toObject();
       const reviewDTOs = reviews.map((review) => getReviewDTO(review));
