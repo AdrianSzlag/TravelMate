@@ -205,7 +205,7 @@ export const addServiceToPlace = async (req: IRequest, res: Response) => {
   const image = req.file as Express.Multer.File;
   const { placeId } = req.params;
   const { name, description, price, duration } = JSON.parse(req.body.service);
-  if (!placeId || !name || !description || !price || !duration) {
+  if (!placeId || !name || !price || typeof duration === "undefined") {
     return res.status(400).json({ message: "Missing data" });
   }
   try {
@@ -279,7 +279,7 @@ export const addMenuItemToPlace = async (req: IRequest, res: Response) => {
   const image = req.file as Express.Multer.File;
   const { placeId } = req.params;
   const { name, description, price } = JSON.parse(req.body.menu);
-  if (!placeId || !name || !description || !price) {
+  if (!placeId || !name || !price) {
     return res.status(400).json({ message: "Missing data" });
   }
   try {
