@@ -35,8 +35,8 @@ const Service = ({
         <div className="flex-1">
           <div className="text-gray-700 text font-semibold">{name}</div>
           <div className="flex items-center">
-            {price && (
-              <div className="text-gray-500 text-sm mr-2">{price} zl</div>
+            {!!price && (
+              <div className="text-gray-500 text-sm mr-2 w-10">{price} zl</div>
             )}
             <button
               className="px-2 bg-blue-600 text-white rounded font-semibold my-0.5 text-sm"

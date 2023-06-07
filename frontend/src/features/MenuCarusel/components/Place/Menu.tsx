@@ -25,7 +25,7 @@ const MenuItem = ({
     <div className="p-1 flex ">
       <div className="flex-1">
         <div className="text-gray-700 text font-semibold">{name}</div>
-        {price && <div className="text-gray-500 text-sm">{price} zl</div>}
+        {!!price && <div className="text-gray-500 text-sm">{price} zl</div>}
         {description && (
           <div className="text-gray-400 text-sm">{description}</div>
         )}
