@@ -7,7 +7,8 @@ export const fetchPlaces = (
   searchQuery: string,
   priceFrom?: string,
   priceTo?: string,
-  type?: string
+  type?: string,
+  firstLoad?: boolean
 ): AppThunk => {
   return async (dispatch, getState) => {
     const searchParams = new URLSearchParams();
@@ -35,8 +36,8 @@ export const fetchPlaces = (
     try {
       const placesData = (await fetchData()) as IPlace[];
       console.log(placesData);
+      if (!firstLoad) dispatch(placesActions.setFocused(null));
       dispatch(placesActions.setPlaces(placesData));
-      dispatch(placesActions.setFocused(null));
     } catch (error) {
       dispatch(placesActions.setPlaces([]));
     }

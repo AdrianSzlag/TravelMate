@@ -6,7 +6,7 @@ import { IRequest } from "../middlewares/authMiddleware";
 import { getUserDTO } from "../utils/dtoUtils";
 
 export const register = async (req: Request, res: Response) => {
-  const { firstName, phone, dateOfBirth, email, password } = req.body;
+  const { name, phone, dateOfBirth, email, password } = req.body;
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -15,7 +15,7 @@ export const register = async (req: Request, res: Response) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     const newUser = new User({
-      firstName,
+      firstName: name,
       email,
       phone,
       dateOfBirth,

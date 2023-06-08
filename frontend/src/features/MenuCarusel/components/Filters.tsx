@@ -21,11 +21,11 @@ const Filters = ({ onSubmit }: Props) => {
       ? "border-red-500"
       : "";
 
-  const fetch = () => {
+  const fetch = (firstLoad = false) => {
     const priceFrom = priceFilterFrom.length > 0 ? priceFilterFrom : undefined;
     const priceTo = priceFilterTo.length > 0 ? priceFilterTo : undefined;
     const type = typeFilter.length > 0 ? typeFilter : undefined;
-    dispatch(fetchPlaces(searchQuery, priceFrom, priceTo, type));
+    dispatch(fetchPlaces(searchQuery, priceFrom, priceTo, type, firstLoad));
   };
 
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +41,7 @@ const Filters = ({ onSubmit }: Props) => {
   useEffect(() => {
     if (firstLoad) {
       setFirstLoad(false);
-      fetch();
+      fetch(true);
       return;
     }
     const timeout = setTimeout(() => {
