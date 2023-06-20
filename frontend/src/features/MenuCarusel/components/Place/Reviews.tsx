@@ -13,7 +13,7 @@ const Review = ({ name, rating, comment }: ReviewProps) => {
   return (
     <div className="border-b py-2">
       <div className="flex w-full">
-        <UserAvatar userId={name} />
+        <UserAvatar name={name} />
         <div className="pl-2 font-semibold text-gray-600">
           <div>{name}</div>
           <Rating rating={rating} />

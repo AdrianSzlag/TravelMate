@@ -1,11 +1,19 @@
 interface Props {
-  userId: string;
+  name: string;
+  url?: string;
+  className?: string;
 }
 
-const UserAvatar = ({ userId }: Props) => {
+const UserAvatar = ({ name, url, className }: Props) => {
+  const defaultClassName = "h-10 w-10 bg-pink-400";
   return (
-    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-pink-400 text-center text-lg font-bold text-white">
-      {userId.charAt(0)}
+    <div
+      className={`${
+        className ? className : defaultClassName
+      } flex items-center justify-center rounded-full text-center text-lg font-bold text-white overflow-hidden`}
+    >
+      {!url && name.charAt(0)}
+      {url && <img src={url} alt={name} className="w-full object-cover" />}
     </div>
   );
 };

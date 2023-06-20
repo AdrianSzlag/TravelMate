@@ -3,6 +3,7 @@ import Button from "./components/Button";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { businessActions } from "store/business-slice";
+import Dropdown, { DropdownButton } from "./components/Dropdown";
 
 const Header = () => {
   const dispatch = useAppDispatch();
@@ -24,6 +25,7 @@ const Header = () => {
     navigate("/reservations");
   };
   const onOpenBusinessModalHandler = () => {
+    navigate("/");
     dispatch(businessActions.showModal());
   };
 
@@ -36,8 +38,26 @@ const Header = () => {
             onClick={onReservationsHandler}
             notifications={noOfReservations}
           />
-          <Button text="Create Business" onClick={onOpenBusinessModalHandler} />
-          <Button text="Sign Out" onClick={onSignOutHandler} />
+          <Dropdown>
+            <div className="px-4 py-3 text-sm text-gray-900 ">
+              <div className="font-medium">{user.name}</div>
+              <div className="truncate">{user.email}</div>
+            </div>
+            <ul className="py-2 ">
+              <DropdownButton
+                text="Reservations"
+                onClick={onReservationsHandler}
+              />
+              <DropdownButton text="Profile" />
+              <DropdownButton
+                text="Create business"
+                onClick={onOpenBusinessModalHandler}
+              />
+            </ul>
+            <ul className="py-2 ">
+              <DropdownButton text="Sign out" onClick={onSignOutHandler} />
+            </ul>
+          </Dropdown>
         </>
       )}
       {!user && <Button text="Sign In" onClick={onSignInHandler} />}

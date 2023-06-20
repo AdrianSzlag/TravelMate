@@ -86,7 +86,7 @@ const MyReview = () => {
         {!edit && (rating ? "Your review:" : "Rate this place")}
       </label>
       <div className="flex w-full pt-1">
-        <UserAvatar userId={userName ?? ""} />
+        <UserAvatar name={userName ?? ""} />
         <div className="pl-2">
           <div className="font-semibold text-gray-600">{userName}</div>
           <Rating rating={currentRating} setRating={setCurrentRating} />
