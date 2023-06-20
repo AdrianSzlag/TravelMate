@@ -145,7 +145,10 @@ const List = () => {
             <h1 className="text-gray-800 font-bold m-4">Your reservations:</h1>
           )}
           {sortedReservations
-            .filter((reservation) => !reservation.user)
+            .filter(
+              (reservation) =>
+                !reservation.user || reservation.user.id === userId
+            )
             .map((reservation) => (
               <Item
                 id={reservation.place.id}
