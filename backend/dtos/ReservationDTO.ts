@@ -1,4 +1,5 @@
 import { ILocation } from "../models/ILocation";
+import { UserDTO } from "./UserDTO";
 
 export interface ReservationDTO {
   id: string;
@@ -18,4 +19,5 @@ export interface ReservationDTO {
     image?: string;
     location: ILocation;
   };
+  user?: UserDTO;
 }

@@ -6,6 +6,7 @@ import { IReservation } from "../models/IReservation";
 import { IRequest } from "../middlewares/authMiddleware";
 import { IUser } from "../models/IUser";
 import { ReservationDTO } from "../dtos/ReservationDTO";
+import { getUserDTO } from "../utils/dtoUtils";
 
 export const getFreeSlotsForService = async (req: Request, res: Response) => {
   const { placeId, serviceId } = req.query;
@@ -114,16 +115,21 @@ export const makeReservation = async (req: IRequest, res: Response) => {
   }
 };
 
-export const getUserReservations = async (req: IRequest, res: Response) => {
+export const getReservations = async (req: IRequest, res: Response) => {
   const userId = req.userId;
   try {
     const places = await Place.find({
       "reservations.user": userId,
-    }).populate("reservations.user");
+      $or: [{ "reservations.user": userId }, { createdBy: userId }],
+    }).populate("reservations.user createdBy");
     const reservations = places.reduce((acc, place) => {
       place.reservations.forEach((reservation) => {
         const user = reservation.user as IUser;
-        if (user._id.toString() !== userId) return;
+        if (
+          user._id.toString() !== userId &&
+          (place.createdBy as IUser)._id.toString() !== userId
+        )
+          return;
         const service = place.services.find(
           (service) => service._id.toString() === reservation.service.toString()
         );
@@ -146,6 +152,10 @@ export const getUserReservations = async (req: IRequest, res: Response) => {
             description: service.description,
             image: service.image,
           },
+          user:
+            (place.createdBy as IUser)._id.toString() === userId
+              ? getUserDTO(user)
+              : undefined,
         };
         acc.push(reservationDTO);
       });

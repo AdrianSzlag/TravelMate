@@ -1,3 +1,5 @@
+import { IUser } from "./IUser";
+
 export interface IReservation {
   id: string;
   date: string;
@@ -19,4 +21,5 @@ export interface IReservation {
       coordinates: number[];
     };
   };
+  user?: IUser;
 }

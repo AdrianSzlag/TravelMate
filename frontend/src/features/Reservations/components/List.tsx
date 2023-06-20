@@ -96,6 +96,7 @@ const Item = ({
 };
 
 const List = () => {
+  const userId = useAppSelector((state) => state.auth.user?.id);
   const reservations = useAppSelector(
     (state) => state.reservations.reservations
   );
@@ -113,9 +114,20 @@ const List = () => {
     (a: IReservation, b: IReservation) => {
       const aDate = new Date(a.date);
       const bDate = new Date(b.date);
-      return bDate.getTime() - aDate.getTime();
+      return aDate.getTime() - bDate.getTime();
     }
   );
+  const businesses = sortedReservations.reduce((acc, curr) => {
+    const business = acc.find((b) => b.id === curr.place.id);
+    if (!business && curr.user) {
+      acc.push({
+        id: curr.place.id,
+        name: curr.place.name,
+        address: curr.place.address,
+      });
+    }
+    return acc;
+  }, [] as { id: string; name: string; address?: string }[]);
 
   return (
     <>
@@ -129,20 +141,65 @@ const List = () => {
               </Link>
             </h1>
           )}
-          {sortedReservations.map((reservation) => (
-            <Item
-              id={reservation.place.id}
-              key={reservation.id}
-              title={reservation.service.name}
-              address={reservation.place.address}
-              name={reservation.place.name}
-              selected={reservation.id === selectedReservation?.id}
-              image={reservation.place.image}
-              date={reservation.date}
-              onClick={() => setSelectedReservation(reservation.id)}
-              onCancel={() => cancelReservationHandler(reservation)}
-            />
-          ))}
+          {reservations.length > 0 && (
+            <h1 className="text-gray-800 font-bold m-4">Your reservations:</h1>
+          )}
+          {sortedReservations
+            .filter((reservation) => !reservation.user)
+            .map((reservation) => (
+              <Item
+                id={reservation.place.id}
+                key={reservation.id}
+                title={reservation.service.name}
+                address={reservation.place.address}
+                name={reservation.place.name}
+                selected={reservation.id === selectedReservation?.id}
+                image={reservation.place.image}
+                date={reservation.date}
+                onClick={() => setSelectedReservation(reservation.id)}
+                onCancel={() => cancelReservationHandler(reservation)}
+              />
+            ))}
+          {businesses && businesses.length > 0 && (
+            <>
+              <h1 className="text-gray-800 font-bold m-4">
+                Reservations in your businesses:
+              </h1>
+              {businesses.map((business) => {
+                return (
+                  <div key={business.id}>
+                    <div className="flex mx-4 mb-4 items-baseline ">
+                      <h1 className="text-gray-600 font-semibold text-lg mr-2">
+                        {business.name}
+                      </h1>
+                      <div className=" text-gray-400 text-sm">
+                        {business.address}
+                      </div>
+                    </div>
+                    {sortedReservations
+                      .filter(
+                        (reservation) =>
+                          reservation.user &&
+                          reservation.place.id === business.id
+                      )
+                      .map((reservation) => (
+                        <Item
+                          id={reservation.id}
+                          key={reservation.id}
+                          title={reservation.service.name}
+                          name={reservation.user!.name}
+                          selected={reservation.id === selectedReservation?.id}
+                          image={reservation.user!.profileImage}
+                          date={reservation.date}
+                          onClick={() => setSelectedReservation(reservation.id)}
+                          onCancel={() => cancelReservationHandler(reservation)}
+                        />
+                      ))}
+                  </div>
+                );
+              })}
+            </>
+          )}
         </div>
       </div>
       <ConfirmCancel />
