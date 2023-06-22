@@ -10,7 +10,10 @@ interface ButtonProps {
 export const DropdownButton = ({ onClick, text }: ButtonProps) => {
   const onClickHandler = () => onClick && onClick();
   return (
-    <li onClick={onClickHandler} className="text-sm text-gray-700">
+    <li
+      onClick={onClickHandler}
+      className="text-sm font-semibold text-gray-700"
+    >
       <a href="#" className="block px-4 py-2 hover:bg-gray-100">
         {text}
       </a>
@@ -31,18 +34,18 @@ const Dropdown = ({ children }: Props) => {
       <button
         className={`${
           isOpen ? "ring-4 ring-gray-100" : ""
-        } flex items-center text-sm font-medium text-white rounded-full md:mr-0`}
+        } flex items-center rounded-full text-sm font-medium text-white md:mr-0`}
         onClick={toggle}
       >
         <UserAvatar
           name={user?.name || ""}
           url={user?.profileImage}
-          className="bg-pink-600 w-8 h-8 mr-2 !text-base"
+          className="mr-2 h-8 w-8 bg-pink-600 !text-base"
         />
-        <div className="hidden xs:flex items-center">
+        <div className="hidden items-center xs:flex">
           {user?.name}
           <svg
-            className="w-4 h-4 mx-1.5"
+            className="mx-1.5 h-4 w-4"
             aria-hidden="true"
             fill="currentColor"
             viewBox="0 0 20 20"
@@ -59,7 +62,7 @@ const Dropdown = ({ children }: Props) => {
       <div
         className={`${
           isOpen ? "" : "hidden"
-        } z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-60 absolute right-0 mt-2`}
+        } absolute right-0 z-10 mt-2 w-60 divide-y divide-gray-100 rounded-lg border bg-white shadow`}
       >
         {children}
       </div>

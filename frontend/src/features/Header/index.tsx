@@ -39,8 +39,8 @@ const Header = () => {
             notifications={noOfReservations}
           />
           <Dropdown>
-            <div className="px-4 py-3 text-sm text-gray-900 ">
-              <div className="font-medium">{user.name}</div>
+            <div className="px-4 py-3 text-sm  text-gray-900 ">
+              <div className="font-semibold">{user.name}</div>
               <div className="truncate">{user.email}</div>
             </div>
             <ul className="py-2 ">
