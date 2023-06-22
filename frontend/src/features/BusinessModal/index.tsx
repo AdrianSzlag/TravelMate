@@ -100,12 +100,12 @@ const BusinessForm = () => {
   };
   return (
     <div
-      className="top-0 right-0 bottom-0 left-0 flex items-center justify-center 
-                z-20 fixed bg-[#0000009a] box-border"
+      className="fixed top-0 right-0 bottom-0 left-0 z-20 box-border 
+                flex items-center justify-center bg-[#0000009a]"
     >
-      <div className="bg-white shadow-xl border sm:rounded sm:w-[550px] md:w-[700px] w-full flex">
-        <div className="w-full md:w-[350px] flex-grow-0 flex-shrink-0">
-          <h1 className="mt-1 mx-4 text-xl font-semibold text-gray-600">
+      <div className="flex max-h-full w-full flex-col overflow-y-auto border bg-white shadow-xl xs:w-[450px] xs:rounded md:w-[700px] md:flex-row">
+        <div className="w-full flex-shrink-0 flex-grow-0 md:w-[350px]">
+          <h1 className="mx-4 mt-1 text-xl font-semibold text-gray-600">
             Let's Get Started
           </h1>
           <div className="mx-4 mt-2">
@@ -127,7 +127,7 @@ const BusinessForm = () => {
               Description
             </label>
             <textarea
-              className="h-20 w-full resize-none rounded border px-0.5 text-gray-600 text-sm font-semibold"
+              className="h-20 w-full resize-none rounded border px-0.5 text-sm font-semibold text-gray-600"
               id="description"
               value={description}
               onChange={(event) => setDescription(event.target.value)}
@@ -176,11 +176,11 @@ const BusinessForm = () => {
             <div className="mt-2" />
           </div>
         </div>
-        <div className="md:w-[350px] flex-grow-0 flex-shrink-0 md:pr-4 md:pt-4">
+        <div className="flex-shrink-0 flex-grow-0 md:w-[350px] md:pr-4 md:pt-4">
           <label className="mb-2 block text-sm font-medium text-gray-900">
             Choose a thumbnail
           </label>
-          <div className="relative h-40 flex items-center justify-center rounded overflow-hidden">
+          <div className="relative flex h-40 items-center justify-center overflow-hidden rounded">
             {thumbnail && (
               <img
                 src={URL.createObjectURL(thumbnail)}
@@ -188,14 +188,14 @@ const BusinessForm = () => {
                 className="h-full w-full object-cover"
               />
             )}
-            <div className="absolute left-0 top-0 w-full h-full bg-[#0000006c] flex items-center justify-center font-bold text-white">
+            <div className="absolute left-0 top-0 flex h-full w-full items-center justify-center bg-[#0000006c] font-bold text-white">
               Click to select file.
             </div>
             <input
               type="file"
               accept=".jpeg,.jpg,.png,.gif"
               onChange={handleThumbnailChange}
-              className="opacity-0 absolute h-full w-full cursor-pointer z-20"
+              className="absolute z-20 h-full w-full cursor-pointer opacity-0"
               multiple={false}
             />
           </div>
@@ -206,22 +206,22 @@ const BusinessForm = () => {
             type="file"
             accept=".jpeg,.jpg,.png,.gif"
             onChange={handleImagesChange}
-            className="w-full cursor-pointer z-20"
+            className="z-20 w-full cursor-pointer"
             multiple={true}
           />
           <label className="mt-2 mb-2 block text-sm font-medium text-gray-900">
             Pick a location
           </label>
           <Map coordinates={coordinates} setCoordinates={setCoordinates} />
-          <div className="mt-2 mb-2 flex gap-2 justify-end">
+          <div className="mt-2 mb-2 flex justify-end gap-2">
             <button
-              className="px-2 py-0.5 block text-sm font-medium text-gray-900 border rounded"
+              className="block rounded border px-2 py-0.5 text-sm font-medium text-gray-900"
               onClick={onCancelHandler}
             >
               Cancel
             </button>
             <button
-              className="px-2 py-0.5 block text-sm font-medium text-gray-900 border rounded disabled:cursor-not-allowed"
+              className="block rounded border px-2 py-0.5 text-sm font-medium text-gray-900 disabled:cursor-not-allowed"
               onClick={onSubmitHandler}
               disabled={!isFormValid}
             >
