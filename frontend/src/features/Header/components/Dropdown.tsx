@@ -34,13 +34,13 @@ const Dropdown = ({ children }: Props) => {
       <button
         className={`${
           isOpen ? "ring-4 ring-gray-100" : ""
-        } flex items-center rounded-full text-sm font-medium text-white md:mr-0`}
+        } flex items-center rounded-full text-sm font-medium text-white`}
         onClick={toggle}
       >
         <UserAvatar
           name={user?.name || ""}
           url={user?.profileImage}
-          className="mr-2 h-8 w-8 bg-pink-600 !text-base"
+          className="h-8 w-8 bg-pink-600 !text-base xs:mr-2"
         />
         <div className="hidden items-center xs:flex">
           {user?.name}

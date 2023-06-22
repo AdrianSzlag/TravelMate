@@ -18,7 +18,7 @@ const NavBar = ({ children, notifications }: Props) => {
             <Logo className="h-8 w-8" />
           </div>
         </Link>
-        <ul className="flex rounded-lg bg-blue-700 xs:space-x-6 space-x-2 items-center">
+        <ul className="flex items-center space-x-4 rounded-lg bg-blue-700 xs:space-x-6">
           {children}
         </ul>
       </div>
