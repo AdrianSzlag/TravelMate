@@ -20,17 +20,18 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "eamodio.gitlens",
-        "GitHub.vscode-pull-request-github",
-        "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode",
-        "bradlc.vscode-tailwindcss",
-        "ms-azuretools.vscode-docker",
-        "streetsidesoftware.code-spell-checker",
-        "VisualStudioExptTeam.vscodeintellicode",
-        "VisualStudioExptTeam.intellicode-api-usage-examples",
-        "GitHub.copilot-nightly"
-      ]
+		"eamodio.gitlens",
+		"GitHub.vscode-pull-request-github",
+		"dbaeumer.vscode-eslint",
+		"esbenp.prettier-vscode",
+		"bradlc.vscode-tailwindcss",
+		"ms-azuretools.vscode-docker",
+		"streetsidesoftware.code-spell-checker",
+		"VisualStudioExptTeam.vscodeintellicode",
+		"VisualStudioExptTeam.intellicode-api-usage-examples",
+		"GitHub.copilot-nightly",
+		"yoavbls.pretty-ts-errors"
+	]
     }
   },
   "features": {
