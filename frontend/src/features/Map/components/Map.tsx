@@ -69,6 +69,7 @@ export default function Map() {
                 place.location.coordinates[0],
               ]}
               onClick={() => setFocused(place)}
+              color="#1d4ed8"
             />
           );
         })}
