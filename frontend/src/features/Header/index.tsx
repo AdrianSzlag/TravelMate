@@ -4,8 +4,17 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { businessActions } from "store/business-slice";
 import Dropdown, { DropdownButton } from "./components/Dropdown";
+import { createPortal } from "react-dom";
+import { ReactNode, useState } from "react";
+import Profile from "./components/Profile";
+
+const ProfileModal = ({ children }: { children: ReactNode }) => {
+  const modalRoot = document.getElementById("business-root") as HTMLElement;
+  return createPortal(children, modalRoot);
+};
 
 const Header = () => {
+  const [showModal, setShowModal] = useState(false);
   const dispatch = useAppDispatch();
   const reservations = useAppSelector(
     (state) => state.reservations.reservations
@@ -48,7 +57,10 @@ const Header = () => {
                 text="Reservations"
                 onClick={onReservationsHandler}
               />
-              <DropdownButton text="Profile" />
+              <DropdownButton
+                text="Profile"
+                onClick={() => setShowModal(true)}
+              />
               <DropdownButton
                 text="Create business"
                 onClick={onOpenBusinessModalHandler}
@@ -61,6 +73,11 @@ const Header = () => {
         </>
       )}
       {!user && <Button text="Sign In" onClick={onSignInHandler} />}
+      {user && showModal && (
+        <ProfileModal>
+          <Profile onClose={() => setShowModal(false)} />
+        </ProfileModal>
+      )}
     </NavBar>
   );
 };

@@ -39,7 +39,7 @@ const Dropdown = ({ children }: Props) => {
       >
         <UserAvatar
           name={user?.name || ""}
-          url={user?.profileImage}
+          image={user?.profileImage}
           className="h-8 w-8 bg-pink-600 !text-base xs:mr-2"
         />
         <div className="hidden items-center xs:flex">

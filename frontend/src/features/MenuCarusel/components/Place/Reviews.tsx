@@ -4,23 +4,24 @@ import UserAvatar from "components/UserAvatar";
 import MyReview from "./MyReview";
 
 interface ReviewProps {
+  image?: string;
   name: string;
   rating: number;
   comment?: string;
 }
 
-const Review = ({ name, rating, comment }: ReviewProps) => {
+const Review = ({ image, name, rating, comment }: ReviewProps) => {
   return (
     <div className="border-b py-2">
       <div className="flex w-full">
-        <UserAvatar name={name} />
+        <UserAvatar name={name} image={image} />
         <div className="pl-2 font-semibold text-gray-600">
           <div>{name}</div>
           <Rating rating={rating} />
         </div>
       </div>
       {comment && (
-        <div className="w-full px-1 pt-2 text-gray-600 text-sm font-semibold">
+        <div className="w-full px-1 pt-2 text-sm font-semibold text-gray-600">
           {comment}
         </div>
       )}
@@ -40,12 +41,13 @@ const Reviews = () => {
     <div className="">
       {userId && <MyReview />}
       {!userId && (
-        <div className="text-sm text-gray-400 font-bold cursor-pointer">
+        <div className="cursor-pointer text-sm font-bold text-gray-400">
           Log in to leave a review
         </div>
       )}
       {otherReviews?.map((review) => (
         <Review
+          image={review.user.profileImage}
           key={review.user.id}
           name={review.user.name}
           rating={review.rating}

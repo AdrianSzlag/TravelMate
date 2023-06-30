@@ -86,14 +86,14 @@ const MyReview = () => {
         {!edit && (rating ? "Your review:" : "Rate this place")}
       </label>
       <div className="flex w-full pt-1">
-        <UserAvatar name={userName ?? ""} />
+        <UserAvatar name={userName ?? ""} image={user?.profileImage} />
         <div className="pl-2">
           <div className="font-semibold text-gray-600">{userName}</div>
           <Rating rating={currentRating} setRating={setCurrentRating} />
         </div>
       </div>
       {!edit && currentComment && (
-        <div className="w-full px-1 pt-2 text-gray-600 text-sm font-semibold">
+        <div className="w-full px-1 pt-2 text-sm font-semibold text-gray-600">
           {currentComment}
         </div>
       )}
@@ -101,19 +101,19 @@ const MyReview = () => {
         <>
           <label
             htmlFor="comment"
-            className="block py-1 text-gray-400 text-sm font-semibold"
+            className="block py-1 text-sm font-semibold text-gray-400"
           >
             Add a comment:
           </label>
           <textarea
-            className="h-20 w-full resize-none rounded border px-0.5 text-gray-600 text-sm font-semibold"
+            className="h-20 w-full resize-none rounded border px-0.5 text-sm font-semibold text-gray-600"
             id="comment"
             value={currentComment}
             onChange={onCommentChange}
           />
         </>
       )}
-      <div className="flex justify-end gap-2 px-1 pt-1 text-blue-600 text-sm font-semibold">
+      <div className="flex justify-end gap-2 px-1 pt-1 text-sm font-semibold text-blue-600">
         {edit && (
           <>
             <button className="cursor-pointer" onClick={onCancelUpdate}>
