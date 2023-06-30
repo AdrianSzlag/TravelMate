@@ -7,6 +7,7 @@ import Dropdown, { DropdownButton } from "./components/Dropdown";
 import { createPortal } from "react-dom";
 import { ReactNode, useState } from "react";
 import Profile from "./components/Profile";
+import SignInButton from "./components/SignInButton";
 
 const ProfileModal = ({ children }: { children: ReactNode }) => {
   const modalRoot = document.getElementById("business-root") as HTMLElement;
@@ -72,7 +73,7 @@ const Header = () => {
           </Dropdown>
         </>
       )}
-      {!user && <Button text="Sign In" onClick={onSignInHandler} />}
+      {!user && <SignInButton onClick={onSignInHandler} />}
       {user && showModal && (
         <ProfileModal>
           <Profile onClose={() => setShowModal(false)} />
