@@ -2,6 +2,7 @@ import express from "express";
 import { authMiddleware } from "../middlewares/authMiddleware";
 import { upload } from "../middlewares/fileMiddleware";
 import { createPlace } from "../controllers/placeController";
+import { updateProfile } from "../controllers/userController";
 
 const userRouter = express.Router();
 
@@ -18,6 +19,13 @@ userRouter.post(
     { name: "images", maxCount: 10 },
   ]),
   createPlace
+);
+
+userRouter.post(
+  "/profile",
+  authMiddleware,
+  upload.single("image"),
+  updateProfile
 );
 
 export default userRouter;
