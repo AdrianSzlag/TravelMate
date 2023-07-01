@@ -1,4 +1,7 @@
 # Travel Mate
+
+![](/README/demo.png)
+
 Travel Mate is a MERN stack application that provides you with an all-in-one platform to book your travel experiences including hotels, restaurants, bars, barber shops, and various other services. Its intuitive design and seamless user interface make it easy for you to plan your travel itinerary with the convenience you've always wished for.
 
 ## Features
@@ -46,8 +49,5 @@ Once the Docker containers are up, the application should be available at http:/
 To start using the app, you first need to create an account. Click on the 'Sign up' button and fill out the form. Once registered, you can log in using the 'Sign in' button.
 
 After logging in, you can start exploring the various features of Travel Mate. Browse through the list of services, check out menus, make bookings, and manage your bookings all through the app.
-
-## Contributing
-We love your input! We want to make contributing to this project as easy and transparent as possible. If you want to report a bug or submit your ideas, feel free to open an issue.
 
 ### Happy Travelling!
