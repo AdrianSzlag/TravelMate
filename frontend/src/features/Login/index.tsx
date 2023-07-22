@@ -1,11 +1,9 @@
-import { Children, useState } from "react";
-
+import { useState } from "react";
 import LoginForm from "./components/LoginForm";
-import Modal from "./components/Modal";
-import Backdrop from "./components/Backdrop";
 import RegisterForm from "./components/RegisterForm";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { authActions } from "store/auth-slice";
+import Modal from "components/Modal";
 
 const LoginModal = () => {
   const isOpen = useAppSelector((state) => state.auth.modalOpen);
@@ -21,21 +19,13 @@ const LoginModal = () => {
   const onExit = () => {
     dispatch(authActions.hideModal());
   };
-  const stopPropagation = (e: any) => e.stopPropagation();
   return (
-    <Modal>
-      <Backdrop onClick={onExit}>
-        <div onClick={stopPropagation}>
-          {isLogin ? (
-            <LoginForm onSignUp={onToggle} onSuccess={onSuccessfulLogin} />
-          ) : (
-            <RegisterForm
-              onLogIn={onToggle}
-              onSuccess={() => setIsLogin(true)}
-            />
-          )}
-        </div>
-      </Backdrop>
+    <Modal onBackdropClick={onExit}>
+      {isLogin ? (
+        <LoginForm onSignUp={onToggle} onSuccess={onSuccessfulLogin} />
+      ) : (
+        <RegisterForm onLogIn={onToggle} onSuccess={() => setIsLogin(true)} />
+      )}
     </Modal>
   );
 };

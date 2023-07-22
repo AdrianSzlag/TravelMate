@@ -1,15 +1,8 @@
+import Modal from "components/Modal";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { createPortal } from "react-dom";
 import { cancelReservation } from "store/reservations-actions";
 import { reservationsActions } from "store/reservations-slice";
-
-interface ModalProps {
-  children: React.ReactNode;
-}
-const Modal = ({ children }: ModalProps) => {
-  const modalRoot = document.getElementById("cancel-modal-root") as HTMLElement;
-  return createPortal(children, modalRoot);
-};
 
 const ConfirmCancel = () => {
   const selectedReservation = useAppSelector(
@@ -26,41 +19,31 @@ const ConfirmCancel = () => {
 
   if (!confirmCancelModalOpen) return null;
 
-  const onFormClickHandler = (e: React.MouseEvent<HTMLDivElement>) =>
-    e.stopPropagation();
   const onConfirmHandler = () => {
     dispatch(cancelReservation(selectedReservation.id));
   };
 
   return (
-    <Modal>
-      <div
-        className="top-0 right-0 bottom-0 left-0 flex items-center justify-center 
-                z-20 fixed bg-[#0000009a] box-border "
-        onClick={closeModal}
-      >
-        <div
-          className="bg-white p-4 h-40 shadow-xl border rounded-xl sm:w-[550px] sm:border flex flex-col justify-between "
-          onClick={onFormClickHandler}
+    <Modal
+      onBackdropClick={closeModal}
+      className="flex h-40 flex-col justify-between rounded-xl border bg-white p-4 shadow-xl sm:w-[550px] sm:border"
+    >
+      <h1 className="text-lg font-semibold">
+        Do you want to cancel reservation?
+      </h1>
+      <div className="flex flex-row justify-end">
+        <button
+          className="mb-1 rounded border bg-green-500 px-2 py-1 text-sm font-semibold text-white"
+          onClick={closeModal}
         >
-          <h1 className="font-semibold text-lg">
-            Do you want to cancel reservation?
-          </h1>
-          <div className="flex flex-row justify-end">
-            <button
-              className="px-2 mb-1 py-1 bg-green-500 text-white rounded font-semibold text-sm border"
-              onClick={closeModal}
-            >
-              Go Back
-            </button>
-            <button
-              className="px-2 mb-1 py-1 bg-red-500 text-white ml-2 rounded font-semibold text-sm border"
-              onClick={onConfirmHandler}
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
+          Go Back
+        </button>
+        <button
+          className="mb-1 ml-2 rounded border bg-red-500 px-2 py-1 text-sm font-semibold text-white"
+          onClick={onConfirmHandler}
+        >
+          Cancel
+        </button>
       </div>
     </Modal>
   );
