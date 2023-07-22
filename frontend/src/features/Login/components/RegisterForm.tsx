@@ -103,7 +103,7 @@ const RegisterForm = ({ onLogIn, onSuccess }: Props) => {
         errorMessage="Passwords must match."
       />
       <Button
-        text={"Sign in"}
+        text={"Sign up"}
         disabled={!formValid || !!message}
         loading={loading || !!message}
       />
