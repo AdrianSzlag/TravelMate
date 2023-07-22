@@ -110,7 +110,7 @@ const RegisterForm = ({ onLogIn, onSuccess }: Props) => {
       <p className="text-sm font-light text-gray-500">
         Already have an account?{" "}
         <a
-          className="text-primary-600 dark:text-primary-500 cursor-pointer font-medium hover:underline"
+          className="text-primary-600  cursor-pointer font-medium hover:underline"
           onClick={onLogIn}
         >
           Sign in

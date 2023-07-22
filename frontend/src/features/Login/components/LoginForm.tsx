@@ -72,10 +72,10 @@ const LoginForm = ({ onSignUp, onSuccess }: Props) => {
         errorMessage="Password must be at least 6 characters long."
       />
       <Button text={"Sign in"} disabled={!formValid} loading={loading} />
-      <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+      <p className="text-sm font-light text-gray-500 ">
         Don’t have an account yet?{" "}
         <a
-          className="text-primary-600 dark:text-primary-500 cursor-pointer font-medium hover:underline"
+          className="text-primary-600  cursor-pointer font-medium hover:underline"
           onClick={onSignUp}
         >
           Sign up
