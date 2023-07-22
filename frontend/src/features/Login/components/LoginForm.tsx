@@ -38,7 +38,7 @@ const LoginForm = ({ onSignUp, onSuccess }: Props) => {
 
   return (
     <Form onSubmit={onSubmitHandler}>
-      <h1 className=" text-xl font-bold leading-tight tracking-tight text-gray-900">
+      <h1 className=" text-xl font-bold leading-tight tracking-tight text-gray-600">
         Sign in to your account
       </h1>
       {errorMessage && (

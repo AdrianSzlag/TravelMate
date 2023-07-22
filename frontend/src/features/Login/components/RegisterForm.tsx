@@ -49,7 +49,7 @@ const RegisterForm = ({ onLogIn, onSuccess }: Props) => {
 
   return (
     <Form onSubmit={onSubmitHandler}>
-      <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900">
+      <h1 className="text-xl font-bold leading-3 tracking-tight text-gray-600">
         Create Your Account
       </h1>
       {errorMessage && (
