@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { IRequest } from "../middlewares/authMiddleware";
 import { getUserDTO } from "../utils/dtoUtils";
+import { JWT_SECRET } from "../config";
 
 export const register = async (req: Request, res: Response) => {
   const { name, phone, dateOfBirth, email, password } = req.body;
@@ -44,7 +45,7 @@ export const login = async (req: Request, res: Response) => {
     const payload = {
       id: user._id,
     };
-    const token = jwt.sign(payload, process.env.JWT_SECRET as string, {
+    const token = jwt.sign(payload, JWT_SECRET as string, {
       expiresIn: "1h",
     });
     res.status(200).json({ token, user: getUserDTO(user) });
