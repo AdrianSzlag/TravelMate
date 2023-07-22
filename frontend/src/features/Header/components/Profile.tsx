@@ -1,6 +1,6 @@
 import UserAvatar from "components/UserAvatar";
 import { useAppSelector } from "hooks/redux-hooks";
-import Input from "./Input";
+import Input from "components/Input";
 import { useEffect, useState } from "react";
 import fetchApi from "utils/fetchApi";
 

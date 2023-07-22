@@ -1,6 +1,5 @@
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
-import { createPortal } from "react-dom";
-import Input from "./components/Input";
+import Input from "components/Input";
 import TimeSelector from "./components/TimeSelector";
 import IOpeningHours from "types/IOpeningHours";
 import { useState } from "react";

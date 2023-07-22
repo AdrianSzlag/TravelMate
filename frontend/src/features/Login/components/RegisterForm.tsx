@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Form from "./Form";
-import Input from "./Input";
+import Input from "components/Input";
 import Button from "./Button";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { register } from "store/auth-actions";
