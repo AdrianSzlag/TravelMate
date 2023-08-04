@@ -35,3 +35,8 @@ export const getTime = (date: string): string => date.slice(11, 16);
 export const areDatesEqual = (date1: string, date2: string): boolean => {
   return getDateString(date1) === getDateString(date2);
 };
+export const isTimeGreater = (time1: string, time2: string): boolean => {
+  const date1 = new Date(`2020-01-01T${time1}`);
+  const date2 = new Date(`2020-01-01T${time2}`);
+  return date1 > date2;
+};

@@ -9,6 +9,7 @@ import { postBusiness } from "store/business-actions";
 import IBusiness from "types/IBusiness";
 import TypeSelector from "./components/TypeSelector";
 import Modal from "components/Modal";
+import { isTimeGreater } from "utils/dateTime";
 
 const BusinessModal = () => {
   const dispatch = useAppDispatch();
@@ -26,25 +27,6 @@ const BusinessModal = () => {
   const [phone, setPhone] = useState("");
   const [tags, setTags] = useState("");
 
-  if (!isOpen) return null;
-
-  const isValidName = name.length > 0;
-  const isValidDescription = description.length > 0;
-  const isValidType = type.length > 0;
-  const isValidAddress = address.length > 0;
-  const isValidPhone = phone.length === 9;
-  const isValidTags = tags.length > 0;
-  const isFormValid =
-    isValidName &&
-    isValidDescription &&
-    isValidType &&
-    isValidAddress &&
-    isValidPhone &&
-    isValidTags &&
-    thumbnail &&
-    !!coordinates &&
-    !loading;
-
   const [openingHours, setOpeningHours] = useState<IOpeningHours[]>(
     [...Array(7)].map((_, i) => {
       return {
@@ -54,6 +36,32 @@ const BusinessModal = () => {
       };
     })
   );
+
+  if (!isOpen) return null;
+
+  const isValidName = name.length > 0;
+  const isValidDescription = description.length > 0;
+  const isValidType = type.length > 0;
+  const isValidAddress = address.length > 0;
+  const isValidPhone = phone.length === 9;
+  const isValidTags = tags.length > 0;
+  const isValidTime = openingHours.every((c) => {
+    return (
+      (c.from == "--:--" && c.to === "--:--") || isTimeGreater(c.to, c.from)
+    );
+  });
+  const isFormValid =
+    isValidName &&
+    isValidDescription &&
+    isValidType &&
+    isValidAddress &&
+    isValidPhone &&
+    isValidTags &&
+    isValidTime &&
+    thumbnail &&
+    !!coordinates &&
+    !loading;
+
   const setHours = (value: IOpeningHours) => {
     const newHours = openingHours.map((current) => {
       if (current.dayOfWeek === value.dayOfWeek) {
