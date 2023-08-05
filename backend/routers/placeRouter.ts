@@ -7,6 +7,7 @@ import {
   deleteServiceFromPlace,
   getPlace,
   searchPlaces,
+  updatePlace,
 } from "../controllers/placeController";
 import { authMiddleware } from "../middlewares/authMiddleware";
 import { upload } from "../middlewares/fileMiddleware";
@@ -15,6 +16,15 @@ const placeRouter = express.Router();
 
 placeRouter.get("/search", searchPlaces);
 placeRouter.get("/:placeId", getPlace);
+placeRouter.put(
+  "/:placeId",
+  authMiddleware,
+  upload.fields([
+    { name: "thumbnail", maxCount: 1 },
+    { name: "images", maxCount: 10 },
+  ]),
+  updatePlace
+);
 placeRouter.delete("/:placeId", authMiddleware, deletePlace);
 placeRouter.post(
   "/:placeId/service",

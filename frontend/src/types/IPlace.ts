@@ -1,3 +1,4 @@
+import IOpeningHours from "./IOpeningHours";
 import { IReview } from "./IReview";
 import { IUser } from "./IUser";
 
@@ -10,6 +11,7 @@ export interface IPlace {
   rating?: number;
   address?: string;
   reviews: IReview[];
+  openingHours: IOpeningHours[];
   location: {
     type: string;
     coordinates: number[];

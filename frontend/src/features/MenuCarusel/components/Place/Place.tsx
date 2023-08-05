@@ -8,7 +8,7 @@ import { useMemo } from "react";
 import Menu from "./Menu";
 import Img from "components/Img";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
-import { deletePlace } from "store/places-actions";
+import { businessActions } from "store/business-slice";
 
 interface ButtonProps {
   text: string;
@@ -66,11 +66,9 @@ const Place = ({ place }: Props) => {
     return pageName === activePage;
   };
 
-  const onDeletePlaceHandler = () => {
+  const onEditHandler = () => {
     if (!place.id || !isOwner) return;
-    const confirmed = window.confirm("Are you sure you want to delete place?");
-    if (!confirmed) return;
-    dispatch(deletePlace(place.id));
+    dispatch(businessActions.setEditing(place));
   };
 
   return (
@@ -85,10 +83,10 @@ const Place = ({ place }: Props) => {
         </h1>
         {isOwner && (
           <button
-            className="flex text-blue-600 text-sm font-semibold cursor-pointer"
-            onClick={onDeletePlaceHandler}
+            className="flex cursor-pointer text-sm font-semibold text-blue-600"
+            onClick={onEditHandler}
           >
-            Delete service
+            Edit
           </button>
         )}
         {!!place.rating && place.reviews.length > 0 && (

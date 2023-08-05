@@ -2,18 +2,22 @@ import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import Input from "components/Input";
 import TimeSelector from "./components/TimeSelector";
 import IOpeningHours from "types/IOpeningHours";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Map from "./components/Map";
 import { businessActions } from "store/business-slice";
-import { postBusiness } from "store/business-actions";
+import { postBusiness, updateBusiness } from "store/business-actions";
 import IBusiness from "types/IBusiness";
 import TypeSelector from "./components/TypeSelector";
 import Modal from "components/Modal";
+import { deletePlace } from "store/places-actions";
 import { isTimeGreater } from "utils/dateTime";
+import Img from "components/Img";
 
 const BusinessModal = () => {
   const dispatch = useAppDispatch();
-  const isOpen = useAppSelector((state) => state.business.modalOpen);
+  const isEditing = useAppSelector((state) => state.business.editing);
+  const editingBusiness = useAppSelector((state) => state.business.subject);
+
   const loading = useAppSelector((state) => state.business.loading);
   const [coordinates, setCoordinates] = useState<
     [number, number] | undefined
@@ -37,7 +41,20 @@ const BusinessModal = () => {
     })
   );
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    if (isEditing) {
+      if (!editingBusiness) return;
+      setName(editingBusiness.name);
+      setDescription(editingBusiness.description || "");
+      setType(editingBusiness.type);
+      setAddress(editingBusiness.address || "");
+      setPhone(editingBusiness.contactInfo.phone || "");
+      setTags(editingBusiness.tags ? editingBusiness.tags.join(" ") : "");
+      setOpeningHours(editingBusiness.openingHours);
+      const coordinates = editingBusiness.location.coordinates;
+      setCoordinates([coordinates[1], coordinates[0]]);
+    }
+  }, []);
 
   const isValidName = name.length > 0;
   const isValidDescription = description.length > 0;
@@ -45,6 +62,7 @@ const BusinessModal = () => {
   const isValidAddress = address.length > 0;
   const isValidPhone = phone.length === 9;
   const isValidTags = tags.length > 0;
+  const isValidThumbnail = !!thumbnail || !!editingBusiness?.thumbnail;
   const isValidTime = openingHours.every((c) => {
     return (
       (c.from == "--:--" && c.to === "--:--") || isTimeGreater(c.to, c.from)
@@ -58,7 +76,7 @@ const BusinessModal = () => {
     isValidPhone &&
     isValidTags &&
     isValidTime &&
-    thumbnail &&
+    isValidThumbnail &&
     !!coordinates &&
     !loading;
 
@@ -109,7 +127,26 @@ const BusinessModal = () => {
         coordinates: [coordinates[1], coordinates[0]],
       },
     };
-    dispatch(postBusiness(business, thumbnail, images));
+    if (!isEditing && thumbnail) {
+      dispatch(postBusiness(business, thumbnail, images));
+    }
+    if (isEditing) {
+      dispatch(
+        updateBusiness(
+          { ...business, id: editingBusiness!.id },
+          thumbnail,
+          images
+        )
+      );
+    }
+  };
+  const onDeletePlaceHandler = () => {
+    if (!editingBusiness) return;
+    const confirm = window.confirm(
+      `Are you sure you want to delete ${editingBusiness.name}?`
+    );
+    if (!confirm) return;
+    dispatch(deletePlace(editingBusiness.id));
   };
 
   return (
@@ -189,6 +226,13 @@ const BusinessModal = () => {
           Choose a thumbnail
         </label>
         <div className="relative flex h-40 items-center justify-center overflow-hidden rounded">
+          {!thumbnail && editingBusiness?.thumbnail && (
+            <Img
+              src={`/${editingBusiness.thumbnail}`}
+              alt="business"
+              className="h-full w-full object-cover"
+            />
+          )}
           {thumbnail && (
             <img
               src={URL.createObjectURL(thumbnail)}
@@ -222,6 +266,14 @@ const BusinessModal = () => {
         </label>
         <Map coordinates={coordinates} setCoordinates={setCoordinates} />
         <div className="mt-2 mb-2 flex justify-end gap-2">
+          {isEditing && (
+            <button
+              className="block rounded border px-2 py-0.5 text-sm font-medium text-gray-900"
+              onClick={onDeletePlaceHandler}
+            >
+              Delete
+            </button>
+          )}
           <button
             className="block rounded border px-2 py-0.5 text-sm font-medium text-gray-900"
             onClick={onCancelHandler}

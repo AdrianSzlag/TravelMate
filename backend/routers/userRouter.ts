@@ -1,7 +1,7 @@
 import express from "express";
 import { authMiddleware } from "../middlewares/authMiddleware";
 import { upload } from "../middlewares/fileMiddleware";
-import { createPlace } from "../controllers/placeController";
+import { updatePlace } from "../controllers/placeController";
 import { updateProfile } from "../controllers/userController";
 
 const userRouter = express.Router();
@@ -18,7 +18,7 @@ userRouter.post(
     { name: "thumbnail", maxCount: 1 },
     { name: "images", maxCount: 10 },
   ]),
-  createPlace
+  updatePlace
 );
 
 userRouter.post(
