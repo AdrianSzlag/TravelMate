@@ -128,14 +128,22 @@ const Overview = () => {
       {address && (
         <div className="flex cursor-pointer items-center py-2">
           <RiMapPin2Line className="mr-4 inline-block text-xl text-blue-500" />
-          <span className="font-semibold text-gray-500">{address}</span>
+          <a
+            className="font-semibold text-gray-500"
+            href={`http://maps.google.com/?q=${address}`}
+            target="_blank"
+          >
+            {address}
+          </a>
         </div>
       )}
       {hours && <HoursOverview openingHours={hours} />}
       {phone && (
         <div className="flex cursor-pointer items-center py-2">
           <FiPhone className="mr-4 inline-block text-xl text-blue-500" />
-          <span className="font-semibold text-gray-500">{phone}</span>
+          <a className="font-semibold text-gray-500" href={`tel:${phone}`}>
+            {phone}
+          </a>
         </div>
       )}
       {email && (
