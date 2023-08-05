@@ -60,6 +60,15 @@ export const searchPlaces = async (req: Request, res: Response) => {
       const servicesDTO = services.map((service) => {
         return { ...service, id: service._id };
       });
+      const openingHours = place.openingHours;
+      for (let i = 0; i < 7; i++) {
+        if (!place.openingHours.find((o) => o.dayOfWeek === i)) {
+          openingHours.push({ dayOfWeek: i, from: "--:--", to: "--:--" });
+        }
+      }
+      openingHours.sort(
+        (a, b) => ((a.dayOfWeek + 6) % 7) - ((b.dayOfWeek + 6) % 7)
+      );
       return getPlaceDTO({
         ...place.toObject(),
         id: _id,
@@ -68,6 +77,7 @@ export const searchPlaces = async (req: Request, res: Response) => {
         createdBy: creator,
         menu: menuDTO,
         services: servicesDTO,
+        openingHours,
       });
     });
     res.status(200).json(placesDTOs);
@@ -100,6 +110,15 @@ export const getPlace = async (req: Request, res: Response) => {
     const servicesDTO = services.map((service) => {
       return { ...service, id: service._id };
     });
+    const openingHours = place.openingHours;
+    for (let i = 0; i < 7; i++) {
+      if (!place.openingHours.find((o) => o.dayOfWeek === i)) {
+        openingHours.push({ dayOfWeek: i, from: "--:--", to: "--:--" });
+      }
+    }
+    openingHours.sort(
+      (a, b) => ((a.dayOfWeek + 6) % 7) - ((b.dayOfWeek + 6) % 7)
+    );
     const placeDTO = getPlaceDTO({
       ...place.toObject(),
       id: _id,
@@ -108,6 +127,7 @@ export const getPlace = async (req: Request, res: Response) => {
       createdBy: creator,
       menu: menuDTO,
       services: servicesDTO,
+      openingHours,
     });
     res.status(200).json(placeDTO);
   } catch (error) {
