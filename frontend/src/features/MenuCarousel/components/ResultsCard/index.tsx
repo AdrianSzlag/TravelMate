@@ -3,6 +3,7 @@ import { placesActions } from "store/places-slice";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import Rating from "../Rating";
 import Img from "components/Img";
+import SearchInput from "./SearchInput";
 
 interface Props {
   onClick: () => void;
@@ -58,22 +59,25 @@ const ResultsList = () => {
   };
 
   return (
-    <ul className="flex w-full flex-shrink flex-grow flex-col divide-y-2 overflow-auto">
-      {results.map((result) => {
-        return (
-          <li key={result.id}>
-            <Result
-              name={result.name}
-              description={result.description}
-              thumbnail={result.thumbnail}
-              rating={result.rating}
-              onClick={() => onClickHandle(result)}
-              numberOfReviews={result.reviews.length}
-            />
-          </li>
-        );
-      })}
-    </ul>
+    <>
+      <SearchInput />
+      <ul className="flex w-full flex-shrink flex-grow flex-col divide-y-2 overflow-auto">
+        {results.map((result) => {
+          return (
+            <li key={result.id}>
+              <Result
+                name={result.name}
+                description={result.description}
+                thumbnail={result.thumbnail}
+                rating={result.rating}
+                onClick={() => onClickHandle(result)}
+                numberOfReviews={result.reviews.length}
+              />
+            </li>
+          );
+        })}
+      </ul>
+    </>
   );
 };
 export default ResultsList;

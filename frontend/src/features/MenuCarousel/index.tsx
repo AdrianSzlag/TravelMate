@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { placesActions } from "store/places-slice";
 import { IPlace } from "types/IPlace";
 import { useParams, useLocation } from "react-router-dom";
-import { fetchPlace } from "store/places-actions";
+import { fetchPlace, fetchPlaces } from "store/places-actions";
 import { useAppNavigate } from "hooks/use-navigate";
 
 const Menu = () => {
@@ -18,6 +18,7 @@ const Menu = () => {
   const navigate = useAppNavigate();
   const { placeId } = useParams();
   const { pathname } = useLocation();
+  const [firstLoad, setFirstLoad] = useState(true);
 
   const [active, setActive] = useState(
     pathname.startsWith("/search") || pathname.startsWith("/place")
@@ -36,6 +37,7 @@ const Menu = () => {
     if (placeId) {
       dispatch(fetchPlace(placeId));
     }
+    dispatch(fetchPlaces(""));
   }, []);
 
   const setFocused = (place: IPlace | null) => {
