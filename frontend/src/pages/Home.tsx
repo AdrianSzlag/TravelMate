@@ -1,6 +1,6 @@
 import { Map } from "features/Map";
 import Header from "features/Header";
-import { Menu } from "features/MenuCarusel";
+import { Menu } from "features/MenuCarousel";
 import BookingModal from "features/BookingModal";
 import { LoginModal } from "features/Login";
 import BusinessModal from "features/BusinessModal";

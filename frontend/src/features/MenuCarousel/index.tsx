@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import Filters from "./components/FiltersCard";
 import ResultsList from "./components/ResultsCard";
-import Carusel from "./components/Carusel";
-import CaruselItem from "./components/CaruselItem";
+import Carousel from "./components/Carousel";
+import CarouselItem from "./components/CarouselItem";
 import NaviButtons from "./components/NaviButtons";
 import Place from "./components/PlaceCard";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
@@ -67,18 +67,18 @@ const Menu = () => {
   };
 
   return (
-    <Carusel
+    <Carousel
       className={`bg-white ${
         isMapVisible && active ? " !h-[40%] xs:!h-full " : " "
       } ${active ? " xs:w-[400px] lg:w-[656px]  " : " xs:w-[256px] "} ${
         active && focused ? " lg:!w-[800px] xl:!w-[1056px] " : " "
       }`}
     >
-      <CaruselItem className="h-full w-full sm:w-[256px]">
+      <CarouselItem className="h-full w-full sm:w-[256px]">
         <Filters onSubmit={onSubmitFiltersHandler} />
-      </CaruselItem>
+      </CarouselItem>
       {active && (
-        <CaruselItem className="h-full w-full xs:w-[400px]">
+        <CarouselItem className="h-full w-full xs:w-[400px]">
           <NaviButtons
             text="Search"
             onBack={onCloseResultsHandler}
@@ -86,10 +86,10 @@ const Menu = () => {
             toggleMapVisibility={toggleMapVisibility}
           />
           <ResultsList />
-        </CaruselItem>
+        </CarouselItem>
       )}
       {active && focused && (
-        <CaruselItem className="h-full w-full xs:w-[400px]">
+        <CarouselItem className="h-full w-full xs:w-[400px]">
           <NaviButtons
             text="Results"
             onBack={onClosePreviewHandler}
@@ -97,9 +97,9 @@ const Menu = () => {
             toggleMapVisibility={toggleMapVisibility}
           />
           <Place place={focused} />
-        </CaruselItem>
+        </CarouselItem>
       )}
-    </Carusel>
+    </Carousel>
   );
 };
 

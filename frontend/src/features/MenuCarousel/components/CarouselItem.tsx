@@ -3,7 +3,7 @@ interface Props {
   className?: string;
 }
 
-const CaruselItem = ({ children, className }: Props) => {
+const CarouselItem = ({ children, className }: Props) => {
   return (
     <div
       className={`relative flex-shrink-0 flex-grow-0 snap-x ${
@@ -17,4 +17,4 @@ const CaruselItem = ({ children, className }: Props) => {
   );
 };
 
-export default CaruselItem;
+export default CarouselItem;
