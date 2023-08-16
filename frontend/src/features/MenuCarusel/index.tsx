@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import Filters from "./components/Filters";
-import ResultsList from "./components/ResultsList";
+import Filters from "./components/FiltersCard";
+import ResultsList from "./components/ResultsCard";
 import Carusel from "./components/Carusel";
 import CaruselItem from "./components/CaruselItem";
 import NaviButtons from "./components/NaviButtons";
-import Place from "./components/Place/Place";
+import Place from "./components/PlaceCard";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { placesActions } from "store/places-slice";
 import { IPlace } from "types/IPlace";

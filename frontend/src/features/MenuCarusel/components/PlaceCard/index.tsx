@@ -1,11 +1,11 @@
 import { IPlace } from "types/IPlace";
 import Rating from "../Rating";
 import { useSearchParams } from "react-router-dom";
-import Services from "./Services";
-import Reviews from "./Reviews";
+import Services from "./ServicesCard";
+import Reviews from "./ReviewsCard";
 import Overview from "./Overview";
 import { useMemo } from "react";
-import Menu from "./Menu";
+import Menu from "./MenuCard";
 import Img from "components/Img";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { businessActions } from "store/business-slice";

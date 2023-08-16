@@ -33,24 +33,24 @@ const Service = ({
     <div className="p-1 ">
       <div className="flex">
         <div className="flex-1">
-          <div className="text-gray-700 text font-semibold">{name}</div>
+          <div className="text font-semibold text-gray-700">{name}</div>
           <div className="flex items-center">
             {!!price && (
-              <div className="text-gray-500 text-sm mr-2 w-10">{price} zl</div>
+              <div className="mr-2 w-10 text-sm text-gray-500">{price} zl</div>
             )}
             <button
-              className="px-2 bg-blue-600 text-white rounded font-semibold my-0.5 text-sm"
+              className="my-0.5 rounded bg-blue-600 px-2 text-sm font-semibold text-white"
               onClick={onClickHandler}
             >
               Book
             </button>
           </div>
           {description && (
-            <div className="text-gray-400 text-sm">{description}</div>
+            <div className="text-sm text-gray-400">{description}</div>
           )}
           {edit && (
             <div
-              className="flex text-blue-600 text-sm font-semibold cursor-pointer"
+              className="flex cursor-pointer text-sm font-semibold text-blue-600"
               onClick={onDelete}
             >
               Delete service
@@ -58,11 +58,11 @@ const Service = ({
           )}
         </div>
         {image && (
-          <div className="w-24 h-20 ">
+          <div className="h-20 w-24 ">
             <Img
               src={`/${image}`}
               alt={name}
-              className="w-full h-full object-cover"
+              className="h-full w-full object-cover"
             />
           </div>
         )}
@@ -98,13 +98,13 @@ const Services = () => {
   return (
     <div className="py-4">
       {services?.length === 0 && (
-        <div className="text-gray-400 font-semibold pl-1">
+        <div className="pl-1 font-semibold text-gray-400">
           No services available!
         </div>
       )}
       {isOwner && (
         <button
-          className="rounded text-sm font-semibold text-gray-400 hover:underline pl-1"
+          className="rounded pl-1 text-sm font-semibold text-gray-400 hover:underline"
           onClick={() => setNewServiceModalOpen(true)}
         >
           Click to add new service

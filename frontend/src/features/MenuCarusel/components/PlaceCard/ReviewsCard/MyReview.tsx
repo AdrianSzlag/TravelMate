@@ -3,7 +3,7 @@ import UserAvatar from "components/UserAvatar";
 import useApi from "hooks/use-api";
 import { ServerResponse } from "utils/fetchApi";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
-import Rating from "../Rating";
+import Rating from "../../Rating";
 import { placesActions } from "store/places-slice";
 import { IUser } from "types/IUser";
 import { IReview } from "types/IReview";

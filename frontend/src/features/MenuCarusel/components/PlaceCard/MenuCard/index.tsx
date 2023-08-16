@@ -22,16 +22,16 @@ const MenuItem = ({
   onDelete,
 }: MenuItemProps) => {
   return (
-    <div className="p-1 flex ">
+    <div className="flex p-1 ">
       <div className="flex-1">
-        <div className="text-gray-700 text font-semibold">{name}</div>
-        {!!price && <div className="text-gray-500 text-sm">{price} zl</div>}
+        <div className="text font-semibold text-gray-700">{name}</div>
+        {!!price && <div className="text-sm text-gray-500">{price} zl</div>}
         {description && (
-          <div className="text-gray-400 text-sm">{description}</div>
+          <div className="text-sm text-gray-400">{description}</div>
         )}
         {edit && (
           <div
-            className="flex text-blue-600 text-sm font-semibold cursor-pointer"
+            className="flex cursor-pointer text-sm font-semibold text-blue-600"
             onClick={onDelete}
           >
             Delete menu item
@@ -39,11 +39,11 @@ const MenuItem = ({
         )}
       </div>
       {image && (
-        <div className="w-24 h-20 ">
+        <div className="h-20 w-24 ">
           <Img
             src={`/${image}`}
             alt={name}
-            className="w-full h-full object-cover"
+            className="h-full w-full object-cover"
           />
         </div>
       )}
@@ -79,13 +79,13 @@ const Menu = () => {
   return (
     <div className="py-4">
       {menu?.length === 0 && (
-        <div className="text-gray-400 font-semibold pl-1">
+        <div className="pl-1 font-semibold text-gray-400">
           No services available!
         </div>
       )}
       {isOwner && (
         <button
-          className="rounded text-sm font-semibold text-gray-400 hover:underline pl-1"
+          className="rounded pl-1 text-sm font-semibold text-gray-400 hover:underline"
           onClick={() => setModalOpen(true)}
         >
           Click to add new menu item

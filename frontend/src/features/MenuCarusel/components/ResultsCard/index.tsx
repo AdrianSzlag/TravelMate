@@ -1,7 +1,7 @@
 import { IPlace } from "types/IPlace";
 import { placesActions } from "store/places-slice";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
-import Rating from "./Rating";
+import Rating from "../Rating";
 import Img from "components/Img";
 
 interface Props {
@@ -35,7 +35,7 @@ const Result = ({
           <div className="text-gray-400">No reviews yet!</div>
         )}
         {description && (
-          <div className="text-gray-400 font-semibold text-sm mt-0.5">
+          <div className="mt-0.5 text-sm font-semibold text-gray-400">
             {description}
           </div>
         )}
