@@ -155,7 +155,9 @@ const Overview = () => {
       {tags && (
         <div className="mt-2 flex flex-wrap gap-2">
           {tags.map((tag) => (
-            <span className="text-sm font-semibold text-gray-300">{tag}</span>
+            <span className="text-sm font-semibold text-gray-300" key={tag}>
+              {tag}
+            </span>
           ))}
         </div>
       )}

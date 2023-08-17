@@ -10,7 +10,7 @@ import Profile from "./components/Profile";
 import SignInButton from "./components/SignInButton";
 
 const ProfileModal = ({ children }: { children: ReactNode }) => {
-  const modalRoot = document.getElementById("business-root") as HTMLElement;
+  const modalRoot = document.getElementById("modal-root") as HTMLElement;
   return createPortal(children, modalRoot);
 };
 
