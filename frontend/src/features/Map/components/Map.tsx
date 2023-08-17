@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Map as PigeonMap, Marker, Point, Bounds } from "pigeon-maps";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { IPlace } from "types/IPlace";
@@ -14,9 +14,28 @@ export default function Map() {
   const setFocused = (place: IPlace | null) =>
     dispatch(placesActions.setFocused(place));
 
-  const [center, setCenter] = useState<Point>(defaultCenter);
-  const [bounds, setBounds] = useState<Bounds>();
-  const [zoom, setZoom] = useState<number>(defaultZoom);
+  const [currentCenter, setCurrentCenter] = useState<Point>(defaultCenter);
+  const [currentBounds, setCurrentBounds] = useState<Bounds>();
+  const [currentZoom, setCurrentZoom] = useState<number>(defaultZoom);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const flyTo = (center: Point, offset: [number, number], zoom: number) => {
+    let flyTo = [center[0], center[1]] as Point;
+    if (currentBounds && containerRef.current) {
+      const zoomDiff = zoom - currentZoom;
+      const containerWidth = containerRef.current.offsetWidth;
+      const containerHeight = containerRef.current.offsetHeight;
+      const boundsWidth = currentBounds.ne[1] - currentBounds.sw[1];
+      const boundsHeight = currentBounds.ne[0] - currentBounds.sw[0];
+      const lngPixelRatio = boundsWidth / containerWidth;
+      const latPixelRatio = boundsHeight / containerHeight;
+      const offsetX = (offset[0] * lngPixelRatio) / Math.pow(2, zoomDiff);
+      const offsetY = (offset[1] * latPixelRatio) / Math.pow(2, zoomDiff);
+      flyTo = [center[0] - offsetY, center[1] - offsetX] as Point;
+    }
+    setCurrentCenter(flyTo);
+    setCurrentZoom(zoom);
+  };
 
   const onBoundariesChangeHandler = ({
     center,
@@ -29,35 +48,46 @@ export default function Map() {
     zoom: number;
     initial: boolean;
   }) => {
-    setCenter(center);
-    setBounds(bounds);
-    setZoom(zoom);
+    setCurrentCenter(center);
+    setCurrentBounds(bounds);
+    setCurrentZoom(zoom);
   };
 
   useEffect(() => {
-    if (focused) {
-      let flyTo = [
-        focused.location.coordinates[1],
-        focused.location.coordinates[0],
-      ] as Point;
-      setCenter(flyTo);
-      setZoom(16);
+    if (focused && containerRef.current) {
+      const mapWidth = containerRef.current.offsetWidth;
+      const menuWidth =
+        mapWidth >= 1280
+          ? 1056
+          : mapWidth >= 1024
+          ? 800
+          : mapWidth >= 475
+          ? 400
+          : 0;
+      const viewport = mapWidth - menuWidth;
+      const offsetX = mapWidth / 2 - viewport / 2;
+      console.log(mapWidth, menuWidth, viewport, offsetX);
+      flyTo(
+        [focused.location.coordinates[1], focused.location.coordinates[0]],
+        [offsetX, 0],
+        14
+      );
     } else {
-      setCenter(defaultCenter);
-      setZoom(defaultZoom);
+      //setCurrentCenter(defaultCenter);
+      //setZoom(defaultZoom);
     }
   }, [focused]);
 
   return (
-    <div className="min-h-0 flex-shrink flex-grow">
+    <div className="min-h-0 flex-shrink flex-grow" ref={containerRef}>
       <PigeonMap
         defaultCenter={defaultCenter}
         defaultZoom={defaultZoom}
-        center={center}
+        center={currentCenter}
         onBoundsChanged={onBoundariesChangeHandler}
         maxZoom={16}
         minZoom={11}
-        zoom={zoom}
+        zoom={currentZoom}
       >
         {places.map((place) => {
           return (

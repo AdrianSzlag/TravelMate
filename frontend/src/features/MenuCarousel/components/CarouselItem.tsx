@@ -6,7 +6,7 @@ interface Props {
 const CarouselItem = ({ children, className }: Props) => {
   return (
     <div
-      className={`relative flex-shrink-0 flex-grow-0 snap-x ${
+      className={`relative flex-shrink-0 flex-grow-0 snap-x bg-transparent ${
         className ? className : " "
       }`}
     >

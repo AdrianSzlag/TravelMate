@@ -65,9 +65,9 @@ const Menu = () => {
 
   return (
     <Carousel
-      className={`bg-white ${isMapVisible ? " !h-[40%] xs:!h-full " : " "} 
+      className={`${isMapVisible ? " !h-[40%] xs:!h-full " : " "} 
       lg:w-[656px] ${active ? " xs:w-[400px]" : " xs:w-[256px] "} ${
-        active && focused ? " lg:!w-[800px] xl:!w-[1056px] " : " "
+        active && focused ? " lg:!w-[800px] xl:!w-[1056px]" : " "
       }`}
     >
       <CarouselItem className="h-full w-full sm:w-[256px]">
@@ -75,7 +75,8 @@ const Menu = () => {
       </CarouselItem>
       <CarouselItem
         className={
-          "h-full w-full xs:w-[400px] " + (active ? "" : "hidden lg:block")
+          "h-full w-full bg-white xs:w-[400px] " +
+          (active ? "" : "hidden lg:block")
         }
       >
         <div className={!focused ? "lg:hidden" : "xl:hidden"}>
@@ -90,13 +91,17 @@ const Menu = () => {
       </CarouselItem>
       {active && focused && (
         <CarouselItem className="h-full w-full xs:w-[400px]">
-          <NaviButtons
-            text="Results"
-            onBack={onClosePreviewHandler}
-            isMapVisible={isMapVisible}
-            toggleMapVisibility={toggleMapVisibility}
-          />
-          <Place place={focused} />
+          <div className="box-border h-full !overflow-hidden sm:p-2">
+            <div className="h-full overflow-y-auto bg-white sm:rounded-xl sm:border sm:shadow-xl">
+              <NaviButtons
+                text="Results"
+                onBack={onClosePreviewHandler}
+                isMapVisible={isMapVisible}
+                toggleMapVisibility={toggleMapVisibility}
+              />
+              <Place place={focused} />
+            </div>
+          </div>
         </CarouselItem>
       )}
     </Carousel>

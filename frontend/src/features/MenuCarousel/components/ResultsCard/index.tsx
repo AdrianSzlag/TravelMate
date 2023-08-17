@@ -24,7 +24,7 @@ const Result = ({
 }: Props) => {
   return (
     <div
-      className="flex cursor-pointer justify-between rounded-lg px-4 py-3  text-gray-600 hover:bg-gray-50"
+      className="flex cursor-pointer justify-between px-4 py-3  text-gray-600 hover:bg-gray-50"
       onClick={onClick}
     >
       <div>
