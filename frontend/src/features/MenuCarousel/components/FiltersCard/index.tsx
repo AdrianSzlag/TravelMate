@@ -98,7 +98,7 @@ const Filters = ({ onSubmit }: Props) => {
         className="mt-4 w-full self-end justify-self-end bg-blue-700 p-2 text-center text-white transition-colors hover:bg-blue-900"
         type="submit"
       >
-        Search
+        Show results
       </button>
     </form>
   );

@@ -27,11 +27,13 @@ const Menu = () => {
   const [isMapVisible, setIsMapVisible] = useState(false);
 
   useEffect(() => {
-    const path = `/${
-      !active ? "" : focused ? `place/${focused.id}` : "search"
-    }`;
+    if (focused) {
+      setIsMapVisible(false);
+      setActive(true);
+    }
+    const path = `/${focused ? `place/${focused.id}` : "search"}`;
     navigate(path, {});
-  }, [active, focused]);
+  }, [focused]);
 
   useEffect(() => {
     if (placeId) {
@@ -53,13 +55,6 @@ const Menu = () => {
     setActive(false);
   };
 
-  useEffect(() => {
-    if (focused) {
-      setIsMapVisible(false);
-      setActive(true);
-    }
-  }, [focused]);
-
   const toggleMapVisibility = () => {
     setIsMapVisible((prev) => !prev);
   };
@@ -70,26 +65,29 @@ const Menu = () => {
 
   return (
     <Carousel
-      className={`bg-white ${
-        isMapVisible && active ? " !h-[40%] xs:!h-full " : " "
-      } ${active ? " xs:w-[400px] lg:w-[656px]  " : " xs:w-[256px] "} ${
+      className={`bg-white ${isMapVisible ? " !h-[40%] xs:!h-full " : " "} 
+      lg:w-[656px] ${active ? " xs:w-[400px]" : " xs:w-[256px] "} ${
         active && focused ? " lg:!w-[800px] xl:!w-[1056px] " : " "
       }`}
     >
       <CarouselItem className="h-full w-full sm:w-[256px]">
         <Filters onSubmit={onSubmitFiltersHandler} />
       </CarouselItem>
-      {active && (
-        <CarouselItem className="h-full w-full xs:w-[400px]">
+      <CarouselItem
+        className={
+          "h-full w-full xs:w-[400px] " + (active ? "" : "hidden lg:block")
+        }
+      >
+        <div className="lg:hidden">
           <NaviButtons
-            text="Search"
+            text="Filters"
             onBack={onCloseResultsHandler}
             isMapVisible={isMapVisible}
             toggleMapVisibility={toggleMapVisibility}
           />
-          <ResultsList />
-        </CarouselItem>
-      )}
+        </div>
+        <ResultsList />
+      </CarouselItem>
       {active && focused && (
         <CarouselItem className="h-full w-full xs:w-[400px]">
           <NaviButtons
