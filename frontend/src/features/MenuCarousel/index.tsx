@@ -78,7 +78,7 @@ const Menu = () => {
           "h-full w-full xs:w-[400px] " + (active ? "" : "hidden lg:block")
         }
       >
-        <div className="lg:hidden">
+        <div className={!focused ? "lg:hidden" : "xl:hidden"}>
           <NaviButtons
             text="Filters"
             onBack={onCloseResultsHandler}
