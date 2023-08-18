@@ -3,7 +3,7 @@ import Filters from "./components/FiltersCard";
 import ResultsList from "./components/ResultsCard";
 import Carousel from "./components/Carousel";
 import CarouselItem from "./components/CarouselItem";
-import NaviButtons from "./components/NaviButtons";
+import NaviButton from "./components/NaviButton";
 import Place from "./components/PlaceCard";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { placesActions } from "store/places-slice";
@@ -11,6 +11,7 @@ import { IPlace } from "types/IPlace";
 import { useParams, useLocation } from "react-router-dom";
 import { fetchPlace, fetchPlaces } from "store/places-actions";
 import { useAppNavigate } from "hooks/use-navigate";
+import MapButton from "./components/MapButton";
 
 const Menu = () => {
   const dispatch = useAppDispatch();
@@ -80,25 +81,28 @@ const Menu = () => {
         }
       >
         <div className={!focused ? "lg:hidden" : "xl:hidden"}>
-          <NaviButtons
-            text="Filters"
-            onBack={onCloseResultsHandler}
-            isMapVisible={isMapVisible}
-            toggleMapVisibility={toggleMapVisibility}
-          />
+          <div className="flex w-full items-center justify-between">
+            <NaviButton text="Filters" onBack={onCloseResultsHandler} />
+            <MapButton
+              isMapVisible={isMapVisible}
+              toggleMapVisibility={toggleMapVisibility}
+            />
+          </div>
         </div>
         <ResultsList />
       </CarouselItem>
       {active && focused && (
         <CarouselItem className="h-full w-full xs:w-[400px]">
           <div className="box-border h-full !overflow-hidden sm:p-2">
-            <div className="h-full overflow-y-auto bg-white sm:rounded-xl sm:border sm:shadow-xl">
-              <NaviButtons
-                text="Results"
-                onBack={onClosePreviewHandler}
-                isMapVisible={isMapVisible}
-                toggleMapVisibility={toggleMapVisibility}
-              />
+            <div className="relative h-full overflow-y-auto bg-white sm:rounded-xl sm:border sm:shadow-xl">
+              <div className="absolute flex w-full flex-row-reverse justify-between">
+                <NaviButton onBack={onClosePreviewHandler} />
+                <MapButton
+                  isMapVisible={isMapVisible}
+                  toggleMapVisibility={toggleMapVisibility}
+                  className="m-2 rounded-full border bg-white !p-1 shadow-xl"
+                />
+              </div>
               <Place place={focused} />
             </div>
           </div>

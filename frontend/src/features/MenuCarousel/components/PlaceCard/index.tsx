@@ -75,7 +75,7 @@ const Place = ({ place }: Props) => {
     <div>
       <Img
         src={`/${place.thumbnail}`}
-        className="h-[200px] w-full object-cover"
+        className=" h-[200px] w-full object-cover"
       />
       <div className="px-5 py-3 ">
         <h1 className="pb-1 text-2xl font-semibold text-gray-600">

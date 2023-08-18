@@ -1,5 +1,4 @@
 import NavBar from "./components/NavBar";
-import Button from "./components/Button";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { businessActions } from "store/business-slice";
@@ -8,6 +7,8 @@ import { createPortal } from "react-dom";
 import { ReactNode, useState } from "react";
 import Profile from "./components/Profile";
 import SignInButton from "./components/SignInButton";
+import Notifications from "./components/Notifications";
+import { BiBookContent } from "react-icons/bi";
 
 const ProfileModal = ({ children }: { children: ReactNode }) => {
   const modalRoot = document.getElementById("modal-root") as HTMLElement;
@@ -43,11 +44,18 @@ const Header = () => {
     <NavBar notifications={noOfNotifications}>
       {user && (
         <>
-          <Button
-            text="Reservations"
+          <li
+            className="relative h-fit cursor-pointer"
             onClick={onReservationsHandler}
-            notifications={noOfReservations}
-          />
+          >
+            {noOfReservations > 0 && (
+              <Notifications number={noOfReservations} />
+            )}
+            <div className="hidden px-2 py-1 font-semibold text-white xs:block">
+              Reservations
+            </div>
+            <BiBookContent className="mx-2 my-1 h-6 w-6 text-white xs:hidden" />
+          </li>
           <Dropdown>
             <div className="px-4 py-3 text-sm  text-gray-900 ">
               <div className="font-semibold">{user.name}</div>
