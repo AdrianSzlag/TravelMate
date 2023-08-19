@@ -1,16 +1,20 @@
 import express from "express";
 import {
-  addMenuItemToPlace,
-  addServiceToPlace,
-  deleteMenuItemFromPlace,
   deletePlace,
-  deleteServiceFromPlace,
   getPlace,
   searchPlaces,
   updatePlace,
 } from "../controllers/placeController";
 import { authMiddleware } from "../middlewares/authMiddleware";
 import { upload } from "../middlewares/fileMiddleware";
+import {
+  addServiceToPlace,
+  deleteServiceFromPlace,
+} from "../controllers/serviceController";
+import {
+  addMenuItemToPlace,
+  deleteMenuItemFromPlace,
+} from "../controllers/menuController";
 
 const placeRouter = express.Router();
 
@@ -32,16 +36,16 @@ placeRouter.post(
   upload.single("image"),
   addServiceToPlace
 );
+placeRouter.delete(
+  "/:placeId/service/:serviceId",
+  authMiddleware,
+  deleteServiceFromPlace
+);
 placeRouter.post(
   "/:placeId/menu",
   authMiddleware,
   upload.single("image"),
   addMenuItemToPlace
-);
-placeRouter.delete(
-  "/:placeId/service/:serviceId",
-  authMiddleware,
-  deleteServiceFromPlace
 );
 placeRouter.delete(
   "/:placeId/menu/:menuId",
