@@ -19,7 +19,6 @@ const Menu = () => {
   const navigate = useAppNavigate();
   const { placeId } = useParams();
   const { pathname } = useLocation();
-  const [firstLoad, setFirstLoad] = useState(true);
 
   const [active, setActive] = useState(
     pathname.startsWith("/search") || pathname.startsWith("/place")
@@ -93,7 +92,7 @@ const Menu = () => {
       </CarouselItem>
       {active && focused && (
         <CarouselItem className="h-full w-full xs:w-[400px]">
-          <div className="box-border h-full !overflow-hidden sm:p-2">
+          <div className="box-border h-full !overflow-hidden sm:px-2 sm:py-3">
             <div className="relative h-full overflow-y-auto bg-white sm:rounded-xl sm:border sm:shadow-xl">
               <div className="absolute flex w-full flex-row-reverse justify-between">
                 <NaviButton onBack={onClosePreviewHandler} />
