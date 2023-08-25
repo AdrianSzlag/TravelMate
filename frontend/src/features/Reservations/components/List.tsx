@@ -132,9 +132,10 @@ const List = () => {
   };
   const sortedReservations = [...reservations].sort(
     (a: IReservation, b: IReservation) => {
-      const aDate = new Date(a.date);
-      const bDate = new Date(b.date);
-      return aDate.getTime() - bDate.getTime();
+      const aTime = new Date(a.date).getTime();
+      const bTime = new Date(b.date).getTime();
+      const now = Date.now();
+      return aTime < now === bTime < now ? aTime - bTime : aTime < now ? 1 : -1;
     }
   );
   const businesses = sortedReservations.reduce((acc, curr) => {
