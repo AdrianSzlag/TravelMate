@@ -60,7 +60,10 @@ const Item = ({
         {address && (
           <h6 className="text-sm font-semibold text-gray-400">{address}</h6>
         )}
-        <div className="mt-2 flex flex-row items-center">
+        <Link
+          className="mt-2 flex flex-row items-center"
+          to={`/place/${placeId}?details=overview`}
+        >
           {image && (
             <Img
               src={"/" + image}
@@ -69,7 +72,7 @@ const Item = ({
             />
           )}
           <h3 className="font-semibold text-gray-600">{name}</h3>
-        </div>
+        </Link>
         <div className="mb-1 mt-2 flex gap-2">
           {!isDone && (
             <>
@@ -90,7 +93,7 @@ const Item = ({
           {isDone && bookAgain && (
             <Link
               className="rounded bg-blue-500 px-2 py-0.5 text-sm font-semibold text-white"
-              to={`/place/${id}?details=services`}
+              to={`/place/${placeId}?details=services`}
             >
               Book again
             </Link>
