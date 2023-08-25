@@ -23,7 +23,7 @@ const NaviButtons = ({ onBack, text }: Props) => {
         onClick={onBack}
         className="m-2 flex items-center rounded-full border bg-white  p-0.5 font-bold text-gray-500 shadow-xl hover:text-gray-800"
       >
-        <IoClose className="h-7 w-7 " />
+        <IoClose className="h-7 w-7 text-gray-600" />
       </button>
     </div>
   );

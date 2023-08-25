@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Form from "./Form";
+import Form from "./Card";
 import Input from "components/Input";
 import Button from "./Button";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
@@ -25,7 +25,8 @@ const LoginForm = ({ onSignUp, onSuccess }: Props) => {
 
   const formValid = validEmail && validPassword && !loading;
 
-  const onSubmitHandler = () => {
+  const onSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (!formValid) return;
     dispatch(login(email, password));
   };
@@ -37,10 +38,10 @@ const LoginForm = ({ onSignUp, onSuccess }: Props) => {
   }, [user]);
 
   return (
-    <Form onSubmit={onSubmitHandler}>
-      <h1 className=" text-xl font-bold leading-tight tracking-tight text-gray-600">
-        Sign in to your account
-      </h1>
+    <form
+      onSubmit={onSubmitHandler}
+      className="flex h-full w-full flex-col space-y-4 bg-white text-gray-600"
+    >
       {errorMessage && (
         <h2 className="text-base font-bold leading-tight tracking-tight text-red-400">
           {errorMessage}
@@ -75,13 +76,13 @@ const LoginForm = ({ onSignUp, onSuccess }: Props) => {
       <p className="text-sm font-light text-gray-500 ">
         Don’t have an account yet?{" "}
         <a
-          className="text-primary-600  cursor-pointer font-medium hover:underline"
+          className="cursor-pointer font-medium hover:underline"
           onClick={onSignUp}
         >
           Sign up
         </a>
       </p>
-    </Form>
+    </form>
   );
 };
 

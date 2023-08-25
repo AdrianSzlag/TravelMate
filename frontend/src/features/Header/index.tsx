@@ -41,7 +41,7 @@ const Header = () => {
   };
 
   return (
-    <NavBar notifications={noOfNotifications}>
+    <NavBar>
       {user && (
         <>
           <li
@@ -92,3 +92,4 @@ const Header = () => {
 };
 
 export default Header;
+export { NavBar };

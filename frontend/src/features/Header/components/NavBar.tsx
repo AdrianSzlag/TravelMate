@@ -5,11 +5,10 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { Link } from "react-router-dom";
 
 interface Props {
-  children: React.ReactNode;
-  notifications: number;
+  children?: React.ReactNode;
 }
 
-const NavBar = ({ children, notifications }: Props) => {
+const NavBar = ({ children }: Props) => {
   return (
     <nav className="z-20 flex-shrink-0 flex-grow-0 bg-blue-700 px-2.5 py-2.5 text-white sm:px-4">
       <div className="mx-auto flex flex-wrap items-center justify-between">

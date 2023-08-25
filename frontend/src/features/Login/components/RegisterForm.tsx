@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Form from "./Form";
+import Form from "./Card";
 import Input from "components/Input";
 import Button from "./Button";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
@@ -33,7 +33,8 @@ const RegisterForm = ({ onLogIn, onSuccess }: Props) => {
     validName &&
     !loading;
 
-  const onSubmitHandler = () => {
+  const onSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (!formValid) return;
     dispatch(register(email, password, name, "123456789", "1990-01-01"));
   };
@@ -48,10 +49,10 @@ const RegisterForm = ({ onLogIn, onSuccess }: Props) => {
   }, [message]);
 
   return (
-    <Form onSubmit={onSubmitHandler}>
-      <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-600">
-        Create Your Account
-      </h1>
+    <form
+      onSubmit={onSubmitHandler}
+      className="flex h-full w-full flex-col space-y-4 bg-white text-gray-600"
+    >
       {errorMessage && (
         <h2 className="text-base font-bold leading-tight tracking-tight text-red-400">
           {errorMessage}
@@ -116,7 +117,7 @@ const RegisterForm = ({ onLogIn, onSuccess }: Props) => {
           Sign in
         </a>
       </p>
-    </Form>
+    </form>
   );
 };
 
