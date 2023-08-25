@@ -7,14 +7,17 @@ import { Link } from "react-router-dom";
 import { IReservation } from "types/IReservation";
 import { cancelReservation } from "store/reservations-actions";
 import Img from "components/Img";
+import { showBookingModal, showEditingModal } from "store/book-actions";
 
 interface ItemProps {
   id: string;
+  serviceId: string;
+  placeId: string;
   title: string;
   address?: string;
   name: string;
   image?: string;
-  date?: string;
+  date: string;
   selected: boolean;
   onClick: () => void;
   onCancel: () => void;
@@ -23,6 +26,8 @@ interface ItemProps {
 
 const Item = ({
   id,
+  placeId,
+  serviceId,
   title,
   address,
   name,
@@ -32,9 +37,14 @@ const Item = ({
   onCancel,
   bookAgain = false,
 }: ItemProps) => {
+  const dispatch = useAppDispatch();
   const dateObj = date ? new Date(date) : undefined;
   const isDone = dateObj ? dateObj.getTime() < Date.now() : false;
   const onCancelClickHandler = () => onCancel();
+  const openEditModal = () => {
+    dispatch(showEditingModal(id, placeId, serviceId, date));
+    console.log("open edit modal");
+  };
   return (
     <div
       className="m-2 box-border flex rounded-lg border shadow"
@@ -60,14 +70,22 @@ const Item = ({
           )}
           <h3 className="font-semibold text-gray-600">{name}</h3>
         </div>
-        <div className="mb-1 mt-2 flex">
+        <div className="mb-1 mt-2 flex gap-2">
           {!isDone && (
-            <button
-              className="rounded bg-red-500 px-2 py-0.5 text-sm font-semibold text-white"
-              onClick={onCancelClickHandler}
-            >
-              Cancel
-            </button>
+            <>
+              <button
+                className="rounded bg-red-500 px-2 py-0.5 text-sm font-semibold text-white"
+                onClick={onCancelClickHandler}
+              >
+                Cancel
+              </button>
+              <button
+                className="rounded bg-gray-500 px-2 py-0.5 text-sm font-semibold text-white"
+                onClick={openEditModal}
+              >
+                Edit
+              </button>
+            </>
           )}
           {isDone && bookAgain && (
             <Link
@@ -153,7 +171,9 @@ const List = () => {
             )
             .map((reservation) => (
               <Item
-                id={reservation.place.id}
+                id={reservation.id}
+                serviceId={reservation.service.id}
+                placeId={reservation.place.id}
                 key={reservation.id}
                 title={reservation.service.name}
                 address={reservation.place.address}
@@ -191,6 +211,8 @@ const List = () => {
                       .map((reservation) => (
                         <Item
                           id={reservation.id}
+                          serviceId={reservation.service.id}
+                          placeId={reservation.place.id}
                           key={reservation.id}
                           title={reservation.service.name}
                           name={reservation.user!.name}

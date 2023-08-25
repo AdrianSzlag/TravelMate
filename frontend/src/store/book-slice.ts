@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { IFreeSlot } from "types/IFreeSlot";
+import { getDateString, getTime } from "utils/dateTime";
 
 interface BookState {
   modalOpen: boolean;
@@ -11,6 +12,9 @@ interface BookState {
   loading: boolean;
   message?: string;
   errorMessage?: string;
+  isEditing: boolean;
+  editId?: string;
+  additionalDate?: string;
 }
 
 const initialState: BookState = {
@@ -23,13 +27,16 @@ const initialState: BookState = {
   loading: false,
   message: undefined,
   errorMessage: undefined,
+  isEditing: false,
+  additionalDate: undefined,
+  editId: undefined,
 };
 
 const bookSlice = createSlice({
   name: "book",
   initialState,
   reducers: {
-    showModal(
+    showBookingModal(
       state,
       action: PayloadAction<{
         slots: IFreeSlot[];
@@ -44,6 +51,32 @@ const bookSlice = createSlice({
       state.errorMessage = undefined;
       state.message = undefined;
       state.loading = false;
+      state.isEditing = false;
+      state.additionalDate = undefined;
+      state.editId = undefined;
+    },
+    showEditingModal(
+      state,
+      action: PayloadAction<{
+        editId: string;
+        slots: IFreeSlot[];
+        placeId: string;
+        serviceId: string;
+        additionalDate: string;
+      }>
+    ) {
+      state.editId = action.payload.editId;
+      state.modalOpen = true;
+      state.freeSlots = action.payload.slots;
+      state.placeId = action.payload.placeId;
+      state.serviceId = action.payload.serviceId;
+      state.errorMessage = undefined;
+      state.message = undefined;
+      state.loading = false;
+      state.isEditing = true;
+      state.additionalDate = action.payload.additionalDate;
+      state.selectedDate = getDateString(action.payload.additionalDate);
+      state.selectedTime = getTime(action.payload.additionalDate);
     },
     setDate(state, action: PayloadAction<string>) {
       state.selectedDate = action.payload;
@@ -59,6 +92,8 @@ const bookSlice = createSlice({
       state.selectedTime = undefined;
       state.placeId = undefined;
       state.serviceId = undefined;
+      state.isEditing = false;
+      state.additionalDate = undefined;
     },
     setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;

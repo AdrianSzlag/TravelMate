@@ -4,14 +4,16 @@ import {
   cancelReservation,
   getFreeSlotsForService,
   getReservations,
-  makeReservation,
+  createReservation,
+  updateReservation,
 } from "../controllers/reservationController";
 
 const reservationRouter = express.Router();
 
 reservationRouter.get("/available/", authMiddleware, getFreeSlotsForService);
-reservationRouter.post("/", authMiddleware, makeReservation);
+reservationRouter.post("/", authMiddleware, createReservation);
 reservationRouter.get("/", authMiddleware, getReservations);
+reservationRouter.put("/:reservationId", authMiddleware, updateReservation);
 reservationRouter.delete("/:reservationId", authMiddleware, cancelReservation);
 
 export default reservationRouter;

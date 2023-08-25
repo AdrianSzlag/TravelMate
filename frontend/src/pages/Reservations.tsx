@@ -4,6 +4,8 @@ import { useAppNavigate } from "hooks/use-navigate";
 import { useEffect } from "react";
 import { List } from "features/Reservations";
 import { ReservationsMap } from "features/Map";
+import BusinessModal from "features/BusinessModal";
+import BookingModal from "features/BookingModal";
 
 const Reservations = () => {
   const isLoggedIn = useAppSelector((state) => state.auth.isLogged);
@@ -22,6 +24,7 @@ const Reservations = () => {
         <ReservationsMap />
         <List />
       </div>
+      <BookingModal />
     </div>
   );
 };

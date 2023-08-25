@@ -18,7 +18,7 @@ const Hour = ({ hour, isNow, isSelected, isDisabled, onClick }: HourProps) => {
       onClick={onClick}
       isSelected={isSelected}
       isDisabled={isDisabled}
-      className="w-16 h-8"
+      className="h-8 w-16"
     >
       <span className={`${textColor} text-sm`}>{hour}</span>
     </Option>
@@ -59,7 +59,7 @@ const HourSelector = () => {
         </Row>
       )}
       {availableHours?.length === 0 && (
-        <div className="my-4 mx-8 text-gray-400 font-semibold">
+        <div className="my-4 mx-8 font-semibold text-gray-400">
           Please select a date to continue
         </div>
       )}

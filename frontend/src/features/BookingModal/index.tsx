@@ -4,15 +4,18 @@ import Calendar from "./components/Calendar";
 import ServiceOverview from "./components/ServiceOverview";
 import { sendBookingRequest } from "store/book-actions";
 import Modal from "components/Modal";
+import { getDateString, getTime } from "utils/dateTime";
 
 const BookingModal = () => {
   const dispatch = useAppDispatch();
   const isOpen = useAppSelector((state) => state.book.modalOpen);
   const selectedDate = useAppSelector((state) => state.book.selectedDate);
   const selectedTime = useAppSelector((state) => state.book.selectedTime);
+  const additionalDate = useAppSelector((state) => state.book.additionalDate);
   const loading = useAppSelector((state) => state.book.loading);
   const message = useAppSelector((state) => state.book.message);
   const errorMessage = useAppSelector((state) => state.book.errorMessage);
+  const isEditing = useAppSelector((state) => state.book.isEditing);
 
   if (!isOpen) return null;
   const formValid = !!selectedDate && !!selectedTime && !loading;
@@ -22,6 +25,14 @@ const BookingModal = () => {
   };
   const onBookClickHandler = () => {
     if (!formValid) return;
+    if (additionalDate) {
+      const date = getDateString(additionalDate);
+      const time = getTime(additionalDate);
+      if (date === selectedDate && time === selectedTime) {
+        dispatch(bookActions.hideModal());
+        return;
+      }
+    }
     dispatch(sendBookingRequest());
   };
   const ErrorMessage = () => (
@@ -49,7 +60,8 @@ const BookingModal = () => {
         } mx-4 mt-4 box-border  rounded-lg py-2 text-center text-white `}
         onClick={onBookClickHandler}
       >
-        {!loading ? "Book" : "Booking..."}
+        {!isEditing && (!loading ? "Book" : "Booking...")}
+        {isEditing && (!loading ? "Save" : "Saving...")}
       </div>
       <div className="mt-4"></div>
     </Modal>

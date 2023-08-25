@@ -5,6 +5,7 @@ import { bookActions } from "./book-slice";
 import { fetchReservations } from "./reservations-actions";
 import { isLoggedIn } from "utils/auth";
 import { authActions } from "./auth-slice";
+import { getDateString, getTime } from "utils/dateTime";
 
 export const showBookingModal = (
   placeId: string,
@@ -33,8 +34,61 @@ export const showBookingModal = (
     }
     try {
       const slots = (await fetchData()) as IFreeSlot[];
+      slots.sort((a, b) => a.localeCompare(b));
+      dispatch(
+        bookActions.showBookingModal({
+          slots,
+          placeId,
+          serviceId,
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const showEditingModal = (
+  id: string,
+  placeId: string,
+  serviceId: string,
+  selectedDate: IFreeSlot
+): AppThunk => {
+  return async (dispatch, getState) => {
+    const fetchData = async () => {
+      const searchParams = new URLSearchParams();
+      searchParams.append("serviceId", serviceId);
+      searchParams.append("placeId", placeId);
+      const response = await fetchApi(
+        `/api/reservation/available?${searchParams}`,
+        {
+          method: "GET",
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Could not fetch service data!");
+      }
+      const data = await response.json();
+      return data;
+    };
+    if (!isLoggedIn()) {
+      dispatch(authActions.showModal());
+      return;
+    }
+    try {
+      const slots = (await fetchData()) as IFreeSlot[];
       console.log(slots);
-      dispatch(bookActions.showModal({ slots, placeId, serviceId }));
+      slots.push(selectedDate);
+      slots.sort((a, b) => a.localeCompare(b));
+      dispatch(
+        bookActions.showEditingModal({
+          editId: id,
+          slots,
+          placeId,
+          serviceId,
+          additionalDate: selectedDate,
+        })
+      );
     } catch (error) {
       console.log(error);
     }
@@ -49,14 +103,20 @@ export const sendBookingRequest = (): AppThunk => {
     }
     try {
       dispatch(bookActions.setLoading(true));
+      const isEditing = getState().book.isEditing;
       const {
         book: { selectedDate, selectedTime, placeId, serviceId },
       } = getState();
       if (!selectedDate || !selectedTime || !placeId || !serviceId) {
         throw new Error("Please fill the form again.");
       }
-      const response = await fetchApi("/api/reservation", {
-        method: "POST",
+      const method = isEditing ? "PUT" : "POST";
+      const path = isEditing
+        ? `/api/reservation/${getState().book.editId}`
+        : "/api/reservation";
+      console.log(path);
+      const response = await fetchApi(path, {
+        method,
         body: JSON.stringify({
           placeId,
           serviceId,
