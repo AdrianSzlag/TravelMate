@@ -41,21 +41,21 @@ const Item = ({
   };
   return (
     <div
-      className="m-2 box-border flex rounded-lg border shadow"
+      className="m-4 box-border flex rounded border shadow"
       onClick={onClick}
     >
-      <div className="flex-1 px-4 py-2">
+      <div className="flex flex-1 flex-col gap-2 p-4">
         {isDone && (
-          <div className="inline-block rounded-3xl bg-gray-200 px-2 text-sm font-semibold text-gray-600">
+          <div className="inline-block w-fit rounded bg-gray-200 px-2 py-0.5 text-sm font-semibold ">
             Ended
           </div>
         )}
-        <h1 className="text-lg font-semibold text-gray-800">{title}</h1>
+        <h1 className="-my-1 text-lg font-semibold text-gray-800">{title}</h1>
         {address && (
           <h6 className="text-sm font-semibold text-gray-400">{address}</h6>
         )}
         <Link
-          className="mt-2 flex flex-row items-center"
+          className="flex flex-row items-center"
           to={`/place/${placeId}?details=overview`}
         >
           {image && (
@@ -67,7 +67,7 @@ const Item = ({
           )}
           <h3 className="font-semibold text-gray-600">{name}</h3>
         </Link>
-        <div className="mb-1 mt-2 flex gap-2">
+        <div className="flex gap-2">
           {!isDone && (
             <>
               <button
@@ -98,13 +98,15 @@ const Item = ({
         <>
           <div className="my-4 flex-shrink-0 flex-grow-0 border-l"></div>
           <div className="flex w-20 flex-none flex-col items-center justify-center">
-            <div className="text-sm text-gray-600">
+            <div className="text-sm font-semibold text-gray-800">
               {getMonthName(dateObj.getMonth())}
             </div>
-            <div className="text-lg font-semibold text-gray-800">
+            <div className="text-lg font-semibold text-black">
               {dateObj.getDate()}
             </div>
-            <div className="text-sm text-gray-600">{getTime(date!)}</div>
+            <div className="text-sm font-semibold text-gray-800">
+              {getTime(date!)}
+            </div>
           </div>
         </>
       )}
