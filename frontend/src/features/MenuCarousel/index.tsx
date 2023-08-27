@@ -21,7 +21,9 @@ const Menu = () => {
   const { pathname } = useLocation();
 
   const [active, setActive] = useState(
-    pathname.startsWith("/search") || pathname.startsWith("/place")
+    pathname.startsWith("/search") ||
+      pathname.startsWith("/place") ||
+      pathname.startsWith("/")
   );
 
   const [isMapVisible, setIsMapVisible] = useState(false);
@@ -52,6 +54,7 @@ const Menu = () => {
 
   const onCloseResultsHandler = () => {
     onClosePreviewHandler();
+    setIsMapVisible(false);
     setActive(false);
   };
 

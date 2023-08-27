@@ -29,8 +29,14 @@ export default function Map() {
       const boundsHeight = currentBounds.ne[0] - currentBounds.sw[0];
       const lngPixelRatio = boundsWidth / containerWidth;
       const latPixelRatio = boundsHeight / containerHeight;
-      const offsetX = (offset[0] * lngPixelRatio) / Math.pow(2, zoomDiff);
-      const offsetY = (offset[1] * latPixelRatio) / Math.pow(2, zoomDiff);
+      const offsetX =
+        containerWidth > 10
+          ? (offset[0] * lngPixelRatio) / Math.pow(2, zoomDiff)
+          : 0;
+      const offsetY =
+        containerHeight > 10
+          ? (offset[1] * latPixelRatio) / Math.pow(2, zoomDiff)
+          : 0;
       flyTo = [center[0] - offsetY, center[1] - offsetX] as Point;
     }
     setCurrentCenter(flyTo);
