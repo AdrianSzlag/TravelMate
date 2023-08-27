@@ -27,7 +27,7 @@ const Day = ({
       onClick={onClick}
       isSelected={isSelected}
       isDisabled={isDisabled}
-      className="w-16 h-20"
+      className="h-[4.5rem] w-14"
     >
       <span className={`${textColor} text-sm`}>{dayName}</span>
       <span className={`${textColor} mt-0.5`}>{day}</span>

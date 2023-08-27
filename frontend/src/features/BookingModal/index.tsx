@@ -20,7 +20,7 @@ const BookingModal = () => {
   if (!isOpen) return null;
   const formValid = !!selectedDate && !!selectedTime && !loading;
 
-  const onBackdropClickHandler = () => {
+  const onCancelClickHandler = () => {
     dispatch(bookActions.hideModal());
   };
   const onBookClickHandler = () => {
@@ -44,8 +44,8 @@ const BookingModal = () => {
 
   return (
     <Modal
-      onBackdropClick={onBackdropClickHandler}
-      className="w-full border bg-white shadow-xl sm:w-[550px] sm:rounded-xl md:w-[700px]"
+      onBackdropClick={onCancelClickHandler}
+      className="flex h-full w-full flex-col justify-center border bg-white shadow-xl xs:h-fit sm:w-[550px] sm:rounded-xl md:w-[700px]"
     >
       <Calendar />
       <ServiceOverview />
@@ -57,11 +57,17 @@ const BookingModal = () => {
           formValid
             ? "cursor-pointer bg-blue-600"
             : "cursor-not-allowed bg-blue-300"
-        } mx-4 mt-4 box-border  rounded-lg py-2 text-center text-white `}
+        } mx-4 mt-4 box-border rounded-lg py-2 text-center text-white `}
         onClick={onBookClickHandler}
       >
         {!isEditing && (!loading ? "Book" : "Booking...")}
         {isEditing && (!loading ? "Save" : "Saving...")}
+      </div>
+      <div
+        className="mx-4 mt-2 box-border cursor-pointer rounded-lg bg-gray-600 py-2 text-center text-white"
+        onClick={onCancelClickHandler}
+      >
+        Cancel
       </div>
       <div className="mt-4"></div>
     </Modal>

@@ -10,7 +10,7 @@ const Arrow = ({ direction, onClick, className }: Props) => {
   const Icon = direction === "left" ? FaChevronLeft : FaChevronRight;
   return (
     <div
-      className={`flex justify-center items-center w-16 cursor-pointer ${className}`}
+      className={`flex h-full w-14 cursor-pointer items-center justify-center ${className}`}
       onClick={onClick}
     >
       <Icon className="text-gray-500" />

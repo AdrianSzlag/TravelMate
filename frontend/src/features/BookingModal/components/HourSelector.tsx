@@ -18,7 +18,7 @@ const Hour = ({ hour, isNow, isSelected, isDisabled, onClick }: HourProps) => {
       onClick={onClick}
       isSelected={isSelected}
       isDisabled={isDisabled}
-      className="h-8 w-16"
+      className="h-8 w-14"
     >
       <span className={`${textColor} text-sm`}>{hour}</span>
     </Option>

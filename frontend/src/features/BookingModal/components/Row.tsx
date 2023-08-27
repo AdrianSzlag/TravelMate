@@ -24,16 +24,16 @@ export const Option = ({
   };
   return (
     <div
-      className={`${className} ${bgColor} relative rounded-xl border text flex justify-center items-center w-16 h-20 cursor-pointer flex-shrink-0 flex-grow-0`}
+      className={`${className} ${bgColor} relative flex flex-shrink-0 flex-grow-0 cursor-pointer items-center justify-center rounded-xl border `}
       onClick={onClickHandler}
     >
       <div
-        className={`${textColor} flex flex-col justify-center items-center font-semibold z-0`}
+        className={`${textColor} z-0 flex flex-col items-center justify-center font-semibold`}
       >
         {children}
       </div>
       {isDisabled && (
-        <div className="absolute w-full h-full bg-[#0000000a] rounded-xl !cursor-not-allowed z-10"></div>
+        <div className="absolute z-10 h-full w-full !cursor-not-allowed rounded-xl bg-[#0000000a]"></div>
       )}
     </div>
   );
@@ -56,19 +56,22 @@ export const Row = ({ children }: RowProps) => {
   };
 
   return (
-    <div className="flex items-center mt-4">
+    <div className="mt-4 flex items-center">
       <Arrow
         direction="left"
         onClick={() => clickHandler("left")}
-        className="flex-grow-0 flex-shrink-0"
+        className="flex-shrink-0 flex-grow-0"
       />
-      <div className="flex gap-4 flex-1 overflow-hidden" ref={rowRef}>
+      <div
+        className="no-scrollbar flex flex-1 gap-4 overflow-x-auto"
+        ref={rowRef}
+      >
         {children}
       </div>
       <Arrow
         direction="right"
         onClick={() => clickHandler("right")}
-        className="flex-grow-0 flex-shrink-0"
+        className="flex-shrink-0 flex-grow-0"
       />
     </div>
   );
