@@ -1,119 +1,29 @@
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { useState } from "react";
-import { getMonthName, getMonthNameShort, getTime } from "utils/dateTime";
+import { getMonthNameShort } from "utils/dateTime";
 import ConfirmCancel from "./ConfirmCancel";
 import { reservationsActions } from "store/reservations-slice";
 import { Link } from "react-router-dom";
 import { IReservation } from "types/IReservation";
 import { cancelReservation } from "store/reservations-actions";
-import Img from "components/Img";
-import { showBookingModal, showEditingModal } from "store/book-actions";
+import { showBookingModal } from "store/book-actions";
+import Item from "./Item";
 
-interface ItemProps {
-  id: string;
-  serviceId: string;
-  placeId: string;
-  title: string;
-  address?: string;
-  name: string;
-  image?: string;
-  date: string;
-  selected: boolean;
+interface FilterProps {
   onClick: () => void;
-  onCancel: () => void;
-  bookAgain?: boolean;
+  selected: boolean;
+  text: string;
 }
-
-const Item = ({
-  id,
-  placeId,
-  serviceId,
-  title,
-  address,
-  name,
-  image,
-  date,
-  onClick,
-  onCancel,
-  bookAgain = false,
-}: ItemProps) => {
-  const dispatch = useAppDispatch();
-  const dateObj = date ? new Date(date) : undefined;
-  const isDone = dateObj ? dateObj.getTime() < Date.now() : false;
-  const onCancelClickHandler = () => onCancel();
-  const openEditModal = () => {
-    dispatch(showEditingModal(id, placeId, serviceId, date));
-    console.log("open edit modal");
-  };
+const Filter = ({ onClick, selected, text }: FilterProps) => {
   return (
     <div
-      className="m-2 box-border flex rounded-lg border shadow"
+      className={
+        "cursor-pointer rounded py-1 px-2 text-sm font-semibold" +
+        (selected ? " bg-gray-700 text-white" : " bg-gray-200 text-black")
+      }
       onClick={onClick}
     >
-      <div className="flex-1 px-4 py-2">
-        {isDone && (
-          <div className="inline-block rounded-3xl bg-gray-200 px-2 text-sm font-semibold text-gray-600">
-            Ended
-          </div>
-        )}
-        <h1 className="text-lg font-semibold text-gray-800">{title}</h1>
-        {address && (
-          <h6 className="text-sm font-semibold text-gray-400">{address}</h6>
-        )}
-        <Link
-          className="mt-2 flex flex-row items-center"
-          to={`/place/${placeId}?details=overview`}
-        >
-          {image && (
-            <Img
-              src={"/" + image}
-              alt={name}
-              className="mr-2 h-5 w-5 rounded-full"
-            />
-          )}
-          <h3 className="font-semibold text-gray-600">{name}</h3>
-        </Link>
-        <div className="mb-1 mt-2 flex gap-2">
-          {!isDone && (
-            <>
-              <button
-                className="rounded bg-red-500 px-2 py-0.5 text-sm font-semibold text-white"
-                onClick={onCancelClickHandler}
-              >
-                Cancel
-              </button>
-              <button
-                className="rounded bg-gray-500 px-2 py-0.5 text-sm font-semibold text-white"
-                onClick={openEditModal}
-              >
-                Edit
-              </button>
-            </>
-          )}
-          {isDone && bookAgain && (
-            <Link
-              className="rounded bg-blue-500 px-2 py-0.5 text-sm font-semibold text-white"
-              to={`/place/${placeId}?details=services`}
-            >
-              Book again
-            </Link>
-          )}
-        </div>
-      </div>
-      {dateObj && (
-        <>
-          <div className="my-4 flex-shrink-0 flex-grow-0 border-l"></div>
-          <div className="flex w-20 flex-none flex-col items-center justify-center">
-            <div className="text-sm text-gray-600">
-              {getMonthName(dateObj.getMonth())}
-            </div>
-            <div className="text-lg font-semibold text-gray-800">
-              {dateObj.getDate()}
-            </div>
-            <div className="text-sm text-gray-600">{getTime(date!)}</div>
-          </div>
-        </>
-      )}
+      {text}
     </div>
   );
 };
@@ -127,6 +37,7 @@ const List = () => {
     (state) => state.reservations.selected
   );
   const dispatch = useAppDispatch();
+  const [filter, setFilter] = useState<undefined | string>(undefined);
   const setSelectedReservation = (id: string) => {
     dispatch(reservationsActions.setSelected(id));
   };
@@ -156,22 +67,81 @@ const List = () => {
   return (
     <>
       <div className="relative h-full max-h-full w-full flex-shrink-0 flex-grow-0 sm:w-[400px]">
-        <div className="absolute top-0 left-0 bottom-0 right-0  overflow-auto bg-[#fcfcfc]">
-          {reservations.length === 0 && (
-            <h1 className="m-4 text-lg font-semibold text-gray-600">
-              No reservations yet{" "}
-              <Link to="/" className="text-blue-600">
-                Book something now {":)"}
-              </Link>
-            </h1>
+        <div className="absolute top-0 left-0 bottom-0 right-0 overflow-auto bg-[#fcfcfc]">
+          {businesses && businesses.length > 0 && (
+            <div className="no-scrollbar my-4 flex w-full gap-2 px-4 ">
+              <Filter
+                onClick={() => setFilter(undefined)}
+                selected={filter === undefined}
+                text="Your reservations"
+              />
+              {businesses &&
+                businesses.length > 0 &&
+                businesses.map((business) => {
+                  return (
+                    <Filter
+                      key={business.id}
+                      onClick={() => setFilter(business.id)}
+                      selected={filter === business.id}
+                      text={business.name}
+                    />
+                  );
+                })}
+            </div>
           )}
-          {reservations.length > 0 && (
-            <h1 className="m-4 font-bold text-gray-800">Your reservations:</h1>
+          {filter === undefined && (
+            <>
+              {reservations.length > 0 && (
+                <h1 className="m-4 font-bold text-gray-800">
+                  Your reservations:
+                </h1>
+              )}
+              {reservations.length === 0 && (
+                <h1 className="m-4 text-lg font-semibold text-gray-600">
+                  No reservations yet{" "}
+                  <Link to="/" className="text-blue-600">
+                    Book something now {":)"}
+                  </Link>
+                </h1>
+              )}
+              {sortedReservations
+                .filter(
+                  (reservation) =>
+                    !reservation.user || reservation.user.id === userId
+                )
+                .map((reservation) => (
+                  <Item
+                    id={reservation.id}
+                    serviceId={reservation.service.id}
+                    placeId={reservation.place.id}
+                    key={reservation.id}
+                    title={reservation.service.name}
+                    address={reservation.place.address}
+                    name={reservation.place.name}
+                    selected={reservation.id === selectedReservation?.id}
+                    image={reservation.place.image}
+                    date={reservation.date}
+                    onClick={() => setSelectedReservation(reservation.id)}
+                    onCancel={() => cancelReservationHandler(reservation)}
+                    bookAgain={true}
+                  />
+                ))}
+            </>
           )}
+          {filter !== undefined &&
+            businesses.length > 0 &&
+            businesses
+              .filter((b) => b.id === filter)
+              .map((b) => (
+                <div className="mx-4 mb-4 flex items-baseline ">
+                  <h1 className="mr-2 text-lg font-semibold ">{b.name}</h1>
+                  <div className=" text-sm text-gray-400">{b.address}</div>
+                </div>
+              ))}
           {sortedReservations
             .filter(
               (reservation) =>
-                !reservation.user || reservation.user.id === userId
+                reservation.user && reservation.place.id === filter
             )
             .map((reservation) => (
               <Item
@@ -180,58 +150,14 @@ const List = () => {
                 placeId={reservation.place.id}
                 key={reservation.id}
                 title={reservation.service.name}
-                address={reservation.place.address}
-                name={reservation.place.name}
+                name={reservation.user!.name}
                 selected={reservation.id === selectedReservation?.id}
-                image={reservation.place.image}
+                image={reservation.user!.profileImage}
                 date={reservation.date}
                 onClick={() => setSelectedReservation(reservation.id)}
                 onCancel={() => cancelReservationHandler(reservation)}
-                bookAgain={true}
               />
             ))}
-          {businesses && businesses.length > 0 && (
-            <>
-              <h1 className="m-4 font-bold text-gray-800">
-                Reservations in your businesses:
-              </h1>
-              {businesses.map((business) => {
-                return (
-                  <div key={business.id}>
-                    <div className="mx-4 mb-4 flex items-baseline ">
-                      <h1 className="mr-2 text-lg font-semibold text-gray-600">
-                        {business.name}
-                      </h1>
-                      <div className=" text-sm text-gray-400">
-                        {business.address}
-                      </div>
-                    </div>
-                    {sortedReservations
-                      .filter(
-                        (reservation) =>
-                          reservation.user &&
-                          reservation.place.id === business.id
-                      )
-                      .map((reservation) => (
-                        <Item
-                          id={reservation.id}
-                          serviceId={reservation.service.id}
-                          placeId={reservation.place.id}
-                          key={reservation.id}
-                          title={reservation.service.name}
-                          name={reservation.user!.name}
-                          selected={reservation.id === selectedReservation?.id}
-                          image={reservation.user!.profileImage}
-                          date={reservation.date}
-                          onClick={() => setSelectedReservation(reservation.id)}
-                          onCancel={() => cancelReservationHandler(reservation)}
-                        />
-                      ))}
-                  </div>
-                );
-              })}
-            </>
-          )}
         </div>
       </div>
       <ConfirmCancel />
