@@ -16,3 +16,12 @@
     }
   }
 }
+
+@media (max-width: 474px) {
+  .pigeon-attribution {
+    top: 0;
+    right: 0;
+    left: auto !important;
+    bottom: auto !important;
+  }
+}

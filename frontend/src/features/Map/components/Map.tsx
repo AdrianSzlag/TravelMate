@@ -85,7 +85,10 @@ export default function Map() {
   }, [focused]);
 
   return (
-    <div className="min-h-0 flex-shrink flex-grow" ref={containerRef}>
+    <div
+      className="h-[80%] min-h-0 w-full flex-shrink-0 flex-grow-0 snap-start overflow-hidden xs:h-full xs:flex-shrink xs:flex-grow "
+      ref={containerRef}
+    >
       <PigeonMap
         defaultCenter={defaultCenter}
         defaultZoom={defaultZoom}

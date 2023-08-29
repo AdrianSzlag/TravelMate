@@ -3,7 +3,6 @@ import Filters from "./components/FiltersCard";
 import ResultsList from "./components/ResultsCard";
 import Carousel from "./components/Carousel";
 import CarouselItem from "./components/CarouselItem";
-import NaviButton from "./components/NaviButton";
 import Place from "./components/PlaceCard";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { placesActions } from "store/places-slice";
@@ -11,9 +10,15 @@ import { IPlace } from "types/IPlace";
 import { useParams, useLocation } from "react-router-dom";
 import { fetchPlace, fetchPlaces } from "store/places-actions";
 import { useAppNavigate } from "hooks/use-navigate";
-import MapButton from "./components/MapButton";
+import { IoMdArrowRoundBack, IoMdArrowRoundUp } from "react-icons/io";
+import { IoClose } from "react-icons/io5";
 
-const Menu = () => {
+interface Props {
+  minimized: boolean;
+  toggleScroll: () => void;
+}
+
+const Menu = ({ minimized, toggleScroll }: Props) => {
   const dispatch = useAppDispatch();
   const focused = useAppSelector((state) => state.places.focused);
   const navigate = useAppNavigate();
@@ -44,6 +49,10 @@ const Menu = () => {
     dispatch(fetchPlaces(""));
   }, []);
 
+  useEffect(() => {
+    if (minimized && !active) toggleScroll();
+  }, [minimized, active]);
+
   const setFocused = (place: IPlace | null) => {
     dispatch(placesActions.setFocused(place));
   };
@@ -59,7 +68,7 @@ const Menu = () => {
   };
 
   const toggleMapVisibility = () => {
-    setIsMapVisible((prev) => !prev);
+    toggleScroll();
   };
 
   const onSubmitFiltersHandler = () => {
@@ -68,10 +77,9 @@ const Menu = () => {
 
   return (
     <Carousel
-      className={`${isMapVisible ? " !h-[40%] xs:!h-full " : " "} 
-      lg:w-[656px] ${active ? " xs:w-[400px]" : " xs:w-[256px] "} ${
-        active && focused ? " lg:!w-[800px] xl:!w-[1056px]" : " "
-      }`}
+      className={`h-full lg:w-[656px] ${
+        active ? " xs:w-[400px]" : " xs:w-[256px] "
+      } ${active && focused ? " lg:!w-[800px] xl:!w-[1056px]" : " "}`}
     >
       <CarouselItem className="h-full w-full sm:w-[256px]">
         <Filters onSubmit={onSubmitFiltersHandler} />
@@ -82,30 +90,53 @@ const Menu = () => {
           (active ? "" : "hidden lg:block")
         }
       >
-        <div className={!focused ? "lg:hidden" : "xl:hidden"}>
-          <div className="flex w-full items-center justify-between">
-            <NaviButton text="Filters" onBack={onCloseResultsHandler} />
-            <MapButton
-              isMapVisible={isMapVisible}
-              toggleMapVisibility={toggleMapVisibility}
-            />
-          </div>
-        </div>
+        <button
+          onClick={onCloseResultsHandler}
+          className={
+            "flex items-center gap-2 p-2 font-bold text-gray-500 hover:text-gray-800 " +
+            (!focused ? "lg:hidden" : "xl:hidden")
+          }
+        >
+          <IoMdArrowRoundBack className="h-7 w-7 " />
+          Filters
+        </button>
         <ResultsList />
       </CarouselItem>
       {active && focused && (
-        <CarouselItem className="h-full w-full xs:w-[400px]">
+        <CarouselItem
+          className="h-full w-full xs:w-[400px] "
+          onClick={() => minimized && toggleScroll()}
+        >
           <div className="box-border h-full !overflow-hidden sm:px-2 sm:py-3">
-            <div className="relative h-full overflow-y-auto bg-white sm:rounded-xl sm:border sm:shadow-xl">
-              <div className="absolute flex w-full flex-row-reverse justify-between">
-                <NaviButton onBack={onClosePreviewHandler} />
-                <MapButton
-                  isMapVisible={isMapVisible}
-                  toggleMapVisibility={toggleMapVisibility}
-                  className="m-2 rounded-full border bg-white !p-1 shadow-xl"
-                />
+            <div
+              className={
+                "relative h-full bg-white sm:rounded-xl sm:border sm:shadow-xl " +
+                (minimized
+                  ? "overflow-hidden xs:overflow-auto"
+                  : "overflow-auto")
+              }
+            >
+              <div className="absolute flex w-full justify-end">
+                <button
+                  onClick={onClosePreviewHandler}
+                  className={
+                    "m-2 items-center rounded-full border bg-white p-0.5 font-bold text-gray-500 shadow-xl hover:text-gray-800 " +
+                    (minimized ? "hidden xs:flex" : "flex")
+                  }
+                >
+                  <IoClose className="h-7 w-7 text-gray-600" />
+                </button>
+                <button
+                  onClick={toggleScroll}
+                  className={
+                    "m-2 items-center p-0.5 font-bold text-gray-500 hover:text-gray-800 " +
+                    (minimized ? "flex xs:hidden" : "hidden")
+                  }
+                >
+                  <IoMdArrowRoundUp className="h-7 w-7 text-gray-600" />
+                </button>
               </div>
-              <Place place={focused} />
+              <Place place={focused} minimized={minimized} />
             </div>
           </div>
         </CarouselItem>

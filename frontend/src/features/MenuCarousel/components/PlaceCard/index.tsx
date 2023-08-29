@@ -19,7 +19,7 @@ const CarouselButton = ({ text, onClick, active }: ButtonProps) => {
   return (
     <button
       onClick={onClick}
-      className={`box-border px-4 py-3 font-semibold ${
+      className={`box-border flex-grow py-3 font-semibold ${
         active
           ? "border-b-2 border-blue-500 text-blue-500 hover:bg-blue-100"
           : "text-gray-500 hover:bg-gray-100"
@@ -32,9 +32,10 @@ const CarouselButton = ({ text, onClick, active }: ButtonProps) => {
 
 interface Props {
   place: IPlace;
+  minimized: boolean;
 }
 
-const Place = ({ place }: Props) => {
+const Place = ({ minimized, place }: Props) => {
   const user = useAppSelector((state) => state.auth.user);
   const ownerId = useAppSelector((state) => state.places.focused?.createdBy.id);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -75,7 +76,10 @@ const Place = ({ place }: Props) => {
     <div>
       <Img
         src={`/${place.thumbnail}`}
-        className=" h-[200px] w-full object-cover"
+        className={
+          "w-full object-cover transition-transform " +
+          (minimized ? "h-0 xs:h-[200px]" : "h-[200px]")
+        }
       />
       <div className="px-5 py-3 ">
         <h1 className="pb-1 text-2xl font-semibold text-gray-600">
