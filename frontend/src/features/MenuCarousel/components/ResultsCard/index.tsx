@@ -45,7 +45,7 @@ const Result = ({
       <Img
         src={`/${thumbnail}`}
         alt=""
-        className="h-24 w-24 rounded-xl object-cover"
+        className="h-24 w-24 rounded object-cover"
       />
     </div>
   );
@@ -77,7 +77,7 @@ const ResultsList = ({ onFiltersClick }: Props) => {
         </button>
         <SearchInput />
       </div>
-      <ul className="my-4 flex w-full flex-shrink flex-grow flex-col divide-y-2 overflow-auto">
+      <ul className="my-4 flex w-full flex-shrink flex-grow flex-col gap-4 overflow-auto">
         {results.map((result) => {
           return (
             <li key={result.id}>
