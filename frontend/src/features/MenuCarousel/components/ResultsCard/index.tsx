@@ -57,6 +57,7 @@ interface Props {
 
 const ResultsList = ({ onFiltersClick }: Props) => {
   const results = useAppSelector((state) => state.places.places);
+  const focused = useAppSelector((state) => state.places.focused);
   const dispatch = useAppDispatch();
 
   const onClickHandle = (result: IPlace) => {
@@ -66,7 +67,12 @@ const ResultsList = ({ onFiltersClick }: Props) => {
   return (
     <div className="p-4">
       <div className="flex w-full">
-        <button className="mr-4 items-center" onClick={onFiltersClick}>
+        <button
+          className={
+            "mr-4 items-center " + (!focused ? "lg:hidden" : "xl:hidden")
+          }
+          onClick={onFiltersClick}
+        >
           <IoFilterSharp className="h-7 w-7" />
         </button>
         <SearchInput />
