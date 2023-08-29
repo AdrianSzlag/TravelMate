@@ -77,7 +77,7 @@ const Place = ({ minimized, place }: Props) => {
       <Img
         src={`/${place.thumbnail}`}
         className={
-          "w-full object-cover transition-transform " +
+          "w-full object-cover transition-all " +
           (minimized ? "h-0 xs:h-[200px]" : "h-[200px]")
         }
       />

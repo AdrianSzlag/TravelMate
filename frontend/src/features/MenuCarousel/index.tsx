@@ -16,9 +16,10 @@ import { IoClose } from "react-icons/io5";
 interface Props {
   minimized: boolean;
   toggleScroll: () => void;
+  lockScroll: (lock: boolean) => void;
 }
 
-const Menu = ({ minimized, toggleScroll }: Props) => {
+const Menu = ({ minimized, toggleScroll, lockScroll }: Props) => {
   const dispatch = useAppDispatch();
   const focused = useAppSelector((state) => state.places.focused);
   const navigate = useAppNavigate();
@@ -31,11 +32,8 @@ const Menu = ({ minimized, toggleScroll }: Props) => {
       pathname.startsWith("/")
   );
 
-  const [isMapVisible, setIsMapVisible] = useState(false);
-
   useEffect(() => {
     if (focused) {
-      setIsMapVisible(false);
       setActive(true);
     }
     const path = `/${focused ? `place/${focused.id}` : "search"}`;
@@ -53,6 +51,10 @@ const Menu = ({ minimized, toggleScroll }: Props) => {
     if (minimized && !active) toggleScroll();
   }, [minimized, active]);
 
+  useEffect(() => {
+    lockScroll(!active);
+  }, [active]);
+
   const setFocused = (place: IPlace | null) => {
     dispatch(placesActions.setFocused(place));
   };
@@ -63,16 +65,15 @@ const Menu = ({ minimized, toggleScroll }: Props) => {
 
   const onCloseResultsHandler = () => {
     onClosePreviewHandler();
-    setIsMapVisible(false);
     setActive(false);
-  };
-
-  const toggleMapVisibility = () => {
-    toggleScroll();
   };
 
   const onSubmitFiltersHandler = () => {
     setActive(true);
+  };
+
+  const maximize = () => {
+    minimized && toggleScroll();
   };
 
   return (
@@ -89,14 +90,14 @@ const Menu = ({ minimized, toggleScroll }: Props) => {
           "h-full w-full bg-white xs:w-[400px] " +
           (active ? "" : "hidden lg:block")
         }
-        onClick={() => minimized && toggleScroll()}
+        onClick={maximize}
       >
         <ResultsList onFiltersClick={onCloseResultsHandler} />
       </CarouselItem>
       {active && focused && (
         <CarouselItem
           className="h-full w-full xs:w-[400px] "
-          onClick={() => minimized && toggleScroll()}
+          onClick={maximize}
         >
           <div className="box-border h-full !overflow-hidden sm:px-2 sm:py-3">
             <div
@@ -118,7 +119,7 @@ const Menu = ({ minimized, toggleScroll }: Props) => {
                   <IoClose className="h-7 w-7 text-gray-600" />
                 </button>
                 <button
-                  onClick={toggleScroll}
+                  onClick={maximize}
                   className={
                     "m-2 items-center p-0.5 font-bold text-gray-500 hover:text-gray-800 " +
                     (minimized ? "flex xs:hidden" : "hidden")

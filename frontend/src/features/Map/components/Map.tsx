@@ -86,7 +86,7 @@ export default function Map() {
 
   return (
     <div
-      className="h-[80%] min-h-0 w-full flex-shrink-0 flex-grow-0 snap-start overflow-hidden xs:h-full xs:flex-shrink xs:flex-grow "
+      className="h-full min-h-0 w-full min-w-0 overflow-hidden"
       ref={containerRef}
     >
       <PigeonMap
