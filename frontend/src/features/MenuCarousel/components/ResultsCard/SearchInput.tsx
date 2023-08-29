@@ -30,7 +30,7 @@ const SearchInput = () => {
     };
   }, [searchQuery]);
   return (
-    <div className="relative mx-2 mt-1 mb-1 lg:mt-2">
+    <div className="relative w-full">
       <input
         type="text"
         className="block w-full rounded border border-gray-300 bg-gray-50 p-3 text-gray-900 focus:border-[#2563eb] focus:ring-[#2563eb]"

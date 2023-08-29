@@ -4,8 +4,9 @@ import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import Rating from "../Rating";
 import Img from "components/Img";
 import SearchInput from "./SearchInput";
+import { IoFilterSharp } from "react-icons/io5";
 
-interface Props {
+interface ResultProps {
   onClick: () => void;
   name: string;
   description?: string;
@@ -21,10 +22,10 @@ const Result = ({
   thumbnail,
   rating,
   numberOfReviews,
-}: Props) => {
+}: ResultProps) => {
   return (
     <div
-      className="flex cursor-pointer justify-between px-4 py-3  text-gray-600 hover:bg-gray-50"
+      className="flex cursor-pointer justify-between text-gray-600 hover:bg-gray-50"
       onClick={onClick}
     >
       <div>
@@ -50,7 +51,11 @@ const Result = ({
   );
 };
 
-const ResultsList = () => {
+interface Props {
+  onFiltersClick: () => void;
+}
+
+const ResultsList = ({ onFiltersClick }: Props) => {
   const results = useAppSelector((state) => state.places.places);
   const dispatch = useAppDispatch();
 
@@ -59,9 +64,14 @@ const ResultsList = () => {
   };
 
   return (
-    <>
-      <SearchInput />
-      <ul className="flex w-full flex-shrink flex-grow flex-col divide-y-2 overflow-auto">
+    <div className="p-4">
+      <div className="flex w-full">
+        <button className="mr-4 items-center" onClick={onFiltersClick}>
+          <IoFilterSharp className="h-7 w-7" />
+        </button>
+        <SearchInput />
+      </div>
+      <ul className="my-4 flex w-full flex-shrink flex-grow flex-col divide-y-2 overflow-auto">
         {results.map((result) => {
           return (
             <li key={result.id}>
@@ -77,7 +87,7 @@ const ResultsList = () => {
           );
         })}
       </ul>
-    </>
+    </div>
   );
 };
 export default ResultsList;

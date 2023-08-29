@@ -89,18 +89,9 @@ const Menu = ({ minimized, toggleScroll }: Props) => {
           "h-full w-full bg-white xs:w-[400px] " +
           (active ? "" : "hidden lg:block")
         }
+        onClick={() => minimized && toggleScroll()}
       >
-        <button
-          onClick={onCloseResultsHandler}
-          className={
-            "flex items-center gap-2 p-2 font-bold text-gray-500 hover:text-gray-800 " +
-            (!focused ? "lg:hidden" : "xl:hidden")
-          }
-        >
-          <IoMdArrowRoundBack className="h-7 w-7 " />
-          Filters
-        </button>
-        <ResultsList />
+        <ResultsList onFiltersClick={onCloseResultsHandler} />
       </CarouselItem>
       {active && focused && (
         <CarouselItem
