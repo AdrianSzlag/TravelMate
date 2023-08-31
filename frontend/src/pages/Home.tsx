@@ -1,4 +1,4 @@
-import { Map } from "features/Map";
+import Map from "features/Map/components/Map";
 import Header from "features/Header";
 import { Menu } from "features/MenuCarousel";
 import BookingModal from "features/BookingModal";

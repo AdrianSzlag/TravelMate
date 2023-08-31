@@ -1,118 +1,81 @@
-import { useEffect, useRef, useState } from "react";
-import { Map as PigeonMap, Marker, Point, Bounds } from "pigeon-maps";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
-import { IPlace } from "types/IPlace";
+import { useEffect, useState } from "react";
+import Map, { Marker, ViewStateChangeEvent } from "react-map-gl/maplibre";
 import { placesActions } from "store/places-slice";
+import IPlace from "types/IPlace";
+import "maplibre-gl/dist/maplibre-gl.css";
+import { PiMapPinFill } from "react-icons/pi";
+import { MapLibreEvent } from "maplibre-gl";
 
-const defaultCenter: Point = [50.06301434728838, 19.941015236678783];
-const defaultZoom: number = 13;
-
-export default function Map() {
+const MainMap = () => {
   const dispatch = useAppDispatch();
   const places = useAppSelector((state) => state.places.places);
   const focused = useAppSelector((state) => state.places.focused);
-  const setFocused = (place: IPlace | null) =>
+  const setFocused = (place: IPlace | null) => {
     dispatch(placesActions.setFocused(place));
-
-  const [currentCenter, setCurrentCenter] = useState<Point>(defaultCenter);
-  const [currentBounds, setCurrentBounds] = useState<Bounds>();
-  const [currentZoom, setCurrentZoom] = useState<number>(defaultZoom);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const flyTo = (center: Point, offset: [number, number], zoom: number) => {
-    let flyTo = [center[0], center[1]] as Point;
-    if (currentBounds && containerRef.current) {
-      const zoomDiff = zoom - currentZoom;
-      const containerWidth = containerRef.current.offsetWidth;
-      const containerHeight = containerRef.current.offsetHeight;
-      const boundsWidth = currentBounds.ne[1] - currentBounds.sw[1];
-      const boundsHeight = currentBounds.ne[0] - currentBounds.sw[0];
-      const lngPixelRatio = boundsWidth / containerWidth;
-      const latPixelRatio = boundsHeight / containerHeight;
-      const offsetX =
-        containerWidth > 10
-          ? (offset[0] * lngPixelRatio) / Math.pow(2, zoomDiff)
-          : 0;
-      const offsetY =
-        containerHeight > 10
-          ? (offset[1] * latPixelRatio) / Math.pow(2, zoomDiff)
-          : 0;
-      flyTo = [center[0] - offsetY, center[1] - offsetX] as Point;
-    }
-    setCurrentCenter(flyTo);
-    setCurrentZoom(zoom);
   };
+  const [viewState, setViewState] = useState({
+    longitude: 19.941015236678783,
+    latitude: 50.06301434728838,
+    zoom: 13,
+    padding: { top: 0, right: 0, bottom: 0, left: 0 },
+  });
 
-  const onBoundariesChangeHandler = ({
-    center,
-    zoom,
-    bounds,
-    initial,
-  }: {
-    center: [number, number];
-    bounds: Bounds;
-    zoom: number;
-    initial: boolean;
-  }) => {
-    setCurrentCenter(center);
-    setCurrentBounds(bounds);
-    setCurrentZoom(zoom);
+  const onMoveHandler = (evt: ViewStateChangeEvent) => {
+    setViewState(evt.viewState);
+  };
+  const onResize = (evt: MapLibreEvent) => {
+    const mapWidth = evt.target._container.offsetWidth;
+    const menuWidth =
+      mapWidth >= 1280
+        ? 1056
+        : mapWidth >= 1024
+        ? 800
+        : mapWidth >= 475
+        ? 400
+        : 0;
+    setViewState({
+      ...viewState,
+      padding: { top: 0, right: 0, bottom: 0, left: menuWidth },
+    });
   };
 
   useEffect(() => {
-    if (focused && containerRef.current) {
-      const mapWidth = containerRef.current.offsetWidth;
-      const menuWidth =
-        mapWidth >= 1280
-          ? 1056
-          : mapWidth >= 1024
-          ? 800
-          : mapWidth >= 475
-          ? 400
-          : 0;
-      const viewport = mapWidth - menuWidth;
-      const offsetX = mapWidth / 2 - viewport / 2;
-      console.log(mapWidth, menuWidth, viewport, offsetX);
-      flyTo(
-        [focused.location.coordinates[1], focused.location.coordinates[0]],
-        [offsetX, 0],
-        14
-      );
-    } else {
-      //setCurrentCenter(defaultCenter);
-      //setZoom(defaultZoom);
+    if (focused) {
+      setViewState({
+        ...viewState,
+        longitude: focused.location.coordinates[0],
+        latitude: focused.location.coordinates[1],
+        zoom: 14,
+      });
     }
   }, [focused]);
 
   return (
-    <div
-      className="h-full min-h-0 w-full min-w-0 overflow-hidden"
-      ref={containerRef}
-    >
-      <PigeonMap
-        defaultCenter={defaultCenter}
-        defaultZoom={defaultZoom}
-        center={currentCenter}
-        onBoundsChanged={onBoundariesChangeHandler}
-        maxZoom={16}
-        minZoom={11}
-        zoom={currentZoom}
+    <div className="h-full min-h-0 w-full min-w-0 overflow-hidden">
+      <Map
+        {...viewState}
+        onMove={onMoveHandler}
+        onResize={onResize}
+        onLoad={onResize}
+        mapStyle="https://api.maptiler.com/maps/basic-v2/style.json?key=u0kFdoythHBvPdgFbgqj"
       >
         {places.map((place) => {
           return (
             <Marker
               key={place.id}
-              width={30}
-              anchor={[
-                place.location.coordinates[1],
-                place.location.coordinates[0],
-              ]}
+              longitude={place.location.coordinates[0]}
+              latitude={place.location.coordinates[1]}
+              anchor="bottom"
               onClick={() => setFocused(place)}
-              color="#1d4ed8"
-            />
+            >
+              <PiMapPinFill className="h-8 w-8 cursor-pointer text-blue-600 drop-shadow-[0_0_4px_rgba(255,255,255,1)] hover:drop-shadow-[0_0_4px_rgba(0,0,0,0.3)]" />
+            </Marker>
           );
         })}
-      </PigeonMap>
+      </Map>
     </div>
   );
-}
+};
+
+export default MainMap;

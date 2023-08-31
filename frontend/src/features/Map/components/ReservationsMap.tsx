@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { Map as PigeonMap, Marker, Point, Bounds } from "pigeon-maps";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
-import { IPlace } from "types/IPlace";
+import { useEffect, useState } from "react";
+import Map, { Marker, ViewStateChangeEvent } from "react-map-gl/maplibre";
 import { placesActions } from "store/places-slice";
+import IPlace from "types/IPlace";
+import "maplibre-gl/dist/maplibre-gl.css";
+import { PiMapPinFill } from "react-icons/pi";
+import { MapLibreEvent } from "maplibre-gl";
 import { IReservation } from "types/IReservation";
 import { reservationsActions } from "store/reservations-slice";
-
-const defaultCenter: Point = [50.06301434728838, 19.941015236678783];
-const defaultZoom: number = 13;
 
 export default function ReservationsMap() {
   const reservations = useAppSelector(
@@ -15,40 +15,19 @@ export default function ReservationsMap() {
   );
   const selected = useAppSelector((state) => state.reservations.selected);
   const dispatch = useAppDispatch();
-
-  const [center, setCenter] = useState<Point>(defaultCenter);
-  const [bounds, setBounds] = useState<Bounds>();
-  const [zoom, setZoom] = useState<number>(defaultZoom);
-
-  const onBoundariesChangeHandler = ({
-    center,
-    zoom,
-    bounds,
-    initial,
-  }: {
-    center: [number, number];
-    bounds: Bounds;
-    zoom: number;
-    initial: boolean;
-  }) => {
-    setCenter(center);
-    setBounds(bounds);
-    setZoom(zoom);
+  const setFocused = (id: string) => {
+    dispatch(reservationsActions.setSelected(id));
   };
 
-  useEffect(() => {
-    if (selected) {
-      let flyTo = [
-        selected.place.location.coordinates[1],
-        selected.place.location.coordinates[0],
-      ] as Point;
-      setCenter(flyTo);
-      setZoom(16);
-    } else {
-      setCenter(defaultCenter);
-      setZoom(defaultZoom);
-    }
-  }, [selected]);
+  const [viewState, setViewState] = useState({
+    longitude: 19.941015236678783,
+    latitude: 50.06301434728838,
+    zoom: 11,
+  });
+
+  const onMoveHandler = (evt: ViewStateChangeEvent) => {
+    setViewState(evt.viewState);
+  };
 
   const places = reservations.reduce((acc: IReservation[], reservation) => {
     if (!acc.find((res) => res.place.id === reservation.place.id)) {
@@ -57,35 +36,38 @@ export default function ReservationsMap() {
     return acc;
   }, []);
 
-  const setFocused = (id: string) => {
-    dispatch(reservationsActions.setSelected(id));
-  };
+  useEffect(() => {
+    if (selected) {
+      setViewState({
+        ...viewState,
+        longitude: selected.place.location.coordinates[0],
+        latitude: selected.place.location.coordinates[1],
+        zoom: 14,
+      });
+    }
+  }, [selected]);
 
   return (
-    <div className="min-h-0 flex-shrink flex-grow">
-      <PigeonMap
-        defaultCenter={defaultCenter}
-        defaultZoom={defaultZoom}
-        center={center}
-        onBoundsChanged={onBoundariesChangeHandler}
-        maxZoom={16}
-        minZoom={11}
-        zoom={zoom}
+    <div className="h-full min-h-0 w-full min-w-0 overflow-hidden">
+      <Map
+        {...viewState}
+        onMove={onMoveHandler}
+        mapStyle="https://api.maptiler.com/maps/basic-v2/style.json?key=u0kFdoythHBvPdgFbgqj"
       >
         {places.map((place) => {
           return (
             <Marker
               key={place.id}
-              width={30}
-              anchor={[
-                place.place.location.coordinates[1],
-                place.place.location.coordinates[0],
-              ]}
+              longitude={place.place.location.coordinates[0]}
+              latitude={place.place.location.coordinates[1]}
+              anchor="bottom"
               onClick={() => setFocused(place.id)}
-            />
+            >
+              <PiMapPinFill className="h-8 w-8 cursor-pointer text-blue-600 drop-shadow-[0_0_4px_rgba(255,255,255,1)] hover:drop-shadow-[0_0_4px_rgba(0,0,0,0.3)]" />
+            </Marker>
           );
         })}
-      </PigeonMap>
+      </Map>
     </div>
   );
 }
