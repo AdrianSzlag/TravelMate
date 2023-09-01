@@ -1,12 +1,34 @@
+interface ItemProps {
+  children: React.ReactNode;
+  className?: string;
+  onClick?: () => void;
+}
+
+export const CarouselItem = ({ children, className, onClick }: ItemProps) => {
+  const onClickHandler = () => {
+    if (onClick) onClick();
+  };
+  return (
+    <div
+      className={`relative flex-none snap-x overflow-auto bg-transparent ${
+        className ? className : " "
+      }`}
+      onClick={onClickHandler}
+    >
+      {children}
+    </div>
+  );
+};
+
 interface Props {
   children: React.ReactNode;
   className?: string;
 }
 
-const Carousel = ({ children, className }: Props) => {
+export const Carousel = ({ children, className }: Props) => {
   return (
     <div
-      className={`z-10 flex h-full max-h-full w-full flex-shrink-0 flex-grow-0 snap-start justify-end bg-transparent xs:absolute ${
+      className={`z-10 flex flex-none snap-start justify-end bg-transparent  ${
         className ? className : " "
       }`}
     >
@@ -14,5 +36,3 @@ const Carousel = ({ children, className }: Props) => {
     </div>
   );
 };
-
-export default Carousel;

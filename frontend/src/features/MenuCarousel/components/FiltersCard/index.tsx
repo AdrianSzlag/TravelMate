@@ -53,7 +53,7 @@ const Filters = ({ onSubmit }: Props) => {
 
   return (
     <form
-      className="flex h-full w-full flex-col gap-2 bg-gray-100 px-4 py-5"
+      className="flex w-full flex-col gap-2 px-4 py-5"
       onSubmit={onSubmitHandler}
     >
       <h3 className="text-lg font-semibold text-gray-600">Filters</h3>

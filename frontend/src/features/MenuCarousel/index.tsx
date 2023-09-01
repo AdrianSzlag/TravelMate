@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import Filters from "./components/FiltersCard";
 import ResultsList from "./components/ResultsCard";
-import Carousel from "./components/Carousel";
-import CarouselItem from "./components/CarouselItem";
+import { Carousel, CarouselItem } from "./components/Carousel";
 import Place from "./components/PlaceCard";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { placesActions } from "store/places-slice";
@@ -10,16 +9,16 @@ import { IPlace } from "types/IPlace";
 import { useParams, useLocation } from "react-router-dom";
 import { fetchPlace, fetchPlaces } from "store/places-actions";
 import { useAppNavigate } from "hooks/use-navigate";
-import { IoMdArrowRoundBack, IoMdArrowRoundUp } from "react-icons/io";
+import { IoMdArrowRoundUp } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
 
 interface Props {
   minimized: boolean;
-  toggleScroll: () => void;
-  lockScroll: (lock: boolean) => void;
+  maximize: () => void;
+  setScrollLock: (lock: boolean) => void;
 }
 
-const Menu = ({ minimized, toggleScroll, lockScroll }: Props) => {
+const Menu = ({ minimized, maximize, setScrollLock }: Props) => {
   const dispatch = useAppDispatch();
   const focused = useAppSelector((state) => state.places.focused);
   const navigate = useAppNavigate();
@@ -48,12 +47,9 @@ const Menu = ({ minimized, toggleScroll, lockScroll }: Props) => {
   }, []);
 
   useEffect(() => {
-    if (minimized && !active) toggleScroll();
+    if (minimized && !active) maximize();
+    setScrollLock(!active);
   }, [minimized, active]);
-
-  useEffect(() => {
-    lockScroll(!active);
-  }, [active]);
 
   const setFocused = (place: IPlace | null) => {
     dispatch(placesActions.setFocused(place));
@@ -72,22 +68,18 @@ const Menu = ({ minimized, toggleScroll, lockScroll }: Props) => {
     setActive(true);
   };
 
-  const maximize = () => {
-    minimized && toggleScroll();
-  };
-
   return (
     <Carousel
-      className={`h-full lg:w-[656px] ${
+      className={`min-h-full w-full xs:absolute xs:h-full xs:max-h-full lg:w-[656px] ${
         active ? " xs:w-[400px]" : " xs:w-[256px] "
       } ${active && focused ? " lg:!w-[800px] xl:!w-[1056px]" : " "}`}
     >
-      <CarouselItem className="h-full w-full sm:w-[256px]">
+      <CarouselItem className="w-full !bg-gray-100 xs:h-full sm:w-[256px]">
         <Filters onSubmit={onSubmitFiltersHandler} />
       </CarouselItem>
       <CarouselItem
         className={
-          "h-full w-full bg-white xs:w-[400px] " +
+          "w-full !bg-white xs:h-full xs:w-[400px] " +
           (active ? "" : "hidden lg:block")
         }
         onClick={maximize}
@@ -96,18 +88,11 @@ const Menu = ({ minimized, toggleScroll, lockScroll }: Props) => {
       </CarouselItem>
       {active && focused && (
         <CarouselItem
-          className="h-full w-full xs:w-[400px] "
+          className="w-full xs:h-full xs:w-[400px]"
           onClick={maximize}
         >
-          <div className="box-border h-full !overflow-hidden sm:px-2 sm:py-3">
-            <div
-              className={
-                "relative h-full bg-white sm:rounded-xl sm:border sm:shadow-xl " +
-                (minimized
-                  ? "overflow-hidden xs:overflow-auto"
-                  : "overflow-auto")
-              }
-            >
+          <div className="h-full sm:px-2 sm:py-3">
+            <div className="relative bg-white xs:h-full xs:overflow-auto sm:rounded-xl sm:border sm:shadow-xl">
               <div className="absolute flex w-full justify-end">
                 <button
                   onClick={onClosePreviewHandler}
@@ -128,7 +113,7 @@ const Menu = ({ minimized, toggleScroll, lockScroll }: Props) => {
                   <IoMdArrowRoundUp className="h-7 w-7 text-gray-600" />
                 </button>
               </div>
-              <Place place={focused} minimized={minimized} />
+              <Place place={focused} minimized={false} />
             </div>
           </div>
         </CarouselItem>
