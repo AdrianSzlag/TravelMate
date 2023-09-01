@@ -15,6 +15,11 @@
       scrollbar-width: none; /* Firefox */
     }
   }
+
+  .text-outline {
+    text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff,
+      1px 1px 0 #fff;
+  }
 }
 
 @media (max-width: 474px) {

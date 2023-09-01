@@ -68,7 +68,11 @@ const MainMap = () => {
               latitude={place.location.coordinates[1]}
               anchor="bottom"
               onClick={() => setFocused(place)}
+              className="relative"
             >
+              <div className=" text-outline !font-semi absolute bottom-0 top-full right-1/2 translate-x-1/2 cursor-pointer whitespace-nowrap text-xs font-semibold  text-black">
+                {place.name}
+              </div>
               <PiMapPinFill className="h-8 w-8 cursor-pointer text-blue-600 drop-shadow-[0_0_4px_rgba(255,255,255,1)] hover:drop-shadow-[0_0_4px_rgba(0,0,0,0.3)]" />
             </Marker>
           );
