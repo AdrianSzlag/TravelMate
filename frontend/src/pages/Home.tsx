@@ -14,10 +14,12 @@ export default function Home() {
   const [menuMinimized, setMenuMinimized] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const [scrollLock, setScrollLock] = useState(false);
-  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    setLoaded(true);
+    contentRef.current?.scrollTo({
+      top: contentRef.current.offsetHeight * 0.8,
+      behavior: "instant",
+    });
   }, []);
 
   const scrollHandler = (e: React.UIEvent<HTMLDivElement>) => {
@@ -66,12 +68,7 @@ export default function Home() {
           onScroll={scrollHandler}
           ref={contentRef}
         >
-          <div
-            className={
-              "h-[80%] min-h-0 w-full flex-none  xs:h-full xs:flex-1 " +
-              (loaded && "snap-start")
-            }
-          >
+          <div className="h-[80%] min-h-0 w-full flex-none  snap-start xs:h-full xs:flex-1 ">
             <Map />
           </div>
           <Menu

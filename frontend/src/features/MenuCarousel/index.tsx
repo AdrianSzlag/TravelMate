@@ -113,7 +113,7 @@ const Menu = ({ minimized, maximize, setScrollLock }: Props) => {
                   <IoMdArrowRoundUp className="h-7 w-7 text-gray-600" />
                 </button>
               </div>
-              <Place place={focused} minimized={false} />
+              <Place place={focused} minimized={minimized} />
             </div>
           </div>
         </CarouselItem>
