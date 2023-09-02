@@ -47,9 +47,14 @@ const Menu = ({ minimized, maximize, setScrollLock }: Props) => {
   }, []);
 
   useEffect(() => {
-    if (minimized && !active) maximize();
-    setScrollLock(!active);
+    if (minimized && !active) {
+      maximize();
+    }
   }, [minimized, active]);
+
+  useEffect(() => {
+    setScrollLock(!active);
+  }, [active]);
 
   const setFocused = (place: IPlace | null) => {
     dispatch(placesActions.setFocused(place));

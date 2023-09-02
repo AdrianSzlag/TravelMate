@@ -25,11 +25,16 @@ export default function Home() {
   const scrollHandler = (e: React.UIEvent<HTMLDivElement>) => {
     const current = contentRef.current;
     if (!current) return;
-    const scroll = current.scrollTop;
+    const scroll = e.currentTarget.scrollTop;
     const height = current.offsetHeight;
     if (scroll === undefined) return;
     console.log(scroll / height);
-    setMenuMinimized(scroll / height < 0.4);
+    if (scroll / height > 0.6) {
+      setMenuMinimized(false);
+    }
+    if (scroll / height < 0.2) {
+      setMenuMinimized(true);
+    }
   };
 
   const scrollDown = () => {
@@ -46,6 +51,7 @@ export default function Home() {
   };
 
   const setScrollLockHandler = (lock: boolean) => {
+    console.log("setScrollLockHandler", lock);
     const current = contentRef.current;
     if (current && lock) {
       contentRef.current?.scrollTo({
@@ -55,7 +61,6 @@ export default function Home() {
     }
     setScrollLock(lock);
   };
-
   return (
     <>
       <div className="fixed left-0 right-0 bottom-0 top-0 flex flex-col">

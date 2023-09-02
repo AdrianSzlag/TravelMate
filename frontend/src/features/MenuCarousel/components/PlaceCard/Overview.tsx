@@ -6,9 +6,10 @@ import { FaRegClock } from "react-icons/fa";
 import { MdExpandMore, MdExpandLess } from "react-icons/md";
 import Img from "components/Img";
 import IOpeningHours from "types/IOpeningHours";
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { days } from "utils/dateTime";
 import { BsArrowLeftCircleFill, BsArrowRightCircleFill } from "react-icons/bs";
+import ImagePreview from "components/ImagePreview";
 
 const HoursOverview = ({ openingHours }: { openingHours: IOpeningHours[] }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -105,12 +106,15 @@ const Images = ({ images }: { images: string[] | null }) => {
   const isEmpty = !images || images.length === 0;
   const ref = useRef<HTMLDivElement>(null);
   const [scroll, setScroll] = useState(0);
+  const [imagePreviewOpen, setImagePreviewOpen] = useState(false);
 
-  const onScrollHandler = () => {
+  const onScrollHandler = useCallback(() => {
     if (!ref.current) return;
     const scrollLeft = ref.current.scrollLeft;
     setScroll(scrollLeft);
-  };
+  }, [ref.current]);
+
+  useEffect(() => onScrollHandler(), [images, ref.current]);
 
   const scrollLeft = () => {
     if (!ref.current) return;
@@ -135,46 +139,64 @@ const Images = ({ images }: { images: string[] | null }) => {
     });
   };
 
+  useEffect(() => {
+    if (!ref.current) return;
+    const resizeObserver = new ResizeObserver(onScrollHandler);
+    resizeObserver.observe(ref.current);
+    return () => resizeObserver.disconnect();
+  }, [ref.current, onScrollHandler]);
+
   const isLeftArrow = scroll > 10;
   const isRightArrow =
     ref.current &&
     scroll < ref.current.scrollWidth - ref.current.offsetWidth - 10;
 
   return (
-    <div className={"relative flex w-full items-center " + (isEmpty && "h-0")}>
-      {isLeftArrow && (
-        <div
-          className="absolute left-0 z-10 hidden h-full min-h-0 cursor-pointer items-center overflow-hidden xs:flex"
-          onClick={scrollLeft}
-        >
-          <BsArrowLeftCircleFill className="h-8 w-8 drop-shadow-[0_0_5px_rgba(255,255,255,100)]" />
-        </div>
-      )}
+    <>
       <div
-        className="xs:no-scrollbar flex h-fit items-center gap-2 overflow-x-auto py-2"
-        ref={ref}
-        onScroll={onScrollHandler}
+        className={"relative flex w-full items-center " + (isEmpty && "h-0")}
       >
-        {!isEmpty &&
-          images.map((image) => {
-            return (
-              <Img
-                key={image}
-                src={`/${image}`}
-                className="h-40 w-24 cursor-pointer rounded-xl object-cover hover:scale-105"
-              />
-            );
-          })}
-      </div>
-      {isRightArrow && (
+        {isLeftArrow && (
+          <div
+            className="absolute left-0 z-10 flex h-full min-h-0 cursor-pointer items-center overflow-hidden"
+            onClick={scrollLeft}
+          >
+            <BsArrowLeftCircleFill className="h-8 w-8 drop-shadow-[0_0_5px_rgba(255,255,255,100)]" />
+          </div>
+        )}
         <div
-          className="absolute right-0 z-10 hidden h-full min-h-0 cursor-pointer items-center overflow-hidden xs:flex"
-          onClick={scrollRight}
+          className="no-scrollbar flex h-fit items-center gap-2 overflow-x-auto py-2"
+          ref={ref}
+          onScroll={onScrollHandler}
         >
-          <BsArrowRightCircleFill className="h-8 w-8 drop-shadow-[0_0_5px_rgba(255,255,255,100)]" />
+          {!isEmpty &&
+            images.map((image) => {
+              return (
+                <Img
+                  key={image}
+                  src={`/${image}`}
+                  className="h-40 w-24 flex-none cursor-pointer rounded-xl object-cover hover:scale-105"
+                  onClick={() => setImagePreviewOpen(true)}
+                />
+              );
+            })}
         </div>
+        {isRightArrow && (
+          <div
+            className="absolute right-0 z-10 flex h-full min-h-0 cursor-pointer items-center overflow-hidden"
+            onClick={scrollRight}
+          >
+            <BsArrowRightCircleFill className="h-8 w-8 drop-shadow-[0_0_5px_rgba(255,255,255,100)]" />
+          </div>
+        )}
+      </div>
+      {imagePreviewOpen && images && (
+        <ImagePreview
+          images={images}
+          onExit={() => setImagePreviewOpen(false)}
+        />
       )}
-    </div>
+    </>
   );
 };
 
