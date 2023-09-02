@@ -68,6 +68,10 @@ const Menu = ({ minimized, maximize, setScrollLock }: Props) => {
     setActive(true);
   };
 
+  const onMaximizeHandler = () => {
+    minimized && maximize();
+  };
+
   return (
     <Carousel
       className={`min-h-full w-full xs:absolute xs:h-full xs:max-h-full lg:w-[656px] ${
@@ -82,14 +86,14 @@ const Menu = ({ minimized, maximize, setScrollLock }: Props) => {
           "w-full !bg-white xs:h-full xs:w-[400px] " +
           (active ? "" : "hidden lg:block")
         }
-        onClick={maximize}
+        onClick={onMaximizeHandler}
       >
         <ResultsList onFiltersClick={onCloseResultsHandler} />
       </CarouselItem>
       {active && focused && (
         <CarouselItem
           className="w-full xs:h-full xs:w-[400px]"
-          onClick={maximize}
+          onClick={onMaximizeHandler}
         >
           <div className="h-full sm:px-2 sm:py-3">
             <div className="relative bg-white xs:h-full xs:overflow-auto sm:rounded-xl sm:border sm:shadow-xl">
@@ -104,7 +108,7 @@ const Menu = ({ minimized, maximize, setScrollLock }: Props) => {
                   <IoClose className="h-7 w-7 text-gray-600" />
                 </button>
                 <button
-                  onClick={maximize}
+                  onClick={onMaximizeHandler}
                   className={
                     "m-2 items-center p-0.5 font-bold text-gray-500 hover:text-gray-800 " +
                     (minimized ? "flex xs:hidden" : "hidden")
