@@ -1,3 +1,5 @@
+import { DateTime } from "luxon";
+
 export const months = [
   "January",
   "February",
@@ -31,6 +33,17 @@ export const getDayName = (date: string): string => {
 export const getMonth = (date: string): number => parseInt(date.slice(5, 7));
 export const getDay = (date: string): number => parseInt(date.slice(8, 10));
 export const getDateString = (date: string): string => date.slice(0, 10);
+export const getLocalDate = (date: DateTime): string => {
+  const year = date.year.toString();
+  const month = date.month.toString().padStart(2, "0");
+  const day = date.day.toString().padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+export const getLocalTime = (date: DateTime): string => {
+  const hours = date.hour.toString().padStart(2, "0");
+  const minutes = date.minute.toString().padStart(2, "0");
+  return `${hours}:${minutes}`;
+};
 export const getTime = (date: string): string => date.slice(11, 16);
 export const areDatesEqual = (date1: string, date2: string): boolean => {
   return getDateString(date1) === getDateString(date2);

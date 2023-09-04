@@ -6,6 +6,7 @@ import { fetchReservations } from "./reservations-actions";
 import { isLoggedIn } from "utils/auth";
 import { authActions } from "./auth-slice";
 import { getDateString, getTime } from "utils/dateTime";
+import { DateTime } from "luxon";
 
 export const showBookingModal = (
   placeId: string,
@@ -35,6 +36,7 @@ export const showBookingModal = (
     try {
       const slots = (await fetchData()) as IFreeSlot[];
       slots.sort((a, b) => a.localeCompare(b));
+      console.log(slots);
       dispatch(
         bookActions.showBookingModal({
           slots,
@@ -114,13 +116,18 @@ export const sendBookingRequest = (): AppThunk => {
       const path = isEditing
         ? `/api/reservation/${getState().book.editId}`
         : "/api/reservation";
-      console.log(path);
+
+      const date = DateTime.fromISO(`${selectedDate}T${selectedTime}`, {
+        zone: "local",
+      })
+        .setZone("utc+0")
+        .toISO();
       const response = await fetchApi(path, {
         method,
         body: JSON.stringify({
           placeId,
           serviceId,
-          date: `${selectedDate}T${selectedTime}:00Z`,
+          date,
         }),
       });
       if (!response.ok) {

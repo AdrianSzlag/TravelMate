@@ -3,6 +3,7 @@ import { getMonthName, getTime } from "utils/dateTime";
 import { Link } from "react-router-dom";
 import Img from "components/Img";
 import { showEditingModal } from "store/book-actions";
+import { DateTime } from "luxon";
 
 interface ItemProps {
   id: string;
@@ -34,19 +35,17 @@ const Item = ({
   bookAgain = false,
 }: ItemProps) => {
   const dispatch = useAppDispatch();
-  const locale = new Date(date);
-  const startDate = new Date(
-    locale.getTime() + locale.getTimezoneOffset() * 60000
-  );
-  const started = startDate.getTime() < Date.now();
-  const isDone = startDate.getTime() + duration * 60 * 1000 < Date.now();
+  console.log(date);
+  const startDate = DateTime.fromISO(date);
+  const started = startDate < DateTime.now();
+  const isDone = startDate.plus({ minutes: duration }) < DateTime.now();
   const onCancelClickHandler = () => onCancel();
   const openEditModal = () => {
     dispatch(showEditingModal(id, placeId, serviceId, date));
     console.log("open edit modal");
   };
   const order =
-    (isDone ? "3" : started ? "1" : "2") + startDate.getTime() / 60000;
+    (isDone ? "3" : started ? "1" : "2") + startDate.toMillis() / 60000;
   return (
     <div
       className="m-4 box-border flex rounded border shadow"
@@ -121,13 +120,14 @@ const Item = ({
           <div className="my-4 flex-shrink-0 flex-grow-0 border-l"></div>
           <div className="flex w-20 flex-none flex-col items-center justify-center">
             <div className="text-sm font-semibold text-gray-800">
-              {getMonthName(startDate.getMonth())}
+              {getMonthName(startDate.month)}
             </div>
             <div className="text-lg font-semibold text-black">
-              {startDate.getDate()}
+              {startDate.day}
             </div>
             <div className="text-sm font-semibold text-gray-800">
-              {getTime(date)}
+              {startDate.hour.toString().padStart(2, "0")}:
+              {startDate.minute.toString().padStart(2, "0")}
             </div>
           </div>
         </>

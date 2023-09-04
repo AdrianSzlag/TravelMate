@@ -1,8 +1,14 @@
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { Option, Row } from "./Row";
-import { getDateString, getDay, getDayName } from "utils/dateTime";
+import {
+  getDateString,
+  getDay,
+  getDayName,
+  getLocalDate,
+} from "utils/dateTime";
 import { bookActions } from "store/book-slice";
 import isToday from "utils/isToday";
+import { DateTime } from "luxon";
 
 interface DayProps {
   day: number;
@@ -40,11 +46,14 @@ const DaySelector = () => {
   const selectedDate = useAppSelector((state) => state.book.selectedDate);
 
   const dispatch = useAppDispatch();
-  const distinctDates: string[] = freeSlots.reduce((acc: string[], curr) => {
-    const date = getDateString(curr);
-    if (!acc.find((item) => item === date)) acc.push(date);
-    return acc;
-  }, []);
+
+  const distinctDates = freeSlots
+    .map((slot) => DateTime.fromISO(slot))
+    .reduce((acc: string[], curr) => {
+      const date = getLocalDate(curr);
+      if (!acc.find((item) => item === date)) acc.push(date);
+      return acc;
+    }, [] as string[]);
 
   const getOnDateClickHandler = (date: string) => () =>
     dispatch(bookActions.setDate(date));

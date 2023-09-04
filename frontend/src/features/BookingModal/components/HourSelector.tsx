@@ -1,7 +1,13 @@
 import { bookActions } from "store/book-slice";
 import { Option, Row } from "./Row";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
-import { getDateString, getTime } from "utils/dateTime";
+import {
+  getDateString,
+  getLocalDate,
+  getLocalTime,
+  getTime,
+} from "utils/dateTime";
+import { DateTime } from "luxon";
 
 interface HourProps {
   hour: string;
@@ -31,13 +37,15 @@ const HourSelector = () => {
   const selectedTime = useAppSelector((state) => state.book.selectedTime);
   const dispatch = useAppDispatch();
 
-  const availableHours = freeSlots.reduce((acc: string[], curr) => {
-    const date = getDateString(curr);
-    if (date !== selectedDate) return acc;
-    const hour = getTime(curr);
-    acc.push(hour);
-    return acc;
-  }, []);
+  const availableHours = freeSlots
+    .map((slot) => DateTime.fromISO(slot))
+    .reduce((acc: string[], curr) => {
+      const date = getLocalDate(curr);
+      if (date !== selectedDate) return acc;
+      const time = getLocalTime(curr);
+      if (!acc.find((item) => item === time)) acc.push(time);
+      return acc;
+    }, []);
 
   const getOnHourClickHandler = (hour: string) => () =>
     dispatch(bookActions.setTime(hour));

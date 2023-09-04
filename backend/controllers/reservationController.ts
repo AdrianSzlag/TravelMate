@@ -27,20 +27,11 @@ export const getFreeSlotsForService = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Service not found!" });
     }
     const { reservations, openingHours } = place;
-    const currentDate = new Date();
-    const freeSlots: IFreeSlotsDTO[] = [];
-    [...Array(14).keys()].forEach((i) => {
-      currentDate.setDate(currentDate.getDate() + 1);
-      const freeSlotsForDay = getFreeSlots(
-        currentDate,
-        openingHours,
-        reservations,
-        service.duration ?? 15
-      );
-      if (freeSlotsForDay.length > 0) {
-        freeSlots.push(...freeSlotsForDay);
-      }
-    });
+    const freeSlots: IFreeSlotsDTO[] = getFreeSlots(
+      openingHours,
+      reservations,
+      service.duration ?? 15
+    );
     res.status(200).json(freeSlots);
   } catch (error) {
     console.log(error);
@@ -76,20 +67,11 @@ export const createReservation = async (req: IRequest, res: Response) => {
       return res.status(404).json({ message: "Service not found!" });
     }
     const { reservations } = place;
-    const currentDate = new Date();
-    const freeSlots: IFreeSlotsDTO[] = [];
-    [...Array(14).keys()].forEach((i) => {
-      currentDate.setDate(currentDate.getDate() + 1);
-      const freeSlotsForDay = getFreeSlots(
-        currentDate,
-        place.openingHours,
-        reservations,
-        service.duration ?? 15
-      );
-      if (freeSlotsForDay.length > 0) {
-        freeSlots.push(...freeSlotsForDay);
-      }
-    });
+    const freeSlots: IFreeSlotsDTO[] = getFreeSlots(
+      place.openingHours,
+      reservations,
+      service.duration ?? 15
+    );
     const dateMs = new Date(date).getTime();
     const slot = freeSlots.find((slot) => new Date(slot).getTime() === dateMs);
     if (!slot) {
@@ -202,21 +184,12 @@ export const updateReservation = async (req: IRequest, res: Response) => {
     if (!service) {
       return res.status(404).json({ message: "Service not found!" });
     }
-    const { reservations } = place;
-    const currentDate = new Date();
-    const freeSlots: IFreeSlotsDTO[] = [];
-    [...Array(14).keys()].forEach((i) => {
-      currentDate.setDate(currentDate.getDate() + 1);
-      const freeSlotsForDay = getFreeSlots(
-        currentDate,
-        place.openingHours,
-        reservations,
-        service.duration ?? 15
-      );
-      if (freeSlotsForDay.length > 0) {
-        freeSlots.push(...freeSlotsForDay);
-      }
-    });
+    const { reservations, openingHours } = place;
+    const freeSlots: IFreeSlotsDTO[] = getFreeSlots(
+      openingHours,
+      reservations,
+      service.duration ?? 15
+    );
     const dateMs = new Date(date).getTime();
     const slot = freeSlots.find((slot) => new Date(slot).getTime() === dateMs);
     if (!slot) {
