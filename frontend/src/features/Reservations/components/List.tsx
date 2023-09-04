@@ -1,12 +1,9 @@
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { useState } from "react";
-import { getMonthNameShort } from "utils/dateTime";
 import ConfirmCancel from "./ConfirmCancel";
 import { reservationsActions } from "store/reservations-slice";
 import { Link } from "react-router-dom";
 import { IReservation } from "types/IReservation";
-import { cancelReservation } from "store/reservations-actions";
-import { showBookingModal } from "store/book-actions";
 import Item from "./Item";
 
 interface FilterProps {
@@ -37,22 +34,17 @@ const List = () => {
     (state) => state.reservations.selected
   );
   const dispatch = useAppDispatch();
-  const [filter, setFilter] = useState<undefined | string>(undefined);
+  const filter = useAppSelector((state) => state.reservations.filter);
+  const setFilter = (id: string | undefined) => {
+    dispatch(reservationsActions.setFilter(id));
+  };
   const setSelectedReservation = (id: string) => {
     dispatch(reservationsActions.setSelected(id));
   };
   const cancelReservationHandler = (reservation: IReservation) => {
     dispatch(reservationsActions.openCancelModal(reservation));
   };
-  const sortedReservations = [...reservations].sort(
-    (a: IReservation, b: IReservation) => {
-      const aTime = new Date(a.date).getTime();
-      const bTime = new Date(b.date).getTime();
-      const now = Date.now();
-      return aTime < now === bTime < now ? aTime - bTime : aTime < now ? 1 : -1;
-    }
-  );
-  const businesses = sortedReservations.reduce((acc, curr) => {
+  const businesses = reservations.reduce((acc, curr) => {
     const business = acc.find((b) => b.id === curr.place.id);
     if (!business && curr.user) {
       acc.push({
@@ -67,7 +59,7 @@ const List = () => {
   return (
     <>
       <div className="relative h-full max-h-full w-full flex-shrink-0 flex-grow-0 sm:w-[400px]">
-        <div className="absolute top-0 left-0 bottom-0 right-0 overflow-auto bg-[#fcfcfc]">
+        <div className="absolute top-0 left-0 bottom-0 right-0 flex flex-col overflow-auto bg-[#fcfcfc]">
           {businesses && businesses.length > 0 && (
             <div className="no-scrollbar my-4 flex w-full gap-2 px-4 ">
               <Filter
@@ -104,7 +96,7 @@ const List = () => {
                   </Link>
                 </h1>
               )}
-              {sortedReservations
+              {reservations
                 .filter(
                   (reservation) =>
                     !reservation.user || reservation.user.id === userId
@@ -121,6 +113,7 @@ const List = () => {
                     selected={reservation.id === selectedReservation?.id}
                     image={reservation.place.image}
                     date={reservation.date}
+                    duration={reservation.duration || 0}
                     onClick={() => setSelectedReservation(reservation.id)}
                     onCancel={() => cancelReservationHandler(reservation)}
                     bookAgain={true}
@@ -138,7 +131,7 @@ const List = () => {
                   <div className=" text-sm text-gray-400">{b.address}</div>
                 </div>
               ))}
-          {sortedReservations
+          {reservations
             .filter(
               (reservation) =>
                 reservation.user && reservation.place.id === filter
@@ -154,6 +147,7 @@ const List = () => {
                 selected={reservation.id === selectedReservation?.id}
                 image={reservation.user!.profileImage}
                 date={reservation.date}
+                duration={reservation.duration || 0}
                 onClick={() => setSelectedReservation(reservation.id)}
                 onCancel={() => cancelReservationHandler(reservation)}
               />

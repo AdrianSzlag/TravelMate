@@ -5,18 +5,23 @@ interface ReservationsSlice {
   reservations: IReservation[];
   selected?: IReservation;
   cancelModalOpen: boolean;
+  filter?: string;
 }
 
 const initialState: ReservationsSlice = {
   reservations: [],
   selected: undefined,
   cancelModalOpen: false,
+  filter: undefined,
 };
 
 const reservationsSlice = createSlice({
   name: "reservations",
   initialState,
   reducers: {
+    setFilter(state, action: PayloadAction<string | undefined>) {
+      state.filter = action.payload;
+    },
     openCancelModal(state, action: PayloadAction<IReservation>) {
       state.selected = state.reservations.find(
         (reservation) => reservation.id === action.payload.id
@@ -32,6 +37,7 @@ const reservationsSlice = createSlice({
       state.reservations = action.payload;
       state.selected = undefined;
       state.cancelModalOpen = false;
+      state.filter = undefined;
     },
     addReservation(state, action: PayloadAction<IReservation>) {
       state.reservations.push(action.payload);

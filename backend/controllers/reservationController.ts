@@ -142,6 +142,7 @@ export const getReservations = async (req: IRequest, res: Response) => {
           place: {
             id: place._id,
             name: place.name,
+            owner: (place.createdBy as IUser)._id.toString(),
             address: place.address,
             image: place.thumbnail,
             location: place.location,

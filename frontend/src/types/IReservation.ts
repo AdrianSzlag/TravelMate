@@ -15,6 +15,7 @@ export interface IReservation {
     id: string;
     name: string;
     address?: string;
+    owner: string;
     image?: string;
     location: {
       type: string;

@@ -10,6 +10,7 @@ import { MapLibreEvent } from "maplibre-gl";
 const MainMap = () => {
   const dispatch = useAppDispatch();
   const places = useAppSelector((state) => state.places.places);
+  const userId = useAppSelector((state) => state.auth.user?.id);
   const focused = useAppSelector((state) => state.places.focused);
   const setFocused = (place: IPlace | null) => {
     dispatch(placesActions.setFocused(place));
@@ -73,7 +74,14 @@ const MainMap = () => {
               <div className=" text-outline !font-semi absolute bottom-0 right-full top-1/2 -translate-y-1/2 cursor-pointer whitespace-nowrap text-xs font-semibold  text-black">
                 {place.name}
               </div>
-              <PiMapPinFill className="h-8 w-8 cursor-pointer text-blue-600 drop-shadow-[0_0_4px_rgba(255,255,255,1)] hover:drop-shadow-[0_0_4px_rgba(0,0,0,0.3)]" />
+              <PiMapPinFill
+                className={
+                  "h-8 w-8 cursor-pointer drop-shadow-[0_0_4px_rgba(255,255,255,1)] hover:drop-shadow-[0_0_4px_rgba(0,0,0,0.3)] " +
+                  (place.createdBy.id !== userId
+                    ? "text-blue-600"
+                    : "text-red-600")
+                }
+              />
             </Marker>
           );
         })}

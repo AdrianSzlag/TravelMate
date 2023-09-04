@@ -23,13 +23,17 @@ const ConfirmCancel = () => {
     dispatch(cancelReservation(selectedReservation.id));
   };
 
+  const isDone = new Date(selectedReservation.date).getTime() < Date.now();
+
   return (
     <Modal
       onBackdropClick={closeModal}
       className="flex h-40 flex-col justify-between rounded-xl border bg-white p-4 shadow-xl sm:w-[550px] sm:border"
     >
       <h1 className="text-lg font-semibold">
-        Do you want to cancel reservation?
+        {!isDone
+          ? "Do you want to cancel reservation?"
+          : "Do you want to remove this reservation?"}
       </h1>
       <div className="flex flex-row justify-end">
         <button

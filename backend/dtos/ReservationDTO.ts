@@ -15,6 +15,7 @@ export interface ReservationDTO {
   place: {
     id: string;
     name: string;
+    owner: string;
     address?: string;
     image?: string;
     location: ILocation;
