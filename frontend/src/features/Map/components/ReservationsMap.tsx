@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import Map, { Marker, ViewStateChangeEvent } from "react-map-gl/maplibre";
 import { placesActions } from "store/places-slice";
 import IPlace from "types/IPlace";
-import "maplibre-gl/dist/maplibre-gl.css";
 import { PiMapPinFill } from "react-icons/pi";
 import { MapLibreEvent } from "maplibre-gl";
 import { IReservation } from "types/IReservation";
