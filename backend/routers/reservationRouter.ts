@@ -10,7 +10,7 @@ import {
 
 const reservationRouter = express.Router();
 
-reservationRouter.get("/available/", authMiddleware, getFreeSlotsForService);
+reservationRouter.get("/available/", getFreeSlotsForService);
 reservationRouter.post("/", authMiddleware, createReservation);
 reservationRouter.get("/", authMiddleware, getReservations);
 reservationRouter.put("/:reservationId", authMiddleware, updateReservation);

@@ -29,10 +29,6 @@ export const showBookingModal = (
       const data = await response.json();
       return data;
     };
-    if (!isLoggedIn()) {
-      dispatch(authActions.showModal());
-      return;
-    }
     try {
       const slots = (await fetchData()) as IFreeSlot[];
       slots.sort((a, b) => a.localeCompare(b));
@@ -100,6 +96,7 @@ export const showEditingModal = (
 export const sendBookingRequest = (): AppThunk => {
   return async (dispatch, getState) => {
     if (!isLoggedIn()) {
+      dispatch(bookActions.hideModal());
       dispatch(authActions.showModal());
       return;
     }
