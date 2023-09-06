@@ -30,7 +30,6 @@ const redirectIfNotLoggedIn = () => {
 
 const BrowserRouter = createBrowserRouter([
   { path: "/", element: <Home />, id: "home" },
-  { path: "/search", element: <Home />, id: "search" },
   { path: "/place/:placeId", element: <Home />, id: "place" },
   { path: "/reservations", element: <Reservations />, id: "reservations" },
   { path: "/login", element: <Login />, id: "login", loader: loginLoader },

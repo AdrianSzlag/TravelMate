@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { placesActions } from "store/places-slice";
 import { IPlace } from "types/IPlace";
 import { useParams, useLocation } from "react-router-dom";
-import { fetchPlace, fetchPlaces } from "store/places-actions";
+import { fetchPlace, fetchPlaces, navigateToPlace } from "store/places-actions";
 import { useAppNavigate } from "hooks/use-navigate";
 import { IoMdArrowRoundUp } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
@@ -22,27 +22,36 @@ const Menu = ({ minimized, maximize, setScrollLock }: Props) => {
   const dispatch = useAppDispatch();
   const focused = useAppSelector((state) => state.places.focused);
   const navigate = useAppNavigate();
+  const [firstLoad, setFirstLoad] = useState(true);
   const { placeId } = useParams();
-  const { pathname } = useLocation();
 
-  const [active, setActive] = useState(
-    pathname.startsWith("/search") ||
-      pathname.startsWith("/place") ||
-      pathname.startsWith("/")
-  );
+  const [active, setActive] = useState(true);
 
   useEffect(() => {
     if (focused) {
       setActive(true);
     }
-    const path = `/${focused ? `place/${focused.id}` : "search"}`;
+    if (firstLoad) {
+      setFirstLoad(false);
+      return;
+    }
+    if (placeId === focused?.id) return;
+    console.log("focused", focused?.id);
+    const path = focused ? `/place/${focused.id}` : "/";
     navigate(path, {});
   }, [focused]);
 
   useEffect(() => {
+    if (placeId === focused?.id) return;
     if (placeId) {
-      dispatch(fetchPlace(placeId));
+      dispatch(navigateToPlace(placeId));
+      console.log("placeId", placeId);
+    } else {
+      setFocused(null);
     }
+  }, [placeId]);
+
+  useEffect(() => {
     dispatch(fetchPlaces(""));
   }, []);
 

@@ -28,7 +28,6 @@ export default function Home() {
     const scroll = e.currentTarget.scrollTop;
     const height = current.offsetHeight;
     if (scroll === undefined) return;
-    console.log(scroll / height);
     if (scroll / height > 0.6) {
       setMenuMinimized(false);
     }
@@ -51,7 +50,6 @@ export default function Home() {
   };
 
   const setScrollLockHandler = (lock: boolean) => {
-    console.log("setScrollLockHandler", lock);
     const current = contentRef.current;
     if (current && lock) {
       contentRef.current?.scrollTo({
@@ -67,13 +65,13 @@ export default function Home() {
         <Header />
         <div
           className={
-            "relative flex flex-1 snap-y snap-mandatory snap-always flex-col scroll-smooth xs:flex-row " +
-            (scrollLock ? "overflow-hidden" : "overflow-auto")
+            "relative flex flex-1 snap-y snap-mandatory snap-always flex-col overscroll-none scroll-smooth xs:flex-row " +
+            (scrollLock ? "overflow-hidden " : "overflow-auto ")
           }
           onScroll={scrollHandler}
           ref={contentRef}
         >
-          <div className="h-[80%] min-h-0 w-full flex-none  snap-start xs:h-full xs:flex-1 ">
+          <div className="h-[80%] min-h-0 w-full flex-none snap-start xs:h-full xs:flex-1 ">
             <Map />
           </div>
           <Menu

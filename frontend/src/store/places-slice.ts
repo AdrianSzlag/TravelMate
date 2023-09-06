@@ -5,6 +5,7 @@ import { IReview } from "../types/IReview";
 export interface PlacesState {
   places: IPlace[];
   focused: IPlace | null;
+  firstLoading?: boolean;
 }
 
 const initialState: PlacesState = {

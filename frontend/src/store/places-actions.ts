@@ -63,6 +63,19 @@ export const fetchPlace = (placeId: string): AppThunk => {
   };
 };
 
+export const navigateToPlace = (placeId: string): AppThunk => {
+  return async (dispatch, getState) => {
+    const place = getState().places.places.find(
+      (place) => place.id === placeId
+    );
+    if (place) {
+      dispatch(placesActions.setFocused(place));
+    } else {
+      dispatch(fetchPlace(placeId));
+    }
+  };
+};
+
 export const deleteService = (placeId: string, serviceId: string): AppThunk => {
   return async (dispatch, getState) => {
     const fetchData = async () => {
