@@ -9,7 +9,7 @@ import { IPlace } from "types/IPlace";
 import { useParams, useLocation } from "react-router-dom";
 import { fetchPlace, fetchPlaces, navigateToPlace } from "store/places-actions";
 import { useAppNavigate } from "hooks/use-navigate";
-import { IoMdArrowRoundUp } from "react-icons/io";
+import { IoMdArrowRoundBack, IoMdArrowRoundUp } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
 
 interface Props {
@@ -111,26 +111,24 @@ const Menu = ({ minimized, maximize, setScrollLock }: Props) => {
         >
           <div className="h-full sm:px-2 sm:py-3">
             <div className="relative bg-white xs:h-full xs:overflow-auto sm:rounded-xl sm:border sm:shadow-xl">
-              <div className="absolute flex w-full justify-end">
-                <button
-                  onClick={onClosePreviewHandler}
-                  className={
-                    "m-2 items-center rounded-full border bg-white p-0.5 font-bold text-gray-500 shadow-xl hover:text-gray-800 " +
-                    (minimized ? "hidden xs:flex" : "flex")
-                  }
-                >
-                  <IoClose className="h-7 w-7 text-gray-600" />
-                </button>
-                <button
-                  onClick={onMaximizeHandler}
-                  className={
-                    "m-2 items-center p-0.5 font-bold text-gray-500 hover:text-gray-800 " +
-                    (minimized ? "flex xs:hidden" : "hidden")
-                  }
-                >
-                  <IoMdArrowRoundUp className="h-7 w-7 text-gray-600" />
-                </button>
-              </div>
+              <button
+                onClick={onClosePreviewHandler}
+                className={
+                  "absolute top-4 left-4 rounded-full border bg-white p-0.5 font-bold text-gray-500 shadow-xl drop-shadow-[0_0_4px_rgba(0,0,0,0.3)] hover:text-gray-800 " +
+                  (minimized ? "hidden xs:flex" : "flex")
+                }
+              >
+                <IoMdArrowRoundBack className="h-9 w-9 text-gray-600" />
+              </button>
+              <button
+                onClick={onMaximizeHandler}
+                className={
+                  "absolute top-4 right-4 font-bold text-gray-500 hover:text-gray-800 " +
+                  (minimized ? "flex xs:hidden" : "hidden")
+                }
+              >
+                <IoMdArrowRoundUp className="h-7 w-7 text-gray-600" />
+              </button>
               <Place place={focused} minimized={minimized} />
             </div>
           </div>
