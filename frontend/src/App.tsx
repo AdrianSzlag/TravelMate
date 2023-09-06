@@ -5,8 +5,8 @@ import {
 } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
-import Login, { loader as loginLoader } from "./pages/Login";
-import Register, { loader as registerLoader } from "./pages/Registration";
+import Login from "./pages/Login";
+import Register from "./pages/Registration";
 import store from "store";
 import { authenticate, logout } from "store/auth-actions";
 import { isLoggedIn, removeToken } from "utils/auth";
@@ -32,12 +32,11 @@ const BrowserRouter = createBrowserRouter([
   { path: "/", element: <Home />, id: "home" },
   { path: "/place/:placeId", element: <Home />, id: "place" },
   { path: "/reservations", element: <Reservations />, id: "reservations" },
-  { path: "/login", element: <Login />, id: "login", loader: loginLoader },
+  { path: "/login", element: <Login />, id: "login" },
   {
     path: "/register",
     element: <Register />,
     id: "register",
-    loader: registerLoader,
   },
   { path: "/logout", id: "logout", loader: logoutLoader },
   { path: "*", element: <div>Not found</div>, id: "not-found" },

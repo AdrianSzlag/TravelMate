@@ -1,18 +1,27 @@
 import { NavBar } from "features/Header";
 import { RegisterForm } from "features/Login";
+import { useAppSelector } from "hooks/redux-hooks";
+import { useEffect } from "react";
 import { redirect, useNavigate } from "react-router-dom";
 import { isLoggedIn } from "utils/auth";
 
 const Register = () => {
   const navigate = useNavigate();
+  const isLoggedIn = useAppSelector((state) => state.auth.isLogged);
 
   const onSuccessHandler = () => {
-    navigate("/search");
+    navigate("/login");
   };
 
   const onLoginHandler = () => {
     navigate("/login");
   };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/", { replace: true });
+    }
+  }, [isLoggedIn]);
 
   return (
     <>
@@ -28,10 +37,3 @@ const Register = () => {
 };
 
 export default Register;
-
-export function loader({ request }: { request: Request }) {
-  if (isLoggedIn()) {
-    return redirect("/search");
-  }
-  return null;
-}
