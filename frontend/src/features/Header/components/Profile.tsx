@@ -3,6 +3,7 @@ import { useAppSelector } from "hooks/redux-hooks";
 import Input from "components/Input";
 import { useEffect, useState } from "react";
 import fetchApi from "utils/fetchApi";
+import Modal from "components/Modal";
 
 interface Props {
   onClose: () => void;
@@ -69,72 +70,68 @@ const Profile = ({ onClose }: Props) => {
   }, [user]);
 
   return (
-    <div
-      className="fixed top-0 right-0 bottom-0 left-0 z-20 box-border 
-            flex items-center justify-center bg-[#0000009a]"
-    >
-      <div className="flex max-h-full w-full overflow-y-auto rounded border bg-white p-4 shadow-xl xs:w-[400px]">
-        <div className="group relative w-14 cursor-pointer">
-          <UserAvatar
-            name={user?.name || ""}
-            url={imageURL}
-            image={image}
-            className="h-12 w-12 bg-pink-400"
-          />
-          <div className="mt-1 block text-sm font-semibold text-gray-600 group-hover:underline">
-            Click to change profile picture
-          </div>
-          <input
-            type="file"
-            accept=".jpeg,.jpg,.png"
-            onChange={handleImageChange}
-            className="absolute top-0 z-20 h-full w-full cursor-pointer opacity-0"
-            multiple={false}
-          />
+    <Modal className="w-full rounded border bg-white p-4 xs:w-[400px]">
+      <h1 className="text-xl font-semibold text-gray-600">Edit your profile</h1>
+      <div className="group relative mt-4 flex cursor-pointer">
+        <UserAvatar
+          name={user?.name || ""}
+          url={imageURL}
+          image={image}
+          className="h-12 w-12 bg-pink-400"
+        />
+        <div className="mx-4 block text-sm font-semibold text-gray-600 group-hover:underline">
+          Click to change profile picture
         </div>
-        <div className="ml-4 w-full">
-          <Input
-            type="text"
-            placeholder="Name"
-            value={name}
-            errorMessage="Enter a valid name"
-            onChange={setName}
-            isValid={validName}
-            name="name"
-            title="Name"
-          />
-          <div className="mb-2" />
-          <Input
-            type="password"
-            placeholder="Password"
-            value={password}
-            errorMessage="Password must be at least 6 characters long"
-            onChange={setPassword}
-            isValid={validPassword}
-            name="password"
-            title="Password"
-          />
-          {error && (
-            <div className="text-sm font-semibold text-red-600">{error}</div>
-          )}
-          <div className="mt-2 flex justify-end gap-2">
-            <button
-              className="block rounded border px-2 py-0.5 text-sm font-medium text-gray-900"
-              onClick={() => onClose()}
-            >
-              Cancel
-            </button>
-            <button
-              className="block rounded border px-2 py-0.5 text-sm font-medium text-gray-900 disabled:cursor-not-allowed"
-              onClick={onSubmit}
-              disabled={!validForm}
-            >
-              {!loading ? "Submit" : "Loading..."}
-            </button>
-          </div>
+        <input
+          type="file"
+          accept=".jpeg,.jpg,.png"
+          onChange={handleImageChange}
+          className="absolute top-0 left-0 z-20 h-full w-full cursor-pointer opacity-0"
+          multiple={false}
+        />
+      </div>
+      <div className="mt-4 w-full">
+        <Input
+          type="text"
+          placeholder="Name"
+          value={name}
+          errorMessage="Enter a valid name"
+          onChange={setName}
+          isValid={validName}
+          name="name"
+          title="Name"
+        />
+        <div className="mb-4" />
+        <Input
+          type="password"
+          placeholder="Password"
+          value={password}
+          errorMessage="Password must be at least 6 characters long"
+          onChange={setPassword}
+          isValid={validPassword}
+          name="password"
+          title="Password"
+        />
+        {error && (
+          <div className="text-sm font-semibold text-red-600">{error}</div>
+        )}
+        <div className="mt-4 flex justify-end gap-2">
+          <button
+            className="block rounded border px-2 py-0.5 text-sm font-medium text-gray-900"
+            onClick={() => onClose()}
+          >
+            Cancel
+          </button>
+          <button
+            className="block rounded border px-2 py-0.5 text-sm font-medium text-gray-900 disabled:cursor-not-allowed"
+            onClick={onSubmit}
+            disabled={!validForm}
+          >
+            {!loading ? "Submit" : "Loading..."}
+          </button>
         </div>
       </div>
-    </div>
+    </Modal>
   );
 };
 

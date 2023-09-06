@@ -11,11 +11,6 @@ import Notifications from "./components/Notifications";
 import { BiBookContent } from "react-icons/bi";
 import { DateTime } from "luxon";
 
-const ProfileModal = ({ children }: { children: ReactNode }) => {
-  const modalRoot = document.getElementById("modal-root") as HTMLElement;
-  return createPortal(children, modalRoot);
-};
-
 const Header = () => {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useAppDispatch();
@@ -88,11 +83,7 @@ const Header = () => {
         </>
       )}
       {!user && <SignInButton onClick={onSignInHandler} />}
-      {user && showModal && (
-        <ProfileModal>
-          <Profile onClose={() => setShowModal(false)} />
-        </ProfileModal>
-      )}
+      {user && showModal && <Profile onClose={() => setShowModal(false)} />}
     </NavBar>
   );
 };
