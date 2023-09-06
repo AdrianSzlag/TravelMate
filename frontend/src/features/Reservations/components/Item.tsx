@@ -44,11 +44,13 @@ const Item = ({
     dispatch(showEditingModal(id, placeId, serviceId, date));
     console.log("open edit modal");
   };
-  const order =
-    (isDone ? "3" : started ? "1" : "2") + startDate.toMillis() / 60000;
+  const order = isDone
+    ? "3" + (100000000 - startDate.toMillis() / 60000)
+    : (started ? "1" : "2") + startDate.toMillis() / 60000;
+
   return (
     <div
-      className="m-4 box-border flex rounded border shadow"
+      className="box-border flex rounded border shadow"
       onClick={onClick}
       style={{ order: order }}
     >
