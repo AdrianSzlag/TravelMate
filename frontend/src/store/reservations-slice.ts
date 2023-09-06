@@ -4,14 +4,12 @@ import { IReservation } from "types/IReservation";
 interface ReservationsSlice {
   reservations: IReservation[];
   selected?: IReservation;
-  cancelModalOpen: boolean;
   filter?: string;
 }
 
 const initialState: ReservationsSlice = {
   reservations: [],
   selected: undefined,
-  cancelModalOpen: false,
   filter: undefined,
 };
 
@@ -22,21 +20,9 @@ const reservationsSlice = createSlice({
     setFilter(state, action: PayloadAction<string | undefined>) {
       state.filter = action.payload;
     },
-    openCancelModal(state, action: PayloadAction<IReservation>) {
-      state.selected = state.reservations.find(
-        (reservation) => reservation.id === action.payload.id
-      );
-      if (state.selected) {
-        state.cancelModalOpen = true;
-      }
-    },
-    closeCancelModal(state) {
-      state.cancelModalOpen = false;
-    },
     setReservations(state, action: PayloadAction<IReservation[]>) {
       state.reservations = action.payload;
       state.selected = undefined;
-      state.cancelModalOpen = false;
       state.filter = undefined;
     },
     addReservation(state, action: PayloadAction<IReservation>) {
