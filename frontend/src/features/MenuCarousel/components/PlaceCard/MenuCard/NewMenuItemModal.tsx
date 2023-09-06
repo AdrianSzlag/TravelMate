@@ -2,6 +2,7 @@ import { useState } from "react";
 import IMenuItem from "types/IMenuItem";
 import fetchApi from "utils/fetchApi";
 import Modal from "components/Modal";
+import Button from "components/Button";
 
 interface Props {
   placeId: string;
@@ -116,19 +117,13 @@ const NewMenuItemModal = ({ placeId, onClose }: Props) => {
         </div>
       </div>
       <div className="m-4 flex justify-end justify-self-end">
-        <button
-          className="block rounded border px-2 py-0.5 text-sm font-medium text-gray-900"
-          onClick={onClose}
-        >
-          Cancel
-        </button>
-        <button
-          className="ml-2 block rounded bg-blue-500 px-2 py-0.5 text-sm font-medium text-white"
+        <Button text="Cancel" onClick={onClose} className="border" />
+        <Button
+          text={loading ? "Loading..." : "Add"}
           onClick={handleAddMenuItem}
           disabled={!isFormValid}
-        >
-          {loading ? "Loading..." : "Add"}
-        </button>
+          className="border"
+        />
       </div>
     </Modal>
   );

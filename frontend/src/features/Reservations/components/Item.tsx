@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Img from "components/Img";
 import { showEditingModal } from "store/book-actions";
 import { DateTime } from "luxon";
+import Button from "components/Button";
 
 interface ItemProps {
   id: string;
@@ -85,35 +86,29 @@ const Item = ({
         <div className="flex gap-2">
           {!started && (
             <>
-              <button
-                className="rounded bg-red-500 px-2 py-0.5 text-sm font-semibold text-white"
+              <Button
+                text="Cancel"
                 onClick={onCancelClickHandler}
-              >
-                Cancel
-              </button>
-              <button
-                className="rounded bg-gray-500 px-2 py-0.5 text-sm font-semibold text-white"
+                className="bg-red-500 text-white"
+              />
+              <Button
+                text="Edit"
                 onClick={openEditModal}
-              >
-                Edit
-              </button>
+                className="bg-gray-500 text-white"
+              />
             </>
           )}
           {isDone && bookAgain && (
-            <Link
-              className="rounded bg-blue-500 px-2 py-0.5 text-sm font-semibold text-white"
-              to={`/place/${placeId}?details=services`}
-            >
-              Book again
+            <Link to={`/place/${placeId}?details=services`}>
+              <Button text="Book again" className="bg-blue-500 text-white" />
             </Link>
           )}
           {isDone && (
-            <button
-              className="rounded bg-gray-500 px-2 py-0.5 text-sm font-semibold text-white"
+            <Button
+              text="Remove"
               onClick={onCancelClickHandler}
-            >
-              Remove
-            </button>
+              className="bg-gray-500 text-white"
+            />
           )}
         </div>
       </div>

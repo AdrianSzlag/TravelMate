@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import fetchApi from "utils/fetchApi";
 import Modal from "components/Modal";
 import { FaRegAddressCard } from "react-icons/fa";
+import Button from "components/Button";
 
 interface Props {
   onClose: () => void;
@@ -122,19 +123,13 @@ const Profile = ({ onClose }: Props) => {
           <div className="text-sm font-semibold text-red-600">{error}</div>
         )}
         <div className="mt-4 flex justify-end gap-2">
-          <button
-            className="block rounded border px-2 py-0.5 text-sm font-medium text-gray-900"
-            onClick={() => onClose()}
-          >
-            Cancel
-          </button>
-          <button
-            className="block rounded border px-2 py-0.5 text-sm font-medium text-gray-900 disabled:cursor-not-allowed"
+          <Button text="Cancel" onClick={() => onClose()} className="border" />
+          <Button
+            text={!loading ? "Submit" : "Loading..."}
             onClick={onSubmit}
             disabled={!validForm}
-          >
-            {!loading ? "Submit" : "Loading..."}
-          </button>
+            className="border"
+          />
         </div>
       </div>
     </Modal>

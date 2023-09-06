@@ -13,6 +13,7 @@ import { deletePlace } from "store/places-actions";
 import { isTimeGreater } from "utils/dateTime";
 import Img from "components/Img";
 import { PiMapPinBold } from "react-icons/pi";
+import Button from "components/Button";
 
 const BusinessModal = () => {
   const dispatch = useAppDispatch();
@@ -274,26 +275,19 @@ const BusinessModal = () => {
         />
         <div className="mt-4 flex justify-end gap-2">
           {isEditing && (
-            <button
-              className="block rounded border px-2 py-0.5 text-sm font-medium text-gray-900"
+            <Button
+              text="Delete"
               onClick={onDeletePlaceHandler}
-            >
-              Delete
-            </button>
+              className="border"
+            />
           )}
-          <button
-            className="block rounded border px-2 py-0.5 text-sm font-medium text-gray-900"
-            onClick={onCancelHandler}
-          >
-            Cancel
-          </button>
-          <button
-            className="block rounded border px-2 py-0.5 text-sm font-medium text-gray-900 disabled:cursor-not-allowed"
+          <Button text="Cancel" onClick={onCancelHandler} className="border" />
+          <Button
+            text={!loading ? "Submit" : "Loading..."}
             onClick={onSubmitHandler}
             disabled={!isFormValid}
-          >
-            {!loading ? "Submit" : "Loading..."}
-          </button>
+            className="border"
+          />
         </div>
       </div>
     </Modal>
