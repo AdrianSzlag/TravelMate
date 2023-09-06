@@ -73,20 +73,20 @@ const Profile = ({ onClose }: Props) => {
 
   return (
     <Modal className="w-full rounded border bg-white p-4 xs:w-[400px]">
-      <h1 className="flex">
+      <div className="flex">
         <FaRegAddressCard className="mr-4 h-7 w-7" />
-        <div className="text-xl font-semibold text-gray-600">
+        <h1 className="text-xl font-semibold text-gray-600">
           Edit your profile
-        </div>
-      </h1>
-      <div className="group relative mt-4 flex cursor-pointer">
+        </h1>
+      </div>
+      <div className="group relative mt-4 flex cursor-pointer items-center">
         <UserAvatar
           name={user?.name || ""}
           url={imageURL}
           image={image}
-          className="h-12 w-12 bg-pink-400"
+          className="h-14 w-14 flex-none bg-pink-400"
         />
-        <div className="mx-4 block text-sm font-semibold text-gray-600 group-hover:underline">
+        <div className="mx-4 block flex-wrap text-sm font-semibold text-gray-600 group-hover:underline">
           Click to change your profile picture
         </div>
         <input
