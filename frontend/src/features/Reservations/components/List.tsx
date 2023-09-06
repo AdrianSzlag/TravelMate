@@ -128,7 +128,7 @@ const List = () => {
             businesses
               .filter((b) => b.id === filter)
               .map((b) => (
-                <div className="mx-4 mb-4 flex items-baseline ">
+                <div className="mx-4 flex items-baseline ">
                   <h1 className="mr-2 text-lg font-semibold ">{b.name}</h1>
                   <div className=" text-sm text-gray-400">{b.address}</div>
                 </div>

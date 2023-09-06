@@ -50,7 +50,7 @@ const Item = ({
 
   return (
     <div
-      className="box-border flex rounded border shadow"
+      className="box-border flex rounded border"
       onClick={onClick}
       style={{ order: order }}
     >
@@ -120,7 +120,7 @@ const Item = ({
       {startDate && (
         <>
           <div className="my-4 flex-shrink-0 flex-grow-0 border-l"></div>
-          <div className="flex w-20 flex-none flex-col items-center justify-center">
+          <div className="flex w-24 flex-none flex-col items-center justify-center">
             <div className="text-sm font-semibold text-gray-800">
               {getMonthName(startDate.month)}
             </div>

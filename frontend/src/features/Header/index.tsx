@@ -9,6 +9,7 @@ import Profile from "./components/Profile";
 import SignInButton from "./components/SignInButton";
 import Notifications from "./components/Notifications";
 import { BiBookContent } from "react-icons/bi";
+import { DateTime } from "luxon";
 
 const ProfileModal = ({ children }: { children: ReactNode }) => {
   const modalRoot = document.getElementById("modal-root") as HTMLElement;
@@ -21,8 +22,13 @@ const Header = () => {
   const reservations = useAppSelector(
     (state) => state.reservations.reservations
   );
-  const noOfReservations = reservations.length;
-  const noOfNotifications = noOfReservations;
+  const noOfNotifications = reservations.reduce((acc, curr) => {
+    const isDone =
+      DateTime.fromISO(curr.date).plus({ minutes: curr.duration }) <
+      DateTime.now();
+    if (!isDone) acc++;
+    return acc;
+  }, 0);
 
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.auth.user);
@@ -48,8 +54,8 @@ const Header = () => {
             className="relative h-fit cursor-pointer"
             onClick={onReservationsHandler}
           >
-            {noOfReservations > 0 && (
-              <Notifications number={noOfReservations} />
+            {noOfNotifications > 0 && (
+              <Notifications number={noOfNotifications} />
             )}
             <div className="hidden px-2 py-1 font-semibold text-white xs:block">
               Reservations
