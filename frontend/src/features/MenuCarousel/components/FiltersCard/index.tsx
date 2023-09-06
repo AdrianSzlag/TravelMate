@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { searchActions } from "store/search-slice";
 import { search } from "store/search-actions";
 import { placesActions } from "store/places-slice";
+import { IoFilterSharp } from "react-icons/io5";
 
 interface Props {
   onSubmit: () => void;
@@ -95,10 +96,15 @@ const Filters = ({ onSubmit }: Props) => {
       </div>
 
       <button
-        className="mt-4 w-full self-end justify-self-end bg-blue-700 p-2 text-center text-white transition-colors hover:bg-blue-900"
+        className="mt-4 flex w-full items-center justify-center self-end justify-self-end bg-blue-700 p-2 text-white transition-colors hover:bg-blue-900"
         type="submit"
       >
-        Filter
+        <div className="relative">
+          <div className="absolute left-0 top-0 bottom-0 flex w-fit -translate-x-full items-center">
+            <IoFilterSharp className="mr-1 h-4 w-4" />
+          </div>
+          Filter
+        </div>
       </button>
     </form>
   );

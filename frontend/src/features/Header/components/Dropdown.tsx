@@ -1,20 +1,23 @@
 import UserAvatar from "components/UserAvatar";
 import { useAppSelector } from "hooks/redux-hooks";
 import { useState } from "react";
+import { IconType } from "react-icons";
 
 interface ButtonProps {
   onClick?: () => void;
   text: string;
+  Icon: IconType;
 }
 
-export const DropdownButton = ({ onClick, text }: ButtonProps) => {
+export const DropdownButton = ({ onClick, text, Icon }: ButtonProps) => {
   const onClickHandler = () => onClick && onClick();
   return (
     <li
       onClick={onClickHandler}
       className="text-sm font-semibold text-gray-700"
     >
-      <a href="#" className="block px-4 py-2 hover:bg-gray-100">
+      <a href="#" className="flex items-center px-4 py-2 hover:bg-gray-100">
+        <Icon className="mr-4 h-5 w-5" />
         {text}
       </a>
     </li>

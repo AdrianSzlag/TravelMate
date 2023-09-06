@@ -38,6 +38,14 @@ const placesSlice = createSlice({
         state.places.push(action.payload);
       }
     },
+    addPlace(state, action: PayloadAction<IPlace>) {
+      const id = action.payload.id;
+      const place = state.places.find((place) => place.id === id);
+      if (place) {
+        state.places.splice(state.places.indexOf(place), 1);
+      }
+      state.places.push(action.payload);
+    },
     addReview(
       state,
       action: PayloadAction<{ placeId: string; review: IReview }>

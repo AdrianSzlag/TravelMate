@@ -12,6 +12,7 @@ import Modal from "components/Modal";
 import { deletePlace } from "store/places-actions";
 import { isTimeGreater } from "utils/dateTime";
 import Img from "components/Img";
+import { PiMapPinBold } from "react-icons/pi";
 
 const BusinessModal = () => {
   const dispatch = useAppDispatch();
@@ -150,16 +151,19 @@ const BusinessModal = () => {
   };
 
   return (
-    <Modal className="box-border max-h-full w-full flex-col gap-4 overflow-y-auto border bg-white px-4 py-2 shadow-xl first:flex xs:w-[450px] xs:rounded md:w-[700px] md:flex-row">
+    <Modal className="box-border max-h-full w-full flex-col gap-4 overflow-y-auto border bg-white p-4 shadow-xl first:flex xs:w-[450px] xs:rounded md:w-[700px] md:flex-row">
       <div className="w-full md:w-1/2">
-        <h1 className="text-xl font-semibold text-gray-600">
-          Let's Get Started
-        </h1>
+        <div className="mb-4 flex">
+          <PiMapPinBold className="mr-4 h-7 w-7" />
+          <h1 className="text-xl font-semibold text-gray-600">
+            Let's Get Started
+          </h1>
+        </div>
         <Input
           type="text"
           placeholder="Business Name"
           value={name}
-          errorMessage=""
+          errorMessage="Name is required"
           onChange={setName}
           isValid={isValidName}
           name="business-name"
@@ -182,7 +186,7 @@ const BusinessModal = () => {
           type="text"
           placeholder="London, UK"
           value={address}
-          errorMessage=""
+          errorMessage="Address is required"
           onChange={setAddress}
           isValid={isValidAddress}
           name="address"
@@ -192,13 +196,16 @@ const BusinessModal = () => {
           type="number"
           placeholder="123456789"
           value={phone}
-          errorMessage=""
+          errorMessage="Please enter a valid phone number"
           onChange={setPhone}
           isValid={isValidPhone}
           name="phone"
           title="Phone number"
         />
-        <div className="mx-4 mt-2 mb-2 flex flex-col gap-0.5 text-sm">
+        <label className="mt-2 block text-sm font-medium text-gray-900">
+          Select opening hours
+        </label>
+        <div className="mx-2 mt-2 flex flex-col gap-0.5 text-sm">
           {openingHours.map((hours) => {
             return (
               <TimeSelector
@@ -209,17 +216,6 @@ const BusinessModal = () => {
             );
           })}
         </div>
-        <Input
-          type="text"
-          placeholder="Separate tags with spaces e.g. hotel restaurant"
-          value={tags}
-          errorMessage=""
-          onChange={setTagsHandler}
-          isValid={isValidTags}
-          name="tags"
-          title="Tags"
-        />
-        <div className="mt-2" />
       </div>
       <div className=" md:w-1/2">
         <label className="mb-2 block text-sm font-medium text-gray-900">
@@ -265,7 +261,18 @@ const BusinessModal = () => {
           Pick a location
         </label>
         <Map coordinates={coordinates} setCoordinates={setCoordinates} />
-        <div className="mt-2 mb-2 flex justify-end gap-2">
+        <div className="mt-2"></div>
+        <Input
+          type="text"
+          placeholder="Separate tags with spaces e.g. hotel restaurant"
+          value={tags}
+          errorMessage=""
+          onChange={setTagsHandler}
+          isValid={isValidTags}
+          name="tags"
+          title="Tags"
+        />
+        <div className="mt-4 flex justify-end gap-2">
           {isEditing && (
             <button
               className="block rounded border px-2 py-0.5 text-sm font-medium text-gray-900"

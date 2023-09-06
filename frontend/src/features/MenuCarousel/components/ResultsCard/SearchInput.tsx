@@ -33,7 +33,7 @@ const SearchInput = () => {
     <div className="relative w-full">
       <input
         type="text"
-        className="block w-full rounded border border-gray-300 bg-gray-50 p-3 text-gray-900 focus:border-[#2563eb] focus:ring-[#2563eb]"
+        className="block w-full rounded border border-gray-300 bg-gray-100 p-3 text-gray-900 focus:border-[#2563eb] focus:ring-[#2563eb]"
         name="destination"
         placeholder="Search..."
         value={searchQuery}

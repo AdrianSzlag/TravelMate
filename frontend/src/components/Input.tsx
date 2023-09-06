@@ -47,29 +47,28 @@ const Input = ({
   }, [isTouched, isValid, value]);
 
   return (
-    <div className="pb-1">
-      <label
-        htmlFor={name}
-        className="mb-2 block text-sm font-medium text-gray-900"
-      >
+    <div>
+      <label htmlFor={name} className="block text-sm font-medium text-gray-900">
         {title}
       </label>
-      <input
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChangeHandler}
-        onBlur={onBlurHandler}
-        name={name}
-        className={` ${
-          error ? "border-red-300" : "border-gray-300"
-        } block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-[#2563eb] focus:ring-[#2563eb] sm:text-sm`}
-      />
-      <p
-        className={`absolute text-xs text-red-500 ${error ? "" : "invisible"}`}
-      >
-        {errorMessage}
-      </p>
+      <div className="relative my-2">
+        <input
+          type={type}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChangeHandler}
+          onBlur={onBlurHandler}
+          name={name}
+          className={` ${
+            error ? "border-red-300" : "border-gray-300"
+          } box-border block w-full rounded-lg border border-gray-300 p-2.5 text-gray-900 focus:border-[#2563eb] focus:ring-[#2563eb] sm:text-sm`}
+        />
+        {error && (
+          <span className="absolute bottom-[1px] left-3 z-10 translate-y-1/2 bg-white px-1 text-xs text-red-500">
+            {errorMessage}
+          </span>
+        )}
+      </div>
     </div>
   );
 };

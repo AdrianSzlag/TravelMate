@@ -56,6 +56,7 @@ export const fetchPlace = (placeId: string): AppThunk => {
     };
     try {
       const placeData = (await fetchData()) as IPlace;
+      dispatch(placesActions.addPlace(placeData));
       dispatch(placesActions.setFocused(placeData));
     } catch (error) {
       console.log(error);

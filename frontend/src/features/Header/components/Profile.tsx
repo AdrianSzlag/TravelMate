@@ -4,6 +4,7 @@ import Input from "components/Input";
 import { useEffect, useState } from "react";
 import fetchApi from "utils/fetchApi";
 import Modal from "components/Modal";
+import { FaRegAddressCard } from "react-icons/fa";
 
 interface Props {
   onClose: () => void;
@@ -71,7 +72,12 @@ const Profile = ({ onClose }: Props) => {
 
   return (
     <Modal className="w-full rounded border bg-white p-4 xs:w-[400px]">
-      <h1 className="text-xl font-semibold text-gray-600">Edit your profile</h1>
+      <h1 className="flex">
+        <FaRegAddressCard className="mr-4 h-7 w-7" />
+        <div className="text-xl font-semibold text-gray-600">
+          Edit your profile
+        </div>
+      </h1>
       <div className="group relative mt-4 flex cursor-pointer">
         <UserAvatar
           name={user?.name || ""}
@@ -80,7 +86,7 @@ const Profile = ({ onClose }: Props) => {
           className="h-12 w-12 bg-pink-400"
         />
         <div className="mx-4 block text-sm font-semibold text-gray-600 group-hover:underline">
-          Click to change profile picture
+          Click to change your profile picture
         </div>
         <input
           type="file"

@@ -3,13 +3,18 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { businessActions } from "store/business-slice";
 import Dropdown, { DropdownButton } from "./components/Dropdown";
-import { createPortal } from "react-dom";
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import Profile from "./components/Profile";
 import SignInButton from "./components/SignInButton";
 import Notifications from "./components/Notifications";
-import { BiBookContent } from "react-icons/bi";
+import { BiBookContent, BiLogOut } from "react-icons/bi";
 import { DateTime } from "luxon";
+import { HiUser } from "react-icons/hi";
+import { IoCreateOutline } from "react-icons/io5";
+import { FaRegAddressCard } from "react-icons/fa";
+import { MdOutlineAddLocationAlt } from "react-icons/md";
+import { PiMapPinBold } from "react-icons/pi";
+import UserAvatar from "components/UserAvatar";
 
 const Header = () => {
   const [showModal, setShowModal] = useState(false);
@@ -58,26 +63,40 @@ const Header = () => {
             <BiBookContent className="mx-2 my-1 h-6 w-6 text-white xs:hidden" />
           </li>
           <Dropdown>
-            <div className="px-4 py-3 text-sm  text-gray-900 ">
-              <div className="font-semibold">{user.name}</div>
-              <div className="truncate">{user.email}</div>
+            <div className="flex p-4 text-sm text-gray-900 ">
+              <UserAvatar
+                name={user?.name || ""}
+                image={user?.profileImage}
+                className="mr-4 h-10 w-10 bg-pink-600 !text-base"
+              />
+              <div>
+                <div className="font-semibold">{user.name}</div>
+                <div>{user.email}</div>
+              </div>
             </div>
             <ul className="py-2 ">
               <DropdownButton
+                Icon={BiBookContent}
                 text="Reservations"
                 onClick={onReservationsHandler}
               />
               <DropdownButton
-                text="Profile"
+                Icon={FaRegAddressCard}
+                text="Edit profile"
                 onClick={() => setShowModal(true)}
               />
               <DropdownButton
+                Icon={PiMapPinBold}
                 text="Create business"
                 onClick={onOpenBusinessModalHandler}
               />
             </ul>
             <ul className="py-2 ">
-              <DropdownButton text="Sign out" onClick={onSignOutHandler} />
+              <DropdownButton
+                Icon={BiLogOut}
+                text="Sign out"
+                onClick={onSignOutHandler}
+              />
             </ul>
           </Dropdown>
         </>
