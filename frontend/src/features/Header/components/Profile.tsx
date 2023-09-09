@@ -7,6 +7,7 @@ import Modal from "components/Modal";
 import { FaRegAddressCard } from "react-icons/fa";
 import Button from "components/Button";
 import ImageInput from "components/ImageInput";
+import { useNavigate } from "react-router";
 
 interface Props {
   onClose: () => void;
@@ -19,18 +20,11 @@ const Profile = ({ onClose }: Props) => {
   const [imageFile, setImageFile] = useState<File | undefined>(undefined);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const validName = name.length >= 3;
   const validPassword = password.length >= 6 || password.length === 0;
   const validForm = validName && validPassword && !loading;
-
-  const imageURL = imageFile ? URL.createObjectURL(imageFile) : undefined;
-  const image = imageURL ? undefined : user?.profileImage;
-
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    setImageFile(file || undefined);
-  };
 
   const onSubmit = async () => {
     if (!validForm) {
@@ -66,6 +60,7 @@ const Profile = ({ onClose }: Props) => {
       console.log(error);
     }
     setLoading(false);
+    navigate(0);
   };
 
   useEffect(() => {
