@@ -10,6 +10,7 @@ import { upload } from "../middlewares/fileMiddleware";
 import {
   addServiceToPlace,
   deleteServiceFromPlace,
+  updateService,
 } from "../controllers/serviceController";
 import {
   addMenuItemToPlace,
@@ -36,6 +37,12 @@ placeRouter.post(
   authMiddleware,
   upload.single("image"),
   addServiceToPlace
+);
+placeRouter.put(
+  "/:placeId/service/:serviceId",
+  authMiddleware,
+  upload.single("image"),
+  updateService
 );
 placeRouter.delete(
   "/:placeId/service/:serviceId",

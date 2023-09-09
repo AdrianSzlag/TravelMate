@@ -2,71 +2,65 @@ import Img from "components/Img";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { useState } from "react";
 import { showBookingModal } from "store/book-actions";
-import NewServiceModal from "./NewServiceModal";
-import { deleteService, fetchPlace } from "store/places-actions";
+import NewServiceModal, { IService } from "./NewServiceModal";
+import { fetchPlace } from "store/places-actions";
 
 interface ServiceProps {
-  placeId: string;
-  serviceId: string;
   name: string;
   price?: number;
   description?: string;
   image?: string;
-  edit: boolean;
-  onDelete: () => void;
+  duration?: number;
+  isOwner: boolean;
+  onBook: () => void;
+  onEdit: () => void;
 }
 const Service = ({
-  placeId,
-  serviceId,
   name,
   price,
   description,
   image,
-  edit,
-  onDelete,
+  duration,
+  isOwner,
+  onBook,
+  onEdit,
 }: ServiceProps) => {
-  const dispatch = useAppDispatch();
-  const onClickHandler = () => {
-    dispatch(showBookingModal(placeId, serviceId));
-  };
   return (
-    <div className="p-1 ">
-      <div className="flex">
-        <div className="flex-1">
-          <div className="text font-semibold text-gray-700">{name}</div>
-          <div className="flex items-center">
-            {!!price && (
-              <div className="mr-2 w-10 text-sm text-gray-500">{price} zl</div>
-            )}
-            <button
-              className="my-0.5 rounded bg-blue-600 px-2 text-sm font-semibold text-white"
-              onClick={onClickHandler}
-            >
-              Book
-            </button>
-          </div>
-          {description && (
-            <div className="text-sm text-gray-400">{description}</div>
+    <div className="flex">
+      <div className="flex-1">
+        <div className="text font-semibold text-gray-700">{name}</div>
+        <div className="flex items-center">
+          {!!price && (
+            <div className="mr-2 w-10 text-sm text-gray-500">{price} zl</div>
           )}
-          {edit && (
-            <div
-              className="flex cursor-pointer text-sm font-semibold text-blue-600"
-              onClick={onDelete}
-            >
-              Delete service
-            </div>
-          )}
+          <button
+            className="my-0.5 rounded bg-blue-600 px-2 text-sm font-semibold text-white"
+            onClick={onBook}
+          >
+            Book
+          </button>
         </div>
-        {image && (
-          <div className="h-20 w-24 ">
-            <Img
-              src={`/${image}`}
-              alt={name}
-              className="h-full w-full object-cover"
-            />
+        {description && (
+          <div className="text-sm text-gray-400">{description}</div>
+        )}
+        {isOwner && (
+          <div
+            className="flex cursor-pointer text-sm font-semibold text-blue-600"
+            onClick={onEdit}
+          >
+            Edit
           </div>
         )}
       </div>
+      {image && (
+        <div className="h-20 w-24 ">
+          <Img
+            src={`/${image}`}
+            alt={name}
+            className="h-full w-full object-cover"
+          />
+        </div>
+      )}
     </div>
   );
 };
@@ -78,53 +72,58 @@ const Services = () => {
   const ownerId = useAppSelector((state) => state.places.focused?.createdBy.id);
   const user = useAppSelector((state) => state.auth.user);
   const dispatch = useAppDispatch();
-  const isOwner = user?.id === ownerId;
+  const [editing, setEditing] = useState<IService>();
 
-  const deleteServiceHandler = async (id: string) => {
-    if (!placeId || !isOwner) return;
-    const confirm = window.confirm(
-      "Are you sure you want to delete this service?"
-    );
-    if (confirm) {
-      dispatch(deleteService(placeId, id));
-    }
-  };
+  const isOwner = user?.id === ownerId;
 
   const onCloseModalHandler = () => {
     dispatch(fetchPlace(placeId!));
     setNewServiceModalOpen(false);
+    setEditing(undefined);
+  };
+
+  const onEditServiceHandler = (service: IService) => {
+    setEditing(service);
+    setNewServiceModalOpen(true);
+  };
+
+  const onBookServiceHandler = (service: IService) => {
+    if (!placeId || !service.id) return;
+    dispatch(showBookingModal(placeId, service.id));
   };
 
   return (
-    <div className="py-4">
+    <div className="flex flex-col gap-4 py-4">
       {services?.length === 0 && (
-        <div className="pl-1 font-semibold text-gray-400">
-          No services available!
-        </div>
+        <h1 className="font-semibold text-gray-400">No services yet!</h1>
       )}
       {isOwner && (
         <button
-          className="rounded pl-1 text-sm font-semibold text-gray-400 hover:underline"
+          className="rounded text-sm font-semibold text-gray-400 hover:underline"
           onClick={() => setNewServiceModalOpen(true)}
         >
-          Click to add new service
+          Click to add new service.
         </button>
       )}
       {services?.map((service) => (
         <Service
           key={service.name}
-          placeId={placeId!}
-          serviceId={service.id}
           name={service.name}
           price={service.price}
           description={service.description}
           image={service.image}
-          edit={isOwner}
-          onDelete={() => deleteServiceHandler(service.id)}
+          duration={service.duration}
+          isOwner={isOwner}
+          onEdit={() => onEditServiceHandler(service)}
+          onBook={() => onBookServiceHandler(service)}
         />
       ))}
       {newServiceModalOpen && (
-        <NewServiceModal placeId={placeId!} onClose={onCloseModalHandler} />
+        <NewServiceModal
+          placeId={placeId!}
+          onClose={onCloseModalHandler}
+          editing={editing}
+        />
       )}
     </div>
   );
