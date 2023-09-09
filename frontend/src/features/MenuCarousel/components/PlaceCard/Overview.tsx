@@ -106,22 +106,23 @@ const Images = ({ images }: { images: string[] | null }) => {
   const isEmpty = !images || images.length === 0;
   const ref = useRef<HTMLDivElement>(null);
   const [scroll, setScroll] = useState(0);
+  const [width, setWidth] = useState(0);
   const [imagePreviewOpen, setImagePreviewOpen] = useState(false);
 
-  const onScrollHandler = useCallback(() => {
+  const onScrollHandler = (event: React.UIEvent<HTMLDivElement>) => {
+    setScroll(event.currentTarget.scrollLeft);
+    setWidth(event.currentTarget.offsetWidth);
+  };
+  const onResizeHandler = (event: ResizeObserverEntry[]) => {
+    setWidth(event[0].contentRect.width);
     if (!ref.current) return;
-    const scrollLeft = ref.current.scrollLeft;
-    setScroll(scrollLeft);
-  }, [ref.current]);
-
-  useEffect(() => onScrollHandler(), [images, ref.current]);
+    setScroll(ref.current.scrollLeft);
+  };
 
   const scrollLeft = () => {
     if (!ref.current) return;
-    const width = ref.current.offsetWidth;
-    const scrollLeft = ref.current.scrollLeft;
     const scrollStep = width / 2;
-    const scrollTarget = scrollLeft - scrollStep;
+    const scrollTarget = scroll - scrollStep;
     ref.current.scrollTo({
       left: scrollTarget > 0 ? scrollTarget : 0,
       behavior: "smooth",
@@ -129,10 +130,8 @@ const Images = ({ images }: { images: string[] | null }) => {
   };
   const scrollRight = () => {
     if (!ref.current) return;
-    const width = ref.current.offsetWidth;
-    const scrollLeft = ref.current.scrollLeft;
     const scrollStep = width / 2;
-    const scrollTarget = scrollLeft + scrollStep;
+    const scrollTarget = width + scrollStep;
     ref.current.scrollTo({
       left: scrollTarget,
       behavior: "smooth",
@@ -141,7 +140,7 @@ const Images = ({ images }: { images: string[] | null }) => {
 
   useEffect(() => {
     if (!ref.current) return;
-    const resizeObserver = new ResizeObserver(onScrollHandler);
+    const resizeObserver = new ResizeObserver(onResizeHandler);
     resizeObserver.observe(ref.current);
     return () => resizeObserver.disconnect();
   }, [ref.current, onScrollHandler]);
