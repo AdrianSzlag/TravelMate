@@ -95,7 +95,7 @@ const NewServiceModal = ({ placeId, onClose, editing }: Props) => {
   };
 
   return (
-    <Modal className="max-h-full w-full overflow-y-auto border bg-white p-4 shadow-xl sm:w-[400px] sm:rounded">
+    <Modal className="max-h-full w-full overflow-y-auto border bg-white p-4 shadow-xl xs:w-[400px] xs:rounded">
       <div className="mb-2 flex">
         <h1 className="text-lg font-semibold text-gray-600">Add Service</h1>
       </div>

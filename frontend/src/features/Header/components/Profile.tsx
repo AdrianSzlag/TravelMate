@@ -6,6 +6,7 @@ import fetchApi from "utils/fetchApi";
 import Modal from "components/Modal";
 import { FaRegAddressCard } from "react-icons/fa";
 import Button from "components/Button";
+import ImageInput from "components/ImageInput";
 
 interface Props {
   onClose: () => void;
@@ -72,29 +73,22 @@ const Profile = ({ onClose }: Props) => {
   }, [user]);
 
   return (
-    <Modal className="w-full rounded border bg-white p-4 xs:w-[400px]">
+    <Modal className="max-h-full w-full overflow-y-auto border bg-white p-4 shadow-xl xs:w-[400px] xs:rounded">
       <div className="flex">
         <FaRegAddressCard className="mr-4 h-7 w-7" />
         <h1 className="text-xl font-semibold text-gray-600">
           Edit your profile
         </h1>
       </div>
-      <div className="group relative mt-4 flex cursor-pointer items-center">
-        <UserAvatar
-          name={user?.name || ""}
-          url={imageURL}
-          image={image}
-          className="h-14 w-14 flex-none bg-pink-400"
-        />
-        <div className="mx-4 block flex-wrap text-sm font-semibold text-gray-600 group-hover:underline">
-          Click to change your profile picture
-        </div>
-        <input
-          type="file"
-          accept=".jpeg,.jpg,.png"
-          onChange={handleImageChange}
-          className="absolute top-0 left-0 z-20 h-full w-full cursor-pointer opacity-0"
-          multiple={false}
+      <label className="mt-2 block text-sm font-medium text-gray-900">
+        Choose an image. (optional)
+      </label>
+      <div className="flex justify-center">
+        <ImageInput
+          defaultImage={user?.profileImage}
+          file={imageFile}
+          onChange={setImageFile}
+          className="my-2 h-40 w-40 overflow-hidden rounded-full"
         />
       </div>
       <div className="mt-4 w-full">

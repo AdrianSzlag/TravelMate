@@ -4,7 +4,6 @@ import Modal from "components/Modal";
 import Button from "components/Button";
 import Input from "components/Input";
 import { BiSolidBookOpen } from "react-icons/bi";
-import Img from "components/Img";
 import { useAppDispatch } from "hooks/redux-hooks";
 import { deleteMenuItem } from "store/places-actions";
 import ImageInput from "components/ImageInput";
@@ -60,8 +59,9 @@ const NewMenuItemModal = ({ placeId, onClose, editing }: Props) => {
       if (image) {
         formData.append("image", image);
       }
-      const url =
-        `/api/place/${placeId}/menu` + (editing ? `/${editing.id}` : "");
+      const url = editing
+        ? `/api/place/${placeId}/menu/${editing.id}`
+        : `/api/place/${placeId}/menu`;
       const response = await fetchApi(url, {
         method: editing ? "PUT" : "POST",
         body: formData,
@@ -69,7 +69,6 @@ const NewMenuItemModal = ({ placeId, onClose, editing }: Props) => {
       if (!response.ok) {
         throw new Error("Something went wrong!");
       }
-      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -89,7 +88,7 @@ const NewMenuItemModal = ({ placeId, onClose, editing }: Props) => {
   };
 
   return (
-    <Modal className="max-h-full w-full overflow-y-auto border bg-white p-4 shadow-xl sm:w-[400px] sm:rounded">
+    <Modal className="max-h-full w-full overflow-y-auto border bg-white p-4 shadow-xl xs:w-[400px] xs:rounded">
       <div className="mb-2 flex">
         <BiSolidBookOpen className="mr-4 h-7 w-7" />
         <h1 className="text-lg font-semibold text-gray-600">Add Menu Item</h1>
@@ -102,7 +101,7 @@ const NewMenuItemModal = ({ placeId, onClose, editing }: Props) => {
           defaultImage={editing?.image}
           file={image}
           onChange={setImage}
-          className="my-2 h-40 w-40"
+          className="my-2 h-40 w-40 overflow-hidden rounded"
         />
       </div>
       <Input
