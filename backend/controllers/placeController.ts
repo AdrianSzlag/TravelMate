@@ -149,7 +149,12 @@ export const createPlace = async (req: IRequest, res: Response) => {
   if (!thumbnailFile) {
     return res.status(400).json({ message: "Missing thumbnail" });
   }
-  const businessDTO = JSON.parse(req.body.business) as BusinessDTO;
+  let businessDTO: BusinessDTO;
+  try {
+    businessDTO = JSON.parse(req.body.business) as BusinessDTO;
+  } catch (error) {
+    return res.status(400).json({ message: "Invalid business data" });
+  }
   const { name, type, location, phone, openingHours } = businessDTO;
   if (!name || !type || !location || !phone || !openingHours) {
     console.log(name, type, location, phone, openingHours);
@@ -187,7 +192,12 @@ export const updatePlace = async (req: IRequest, res: Response) => {
   const imagesFiles = files?.images
     ? (files.images as Express.Multer.File[])
     : undefined;
-  const businessDTO = JSON.parse(req.body.business) as BusinessDTO;
+  let businessDTO: BusinessDTO;
+  try {
+    businessDTO = JSON.parse(req.body.business) as BusinessDTO;
+  } catch (error) {
+    return res.status(400).json({ message: "Invalid business data" });
+  }
   const { name, type, location, phone, openingHours } = businessDTO;
   if (!name || !type || !location || !phone || !openingHours) {
     console.log(name, type, location, phone, openingHours);

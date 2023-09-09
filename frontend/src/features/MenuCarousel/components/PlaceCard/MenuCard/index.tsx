@@ -1,16 +1,17 @@
 import Img from "components/Img";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { useState } from "react";
-import NewMenuItemModal from "./NewMenuItemModal";
+import NewMenuItemModal, { IMenuItem } from "./NewMenuItemModal";
 import { deleteMenuItem, fetchPlace } from "store/places-actions";
+import IPlace from "types/IPlace";
 
 interface MenuItemProps {
   name: string;
   price?: number;
   description?: string;
   image?: string;
-  edit: boolean;
-  onDelete: () => void;
+  isOwner: boolean;
+  onEdit: () => void;
 }
 
 const MenuItem = ({
@@ -18,23 +19,23 @@ const MenuItem = ({
   price,
   description,
   image,
-  edit,
-  onDelete,
+  isOwner,
+  onEdit,
 }: MenuItemProps) => {
   return (
-    <div className="flex p-1 ">
+    <div className="flex">
       <div className="flex-1">
         <div className="text font-semibold text-gray-700">{name}</div>
         {!!price && <div className="text-sm text-gray-500">{price} zl</div>}
         {description && (
           <div className="text-sm text-gray-400">{description}</div>
         )}
-        {edit && (
+        {isOwner && (
           <div
             className="flex cursor-pointer text-sm font-semibold text-blue-600"
-            onClick={onDelete}
+            onClick={onEdit}
           >
-            Delete menu item
+            Edit
           </div>
         )}
       </div>
@@ -58,54 +59,50 @@ const Menu = () => {
   const ownerId = useAppSelector((state) => state.places.focused?.createdBy.id);
   const user = useAppSelector((state) => state.auth.user);
   const dispatch = useAppDispatch();
+  const [editing, setEditing] = useState<IMenuItem>();
 
   const isOwner = user?.id === ownerId;
-
-  const deleteMenuItemHandler = async (id: string) => {
-    if (!placeId || !isOwner) return;
-    const confirm = window.confirm(
-      "Are you sure you want to delete this menu item?"
-    );
-    if (confirm) {
-      dispatch(deleteMenuItem(placeId, id));
-    }
-  };
 
   const onCloseModalHandler = () => {
     dispatch(fetchPlace(placeId!));
     setModalOpen(false);
+    setEditing(undefined);
+  };
+
+  const onEditMenuItemHandler = (menuItem: IMenuItem) => {
+    setEditing(menuItem);
+    setModalOpen(true);
   };
 
   return (
-    <div className="py-4">
+    <div className="flex flex-col gap-4 py-4">
       {menu?.length === 0 && (
-        <div className="pl-1 font-semibold text-gray-400">
-          No services available!
+        <div className="font-semibold text-gray-400">
+          No menu items added yet!
         </div>
       )}
       {isOwner && (
         <button
-          className="rounded pl-1 text-sm font-semibold text-gray-400 hover:underline"
+          className="rounded text-sm font-semibold text-gray-400 hover:underline"
           onClick={() => setModalOpen(true)}
         >
-          Click to add new menu item
+          Click to add new menu item.
         </button>
       )}
-      <div className="">
-        {menu?.map((menuItem) => (
-          <MenuItem
-            key={menuItem.name}
-            name={menuItem.name}
-            price={menuItem.price}
-            description={menuItem.description}
-            image={menuItem.image}
-            edit={isOwner}
-            onDelete={() => deleteMenuItemHandler(menuItem.id)}
-          />
-        ))}
-      </div>
+      {menu?.map((menuItem) => (
+        <MenuItem
+          key={menuItem.id}
+          {...menuItem}
+          isOwner={isOwner}
+          onEdit={() => onEditMenuItemHandler(menuItem)}
+        />
+      ))}
       {modalOpen && (
-        <NewMenuItemModal placeId={placeId!} onClose={onCloseModalHandler} />
+        <NewMenuItemModal
+          placeId={placeId!}
+          onClose={onCloseModalHandler}
+          editing={editing}
+        />
       )}
     </div>
   );

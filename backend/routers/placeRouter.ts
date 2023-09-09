@@ -14,6 +14,7 @@ import {
 import {
   addMenuItemToPlace,
   deleteMenuItemFromPlace,
+  updateMenuItem,
 } from "../controllers/menuController";
 
 const placeRouter = express.Router();
@@ -46,6 +47,12 @@ placeRouter.post(
   authMiddleware,
   upload.single("image"),
   addMenuItemToPlace
+);
+placeRouter.put(
+  "/:placeId/menu/:menuId",
+  authMiddleware,
+  upload.single("image"),
+  updateMenuItem
 );
 placeRouter.delete(
   "/:placeId/menu/:menuId",
