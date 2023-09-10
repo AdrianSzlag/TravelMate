@@ -1,12 +1,12 @@
 import { useAppSelector } from "hooks/redux-hooks";
-import { RiMapPin2Line } from "react-icons/ri";
+import { RiMapPinLine } from "react-icons/ri";
 import { FiPhone } from "react-icons/fi";
 import { AiOutlineMail } from "react-icons/ai";
 import { FaRegClock } from "react-icons/fa";
 import { MdExpandMore, MdExpandLess } from "react-icons/md";
 import Img from "components/Img";
 import IOpeningHours from "types/IOpeningHours";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { days } from "utils/dateTime";
 import { BsArrowLeftCircleFill, BsArrowRightCircleFill } from "react-icons/bs";
 import ImagePreview from "components/ImagePreview";
@@ -121,7 +121,7 @@ const Images = ({ images }: { images: string[] | null }) => {
 
   const scrollLeft = () => {
     if (!ref.current) return;
-    const scrollStep = width / 2;
+    const scrollStep = width * 0.8;
     const scrollTarget = scroll - scrollStep;
     ref.current.scrollTo({
       left: scrollTarget > 0 ? scrollTarget : 0,
@@ -130,8 +130,8 @@ const Images = ({ images }: { images: string[] | null }) => {
   };
   const scrollRight = () => {
     if (!ref.current) return;
-    const scrollStep = width / 2;
-    const scrollTarget = width + scrollStep;
+    const scrollStep = width * 0.8;
+    const scrollTarget = scroll + scrollStep;
     ref.current.scrollTo({
       left: scrollTarget,
       behavior: "smooth",
@@ -152,19 +152,15 @@ const Images = ({ images }: { images: string[] | null }) => {
 
   return (
     <>
-      <div
-        className={"relative flex w-full items-center " + (isEmpty && "h-0")}
-      >
+      <div className={"relative -mx-4 flex items-center" + (isEmpty && "h-0")}>
         {isLeftArrow && (
-          <div
-            className="absolute left-0 z-10 flex h-full min-h-0 cursor-pointer items-center overflow-hidden"
+          <BsArrowLeftCircleFill
+            className="absolute top-1/2 left-4 z-10 h-8 w-8 -translate-y-1/2 cursor-pointer drop-shadow-[0_0_2px_rgba(255,255,255,10)] hover:scale-105"
             onClick={scrollLeft}
-          >
-            <BsArrowLeftCircleFill className="h-8 w-8 drop-shadow-[0_0_5px_rgba(255,255,255,100)]" />
-          </div>
+          />
         )}
         <div
-          className="no-scrollbar flex h-fit items-center gap-2 overflow-x-auto py-2"
+          className="no-scrollbar flex h-fit items-center gap-2 overflow-x-auto py-2 px-4"
           ref={ref}
           onScroll={onScrollHandler}
         >
@@ -181,12 +177,10 @@ const Images = ({ images }: { images: string[] | null }) => {
             })}
         </div>
         {isRightArrow && (
-          <div
-            className="absolute right-0 z-10 flex h-full min-h-0 cursor-pointer items-center overflow-hidden"
+          <BsArrowRightCircleFill
+            className="absolute top-1/2 right-4 z-10 h-8 w-8 -translate-y-1/2 cursor-pointer drop-shadow-[0_0_2px_rgba(255,255,255,10)] hover:scale-105"
             onClick={scrollRight}
-          >
-            <BsArrowRightCircleFill className="h-8 w-8 drop-shadow-[0_0_5px_rgba(255,255,255,100)]" />
-          </div>
+          />
         )}
       </div>
       {imagePreviewOpen && images && (
@@ -214,7 +208,7 @@ const Overview = () => {
       <Images images={images} />
       {address && (
         <div className="flex cursor-pointer items-center py-2">
-          <RiMapPin2Line className="mr-4 inline-block text-xl text-blue-500" />
+          <RiMapPinLine className="mr-4 inline-block text-xl text-blue-500" />
           <a
             className="font-semibold text-gray-500"
             href={`http://maps.google.com/?q=${address}`}

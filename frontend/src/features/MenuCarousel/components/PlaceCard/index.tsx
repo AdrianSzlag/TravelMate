@@ -19,7 +19,7 @@ const CarouselButton = ({ text, onClick, active }: ButtonProps) => {
   return (
     <button
       onClick={onClick}
-      className={`box-border flex-grow py-3 font-semibold ${
+      className={`box-border flex-grow py-3 px-1 font-semibold ${
         active
           ? "border-b-2 border-blue-500 text-blue-500 hover:bg-blue-100"
           : "text-gray-500 hover:bg-gray-100"
@@ -81,7 +81,7 @@ const Place = ({ minimized, place }: Props) => {
           (minimized ? "h-0 xs:h-[200px]" : "h-[200px]")
         }
       />
-      <div className="px-5 py-3 ">
+      <div className="px-4 py-3">
         <h1 className="pb-1 text-2xl font-semibold text-gray-600">
           {place.name}
         </h1>
@@ -101,7 +101,8 @@ const Place = ({ minimized, place }: Props) => {
         )}
         {!place.rating && <div className="text-gray-400">No reviews yet!</div>}
         <p className="mb-2 font-semibold text-gray-500">{place.description}</p>
-        <div className="flex w-full justify-evenly border-b">
+        <div className="-mx-4 flex justify-evenly overflow-auto border-b">
+          <div className="w-4"></div>
           <CarouselButton
             text={"Overview"}
             onClick={getOnClickPageHandler("overview")}
@@ -126,6 +127,7 @@ const Place = ({ minimized, place }: Props) => {
             onClick={getOnClickPageHandler("reviews")}
             active={isActive("reviews")}
           />
+          <div className="w-4"></div>
         </div>
         {activePage === "menu" && <Menu />}
         {activePage === "services" && <Services />}
