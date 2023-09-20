@@ -1,14 +1,13 @@
 import { AppThunk } from "store";
 import { IFreeSlot } from "types/IFreeSlot";
 import fetchApi from "utils/fetchApi";
-import { bookActions } from "./book-slice";
+import { serviceBookingActions } from "./service-slice";
 import { fetchReservations } from "./reservations-actions";
 import { isLoggedIn } from "utils/auth";
 import { authActions } from "./auth-slice";
-import { getDateString, getTime } from "utils/dateTime";
 import { DateTime } from "luxon";
 
-export const showBookingModal = (
+export const showServiceBookingModal = (
   placeId: string,
   serviceId: string
 ): AppThunk => {
@@ -34,7 +33,7 @@ export const showBookingModal = (
       slots.sort((a, b) => a.localeCompare(b));
       console.log(slots);
       dispatch(
-        bookActions.showBookingModal({
+        serviceBookingActions.showBookingModal({
           slots,
           placeId,
           serviceId,
@@ -46,7 +45,7 @@ export const showBookingModal = (
   };
 };
 
-export const showEditingModal = (
+export const showServiceEditingModal = (
   id: string,
   placeId: string,
   serviceId: string,
@@ -79,7 +78,7 @@ export const showEditingModal = (
       slots.push(selectedDate);
       slots.sort((a, b) => a.localeCompare(b));
       dispatch(
-        bookActions.showEditingModal({
+        serviceBookingActions.showEditingModal({
           editId: id,
           slots,
           placeId,
@@ -93,15 +92,15 @@ export const showEditingModal = (
   };
 };
 
-export const sendBookingRequest = (): AppThunk => {
+export const sendServiceBookingRequest = (): AppThunk => {
   return async (dispatch, getState) => {
     if (!isLoggedIn()) {
-      dispatch(bookActions.hideModal());
+      dispatch(serviceBookingActions.hideModal());
       dispatch(authActions.showModal());
       return;
     }
     try {
-      dispatch(bookActions.setLoading(true));
+      dispatch(serviceBookingActions.setLoading(true));
       const isEditing = getState().book.isEditing;
       const {
         book: { selectedDate, selectedTime, placeId, serviceId },
@@ -138,22 +137,22 @@ export const sendBookingRequest = (): AppThunk => {
           "Booking failed: The selected time slot is no longer available. Please choose another time slot."
         );
       }
-      dispatch(bookActions.setMessage("Booking successful!"));
-      dispatch(bookActions.setErrorMessage(undefined));
+      dispatch(serviceBookingActions.setMessage("Booking successful!"));
+      dispatch(serviceBookingActions.setErrorMessage(undefined));
       dispatch(fetchReservations());
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      dispatch(bookActions.hideModal());
+      dispatch(serviceBookingActions.hideModal());
     } catch (error: any) {
       console.log(error);
       dispatch(
-        bookActions.setErrorMessage(
+        serviceBookingActions.setErrorMessage(
           typeof error.message === "string"
             ? error.message
             : "There was a problem, please try again later!"
         )
       );
-      dispatch(bookActions.setMessage(undefined));
+      dispatch(serviceBookingActions.setMessage(undefined));
     }
-    dispatch(bookActions.setLoading(false));
+    dispatch(serviceBookingActions.setLoading(false));
   };
 };

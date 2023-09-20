@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { IFreeSlot } from "types/IFreeSlot";
 import { getDateString, getTime } from "utils/dateTime";
 
-interface BookState {
+interface ServiceBookingState {
   modalOpen: boolean;
   freeSlots: IFreeSlot[];
   selectedDate?: string;
@@ -17,7 +17,7 @@ interface BookState {
   additionalDate?: string;
 }
 
-const initialState: BookState = {
+const initialState: ServiceBookingState = {
   modalOpen: false,
   freeSlots: [],
   selectedDate: undefined,
@@ -32,7 +32,7 @@ const initialState: BookState = {
   editId: undefined,
 };
 
-const bookSlice = createSlice({
+const serviceBookingSlice = createSlice({
   name: "book",
   initialState,
   reducers: {
@@ -107,5 +107,5 @@ const bookSlice = createSlice({
   },
 });
 
-export const bookActions = bookSlice.actions;
-export default bookSlice.reducer;
+export const serviceBookingActions = serviceBookingSlice.actions;
+export default serviceBookingSlice.reducer;
