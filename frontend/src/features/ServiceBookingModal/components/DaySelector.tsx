@@ -6,7 +6,7 @@ import {
   getDayName,
   getLocalDate,
 } from "utils/dateTime";
-import { bookActions } from "store/book-slice";
+import { serviceBookingActions } from "store/service-slice";
 import isToday from "utils/isToday";
 import { DateTime } from "luxon";
 
@@ -56,7 +56,7 @@ const DaySelector = () => {
     }, [] as string[]);
 
   const getOnDateClickHandler = (date: string) => () =>
-    dispatch(bookActions.setDate(date));
+    dispatch(serviceBookingActions.setDate(date));
 
   return (
     <Row>

@@ -1,4 +1,4 @@
-import { bookActions } from "store/book-slice";
+import { serviceBookingActions } from "store/service-slice";
 import { Option, Row } from "./Row";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import {
@@ -48,7 +48,7 @@ const HourSelector = () => {
     }, []);
 
   const getOnHourClickHandler = (hour: string) => () =>
-    dispatch(bookActions.setTime(hour));
+    dispatch(serviceBookingActions.setTime(hour));
 
   return (
     <>

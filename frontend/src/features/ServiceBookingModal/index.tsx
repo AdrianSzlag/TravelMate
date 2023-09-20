@@ -1,8 +1,8 @@
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
-import { bookActions } from "store/book-slice";
+import { serviceBookingActions } from "store/service-slice";
 import Calendar from "./components/Calendar";
 import ServiceOverview from "./components/ServiceOverview";
-import { sendBookingRequest } from "store/book-actions";
+import { sendServiceBookingRequest } from "store/service-actions";
 import Modal from "components/Modal";
 import { getDateString, getTime } from "utils/dateTime";
 
@@ -21,7 +21,7 @@ const BookingModal = () => {
   const formValid = !!selectedDate && !!selectedTime && !loading;
 
   const onCancelClickHandler = () => {
-    dispatch(bookActions.hideModal());
+    dispatch(serviceBookingActions.hideModal());
   };
   const onBookClickHandler = () => {
     if (!formValid) return;
@@ -29,11 +29,11 @@ const BookingModal = () => {
       const date = getDateString(additionalDate);
       const time = getTime(additionalDate);
       if (date === selectedDate && time === selectedTime) {
-        dispatch(bookActions.hideModal());
+        dispatch(serviceBookingActions.hideModal());
         return;
       }
     }
-    dispatch(sendBookingRequest());
+    dispatch(sendServiceBookingRequest());
   };
   const ErrorMessage = () => (
     <div className="mx-6 mt-4 font-semibold text-red-500">{errorMessage}</div>
