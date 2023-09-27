@@ -99,13 +99,14 @@ export const createRoomReservation = async (req: IRequest, res: Response) => {
     const duration = endDateObject.diff(tempDate, "days").days;
 
     while (tempDate.toMillis() < endDateObject.toMillis()) {
-      tempDate = tempDate.plus({ days: 1 });
       if (!freeSlots.find((slot) => slot.start.equals(tempDate))) {
         return res
           .status(400)
           .json({ message: "Please choose different date." });
       }
+      tempDate = tempDate.plus({ days: 1 });
     }
+
     const reservation: IReservation = {
       _id: undefined!,
       user: userId,
@@ -184,12 +185,12 @@ export const updateRoomReservation = async (req: IRequest, res: Response) => {
     }
     let tempDate = startDateObject;
     while (tempDate.toMillis() < endDateObject.toMillis()) {
-      tempDate = tempDate.plus({ days: 1 });
       if (!freeSlots.find((slot) => slot.start.equals(tempDate))) {
         return res
           .status(400)
           .json({ message: "Please choose different date." });
       }
+      tempDate = tempDate.plus({ days: 1 });
     }
     const duration = endDateObject.diff(startDateObject, "days").days;
     reservation.roomReservation.date = startDateObject.toJSDate();
