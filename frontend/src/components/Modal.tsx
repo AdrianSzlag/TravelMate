@@ -26,8 +26,8 @@ export const Backdrop = ({ children, onClick }: BackdropProps) => {
   };
   return (
     <div
-      className="fixed top-0 right-0 bottom-0 left-0 z-20 box-border 
-                flex items-center justify-center bg-[#0000009a]"
+      className="fixed top-0 right-0 bottom-0 left-0 z-20 flex 
+                 items-center justify-center bg-[#0000009a]"
       onClick={onBackdropClickHandler}
     >
       {children}

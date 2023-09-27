@@ -31,6 +31,15 @@ export interface IPlace {
     price: number;
     image?: string;
   }[];
+  rooms: {
+    id: string;
+    name: string;
+    description?: string;
+    image?: string;
+    roomsCount: number;
+    guestsCount: number;
+    price: number;
+  }[];
   createdBy: IUser;
   images: string[];
   contactInfo: {

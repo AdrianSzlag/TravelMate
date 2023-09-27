@@ -14,7 +14,7 @@ export const authenticate = (): AppThunk => {
       });
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.message ? data.message : "Authentication failed!");
+        throw new Error(data.message ? data.message : "Token is not valid.");
       }
       const data = await response.json();
       dispatch(authActions.setUser(data));

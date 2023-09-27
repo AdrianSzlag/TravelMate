@@ -1,7 +1,7 @@
 import Img from "components/Img";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { useState } from "react";
-import { showBookingModal } from "store/book-actions";
+import { showServiceBookingModal } from "store/service-actions";
 import NewServiceModal, { IService } from "./NewServiceModal";
 import { fetchPlace } from "store/places-actions";
 
@@ -89,7 +89,7 @@ const Services = () => {
 
   const onBookServiceHandler = (service: IService) => {
     if (!placeId || !service.id) return;
-    dispatch(showBookingModal(placeId, service.id));
+    dispatch(showServiceBookingModal(placeId, service.id));
   };
 
   return (

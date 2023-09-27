@@ -1,9 +1,7 @@
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { reservationsActions } from "store/reservations-slice";
 import { Link } from "react-router-dom";
-import { IReservation } from "types/IReservation";
 import Item from "./Item";
-import { cancelReservation } from "store/reservations-actions";
 
 interface FilterProps {
   onClick: () => void;
@@ -29,26 +27,10 @@ const List = () => {
   const reservations = useAppSelector(
     (state) => state.reservations.reservations
   );
-  const selectedReservation = useAppSelector(
-    (state) => state.reservations.selected
-  );
   const dispatch = useAppDispatch();
   const filter = useAppSelector((state) => state.reservations.filter);
   const setFilter = (id: string | undefined) => {
     dispatch(reservationsActions.setFilter(id));
-  };
-  const setSelectedReservation = (id: string) => {
-    dispatch(reservationsActions.setSelected(id));
-  };
-  const cancelReservationHandler = (reservation: IReservation) => {
-    const isDone = new Date(reservation.date).getTime() < Date.now();
-    if (!isDone) {
-      const confirm = window.confirm(
-        `Are you sure you want to cancel this reservation?`
-      );
-      if (!confirm) return;
-    }
-    dispatch(cancelReservation(reservation.id));
   };
   const businesses = reservations.reduce((acc, curr) => {
     const business = acc.find((b) => b.id === curr.place.id);
@@ -101,32 +83,20 @@ const List = () => {
                 </Link>
               </h1>
             )}
-            <div className="m-4 flex flex-col gap-4">
-              {reservations
-                .filter(
-                  (reservation) =>
-                    !reservation.user || reservation.user.id === userId
-                )
-                .map((reservation) => (
-                  <Item
-                    id={reservation.id}
-                    serviceId={reservation.service.id}
-                    placeId={reservation.place.id}
-                    key={reservation.id}
-                    title={reservation.service.name}
-                    address={reservation.place.address}
-                    name={reservation.place.name}
-                    selected={reservation.id === selectedReservation?.id}
-                    image={reservation.place.image}
-                    date={reservation.date}
-                    duration={reservation.duration || 0}
-                    onClick={() => setSelectedReservation(reservation.id)}
-                    onCancel={() => cancelReservationHandler(reservation)}
-                    bookAgain={true}
-                  />
-                ))}
-            </div>
           </>
+        )}
+
+        {filter === undefined && (
+          <div className="m-4 flex flex-col gap-4">
+            {reservations
+              .filter(
+                (reservation) =>
+                  !reservation.user || reservation.user.id === userId
+              )
+              .map((reservation) => (
+                <Item reservation={reservation} key={reservation.id} />
+              ))}
+          </div>
         )}
         {filter !== undefined &&
           businesses.length > 0 &&
@@ -145,20 +115,7 @@ const List = () => {
                 reservation.user && reservation.place.id === filter
             )
             .map((reservation) => (
-              <Item
-                id={reservation.id}
-                serviceId={reservation.service.id}
-                placeId={reservation.place.id}
-                key={reservation.id}
-                title={reservation.service.name}
-                name={reservation.user!.name}
-                selected={reservation.id === selectedReservation?.id}
-                image={reservation.user!.profileImage}
-                date={reservation.date}
-                duration={reservation.duration || 0}
-                onClick={() => setSelectedReservation(reservation.id)}
-                onCancel={() => cancelReservationHandler(reservation)}
-              />
+              <Item reservation={reservation} key={reservation.id} />
             ))}
         </div>
       </div>

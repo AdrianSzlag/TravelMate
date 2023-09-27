@@ -1,7 +1,8 @@
 import Map from "features/Map/components/Map";
 import Header from "features/Header";
 import { Menu } from "features/MenuCarousel";
-import BookingModal from "features/BookingModal";
+import ServiceBookingModal from "features/ServiceBookingModal";
+import RoomBookingModal from "features/RoomBookingModal";
 import { LoginModal } from "features/Login";
 import BusinessModal from "features/BusinessModal";
 import { useAppSelector } from "hooks/redux-hooks";
@@ -80,7 +81,8 @@ export default function Home() {
             setScrollLock={setScrollLockHandler}
           />
         </div>
-        <BookingModal />
+        <ServiceBookingModal />
+        <RoomBookingModal />
       </div>
       {isBusinessModalOpen && <BusinessModal />}
       <LoginModal />

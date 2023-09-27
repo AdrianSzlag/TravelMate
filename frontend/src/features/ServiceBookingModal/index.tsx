@@ -45,7 +45,7 @@ const BookingModal = () => {
   return (
     <Modal
       onBackdropClick={onCancelClickHandler}
-      className="flex h-full w-full flex-col justify-center border bg-white shadow-xl xs:h-fit sm:w-[550px] sm:rounded-xl md:w-[700px]"
+      className="flex h-full w-full flex-col overflow-y-auto border bg-white shadow-xl xs:h-fit sm:w-[550px] sm:rounded-xl"
     >
       <Calendar />
       <ServiceOverview />

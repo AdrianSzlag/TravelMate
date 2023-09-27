@@ -40,7 +40,12 @@ export default function ReservationsMap() {
     const business = acc.find((b) => b.id === curr.place.id);
     const startDate = DateTime.fromISO(curr.date);
     const started = startDate < DateTime.now();
-    const isDone = startDate.plus({ minutes: curr.duration }) < DateTime.now();
+    const endDate = curr.service
+      ? startDate.plus({ minutes: curr.service.duration })
+      : curr.room
+      ? startDate.plus({ days: curr.room.length })
+      : startDate;
+    const isDone = endDate < DateTime.now();
     const status = isDone ? "done" : started ? "started" : "upcoming";
     const isOwner = filter === curr.place.id;
     if (!business) {

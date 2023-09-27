@@ -1,21 +1,33 @@
 import { IUser } from "./IUser";
 
+export interface IRoomDTO {
+  id: string;
+  name: string;
+  description?: string;
+  image?: string;
+  guestsCount: number;
+  price: number;
+  length: number;
+}
+export interface IServiceDTO {
+  id: string;
+  name: string;
+  description?: string;
+  image?: string;
+  price: number;
+  duration?: number;
+}
 export interface IReservation {
   id: string;
   date: string;
-  duration?: number;
-  price: number;
-  service: {
-    id: string;
-    name: string;
-    description?: string;
-    image?: string;
-  };
+  type: "service" | "room";
+  service?: IServiceDTO;
+  room?: IRoomDTO;
   place: {
     id: string;
     name: string;
-    address?: string;
     owner: string;
+    address?: string;
     image?: string;
     location: {
       type: string;

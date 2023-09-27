@@ -101,6 +101,30 @@ export const deleteService = (placeId: string, serviceId: string): AppThunk => {
   };
 };
 
+export const deleteRoom = (placeId: string, roomId: string): AppThunk => {
+  return async (dispatch, getState) => {
+    const fetchData = async () => {
+      const response = await fetchApi(
+        `/api/place/${placeId}/service/${roomId}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Could not delete room!");
+      }
+      const data = await response.json();
+      return data;
+    };
+    try {
+      await fetchData();
+      dispatch(fetchPlace(placeId));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 export const deleteMenuItem = (
   placeId: string,
   menuItemId: string

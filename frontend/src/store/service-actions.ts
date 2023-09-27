@@ -17,7 +17,7 @@ export const showServiceBookingModal = (
       searchParams.append("serviceId", serviceId);
       searchParams.append("placeId", placeId);
       const response = await fetchApi(
-        `/api/reservation/available?${searchParams}`,
+        `/api/reservation/available/services?${searchParams}`,
         {
           method: "GET",
         }
@@ -57,7 +57,7 @@ export const showServiceEditingModal = (
       searchParams.append("serviceId", serviceId);
       searchParams.append("placeId", placeId);
       const response = await fetchApi(
-        `/api/reservation/available?${searchParams}`,
+        `/api/reservation/available/services?${searchParams}`,
         {
           method: "GET",
         }
@@ -110,8 +110,8 @@ export const sendServiceBookingRequest = (): AppThunk => {
       }
       const method = isEditing ? "PUT" : "POST";
       const path = isEditing
-        ? `/api/reservation/${getState().book.editId}`
-        : "/api/reservation";
+        ? `/api/reservation/service/${getState().book.editId}`
+        : "/api/reservation/service";
 
       const date = DateTime.fromISO(`${selectedDate}T${selectedTime}`, {
         zone: "local",

@@ -1,136 +1,76 @@
-import { useAppDispatch } from "hooks/redux-hooks";
-import { getMonthName, getTime } from "utils/dateTime";
-import { Link } from "react-router-dom";
-import Img from "components/Img";
-import { showEditingModal } from "store/book-actions";
-import { DateTime } from "luxon";
-import Button from "components/Button";
+import { IReservation } from "types/IReservation";
+import Service from "./Service";
+import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
+import { reservationsActions } from "store/reservations-slice";
+import { cancelReservation } from "store/reservations-actions";
+import Room from "./Room";
 
-interface ItemProps {
-  id: string;
-  serviceId: string;
-  placeId: string;
-  title: string;
-  address?: string;
-  name: string;
-  image?: string;
-  date: string;
-  duration: number;
-  selected: boolean;
-  onClick: () => void;
-  onCancel: () => void;
-  bookAgain?: boolean;
+interface Props {
+  reservation: IReservation;
 }
-const Item = ({
-  id,
-  placeId,
-  serviceId,
-  title,
-  address,
-  name,
-  image,
-  date,
-  duration,
-  onClick,
-  onCancel,
-  bookAgain = false,
-}: ItemProps) => {
-  const dispatch = useAppDispatch();
-  console.log(date);
-  const startDate = DateTime.fromISO(date);
-  const started = startDate < DateTime.now();
-  const isDone = startDate.plus({ minutes: duration }) < DateTime.now();
-  const onCancelClickHandler = () => onCancel();
-  const openEditModal = () => {
-    dispatch(showEditingModal(id, placeId, serviceId, date));
-    console.log("open edit modal");
-  };
-  const order = isDone
-    ? "3" + (100000000 - startDate.toMillis() / 60000)
-    : (started ? "1" : "2") + startDate.toMillis() / 60000;
 
-  return (
-    <div
-      className="box-border flex rounded border"
-      onClick={onClick}
-      style={{ order: order }}
-    >
-      <div className="flex flex-1 flex-col gap-2 p-4">
-        {isDone && (
-          <div className="inline-block w-fit rounded bg-gray-200 px-2 py-0.5 text-sm font-semibold ">
-            Ended
-          </div>
-        )}
-        {started && !isDone && (
-          <div className="inline-block w-fit rounded bg-orange-500 px-2 py-0.5 text-sm font-semibold text-white">
-            Now
-          </div>
-        )}
-        <h1 className="-my-1 text-lg font-semibold text-gray-800">{title}</h1>
-        {address && (
-          <h6 className="text-sm font-semibold text-gray-400">{address}</h6>
-        )}
-        <Link
-          className="flex flex-row items-center"
-          to={`/place/${placeId}?details=overview`}
-        >
-          {image && (
-            <Img
-              src={"/" + image}
-              alt={name}
-              className="mr-2 h-5 w-5 rounded-full"
-            />
-          )}
-          <h3 className="font-semibold text-gray-600">{name}</h3>
-        </Link>
-        <div className="flex gap-2">
-          {!started && (
-            <>
-              <Button
-                text="Cancel"
-                onClick={onCancelClickHandler}
-                className="bg-red-500 text-white"
-              />
-              <Button
-                text="Edit"
-                onClick={openEditModal}
-                className="bg-gray-500 text-white"
-              />
-            </>
-          )}
-          {isDone && bookAgain && (
-            <Link to={`/place/${placeId}?details=services`}>
-              <Button text="Book again" className="bg-blue-500 text-white" />
-            </Link>
-          )}
-          {isDone && (
-            <Button
-              text="Remove"
-              onClick={onCancelClickHandler}
-              className="bg-gray-500 text-white"
-            />
-          )}
-        </div>
-      </div>
-      {startDate && (
-        <>
-          <div className="my-4 flex-shrink-0 flex-grow-0 border-l"></div>
-          <div className="flex w-24 flex-none flex-col items-center justify-center">
-            <div className="text-sm font-semibold text-gray-800">
-              {getMonthName(startDate.month)}
-            </div>
-            <div className="text-lg font-semibold text-black">
-              {startDate.day}
-            </div>
-            <div className="text-sm font-semibold text-gray-800">
-              {startDate.hour.toString().padStart(2, "0")}:
-              {startDate.minute.toString().padStart(2, "0")}
-            </div>
-          </div>
-        </>
-      )}
-    </div>
+const Item = ({ reservation }: Props) => {
+  const userId = useAppSelector((state) => state.auth.user?.id);
+  const isClient = reservation.user?.id === userId;
+  const isOwner = reservation.place.owner === userId;
+  const selectedReservation = useAppSelector(
+    (state) => state.reservations.selected
   );
+  const dispatch = useAppDispatch();
+
+  const setSelectedReservation = () => {
+    dispatch(reservationsActions.setSelected(reservation.id));
+  };
+  const cancelReservationHandler = () => {
+    const isDone = new Date(reservation.date).getTime() < Date.now();
+    if (!isDone) {
+      const confirm = window.confirm(
+        `Are you sure you want to cancel this reservation?`
+      );
+      if (!confirm) return;
+    }
+    dispatch(cancelReservation(reservation.id));
+  };
+
+  if (reservation.service)
+    return (
+      <Service
+        id={reservation.id}
+        serviceId={reservation.service.id}
+        placeId={reservation.place.id}
+        title={reservation.service.name}
+        address={reservation.place.address}
+        name={reservation.place.name}
+        selected={reservation.id === selectedReservation?.id}
+        image={reservation.place.image}
+        date={reservation.date}
+        duration={reservation.service.duration || 0}
+        onClick={setSelectedReservation}
+        onCancel={cancelReservationHandler}
+        bookAgain={isClient}
+      />
+    );
+
+  if (reservation.room)
+    return (
+      <Room
+        id={reservation.id}
+        placeId={reservation.place.id}
+        date={reservation.date}
+        room={reservation.room}
+        name={reservation.place.name}
+        image={reservation.place.image}
+        address={reservation.place.address}
+        selected={reservation.id === selectedReservation?.id}
+        onClick={setSelectedReservation}
+        onCancel={cancelReservationHandler}
+        bookAgain={isClient}
+        isOwner={isOwner}
+        reservationId={reservation.id}
+      />
+    );
+
+  return null;
 };
 
 export default Item;

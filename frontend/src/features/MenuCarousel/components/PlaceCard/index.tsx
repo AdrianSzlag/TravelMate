@@ -9,6 +9,7 @@ import Menu from "./MenuCard";
 import Img from "components/Img";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
 import { businessActions } from "store/business-slice";
+import Rooms from "./RoomsCard";
 
 interface ButtonProps {
   text: string;
@@ -46,6 +47,8 @@ const Place = ({ minimized, place }: Props) => {
     place.menu?.length > 0 || place.createdBy.id === user?.id;
   const areServicesAvailable =
     place.services?.length > 0 || place.createdBy.id === user?.id;
+  const areRoomsAvailable =
+    place.rooms?.length > 0 || place.createdBy.id === user?.id;
 
   const activePage = useMemo(() => {
     const page = searchParams.get("details");
@@ -53,6 +56,7 @@ const Place = ({ minimized, place }: Props) => {
     if (page === "menu" && isMenuAvailable) return "menu";
     if (page === "services" && areServicesAvailable) return "services";
     if (page === "reviews") return "reviews";
+    if (page === "rooms" && areRoomsAvailable) return "rooms";
     return "overview";
   }, [searchParams, place]);
 
@@ -81,7 +85,7 @@ const Place = ({ minimized, place }: Props) => {
           (minimized ? "h-0 xs:h-[200px]" : "h-[200px]")
         }
       />
-      <div className="px-4 py-3">
+      <div className="p-4">
         <h1 className="pb-1 text-2xl font-semibold text-gray-600">
           {place.name}
         </h1>
@@ -122,6 +126,13 @@ const Place = ({ minimized, place }: Props) => {
               active={isActive("services")}
             />
           )}
+          {areRoomsAvailable && (
+            <CarouselButton
+              text={"Rooms"}
+              onClick={getOnClickPageHandler("rooms")}
+              active={isActive("rooms")}
+            />
+          )}
           <CarouselButton
             text={"Reviews"}
             onClick={getOnClickPageHandler("reviews")}
@@ -133,6 +144,7 @@ const Place = ({ minimized, place }: Props) => {
         {activePage === "services" && <Services />}
         {activePage === "reviews" && <Reviews />}
         {activePage === "overview" && <Overview />}
+        {activePage === "rooms" && <Rooms />}
       </div>
     </div>
   );
