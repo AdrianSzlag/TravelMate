@@ -5,6 +5,7 @@ import {
   getPlaceDTO,
   getPlaceFromBusinessDTO,
   getReviewDTO,
+  getRoomDTO,
   getUserDTO,
 } from "../utils/dtoUtils";
 import { IRequest } from "../middlewares/authMiddleware";
@@ -49,6 +50,7 @@ export const searchPlaces = async (req: Request, res: Response) => {
     const placesDTOs: PlaceDTO[] = places.map((place) => {
       const { _id, reviews, menu, services, createdBy } = place.toObject();
       const reviewDTOs = reviews.map((review) => getReviewDTO(review));
+      const roomDTOs = place.rooms.map((room) => getRoomDTO(room));
       const rating =
         reviewDTOs?.reduce((acc, review) => acc + review.rating, 0) /
         reviewDTOs.length;
@@ -74,6 +76,7 @@ export const searchPlaces = async (req: Request, res: Response) => {
         reviews: reviewDTOs,
         rating,
         createdBy: creator,
+        rooms: roomDTOs,
         menu: menuDTO,
         services: servicesDTO,
         openingHours,
@@ -109,6 +112,7 @@ export const getPlace = async (req: Request, res: Response) => {
     const servicesDTO = services.map((service) => {
       return { ...service, id: service._id };
     });
+    const roomDTOs = place.rooms.map((room) => getRoomDTO(room));
     const openingHours = place.openingHours;
     for (let i = 0; i < 7; i++) {
       if (!place.openingHours.find((o) => o.dayOfWeek === i)) {
@@ -126,6 +130,7 @@ export const getPlace = async (req: Request, res: Response) => {
       createdBy: creator,
       menu: menuDTO,
       services: servicesDTO,
+      rooms: roomDTOs,
       openingHours,
     });
     res.status(200).json(placeDTO);
@@ -254,6 +259,18 @@ export const deletePlace = async (req: IRequest, res: Response) => {
     }
     await imageDelete(place.thumbnail);
     if (place.images) await Promise.all(place.images.map(imageDelete));
+    if (place.menu && place.menu.length > 0)
+      await Promise.all(
+        place.menu.map(async (i) => i.image && (await imageDelete(i.image)))
+      );
+    if (place.services && place.services.length > 0)
+      await Promise.all(
+        place.services.map(async (i) => i.image && (await imageDelete(i.image)))
+      );
+    if (place.rooms && place.rooms.length > 0)
+      await Promise.all(
+        place.rooms.map(async (i) => i.image && (await imageDelete(i.image)))
+      );
     place.deleteOne();
     res.status(200).json({ message: "Place deleted successfully" });
   } catch (error) {

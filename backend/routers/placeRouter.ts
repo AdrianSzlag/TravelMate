@@ -17,6 +17,7 @@ import {
   deleteMenuItemFromPlace,
   updateMenuItem,
 } from "../controllers/menuController";
+import { addRoom, deleteRoom, updateRoom } from "../controllers/roomController";
 
 const placeRouter = express.Router();
 
@@ -66,5 +67,18 @@ placeRouter.delete(
   authMiddleware,
   deleteMenuItemFromPlace
 );
+placeRouter.post(
+  "/:placeId/room",
+  authMiddleware,
+  upload.single("image"),
+  addRoom
+);
+placeRouter.put(
+  "/:placeId/room/:roomId",
+  authMiddleware,
+  upload.single("image"),
+  updateRoom
+);
+placeRouter.delete("/:placeId/room/:roomId", authMiddleware, deleteRoom);
 
 export default placeRouter;

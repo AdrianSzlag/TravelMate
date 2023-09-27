@@ -29,6 +29,15 @@ export type PlaceDTO = {
     price: number;
     image?: string;
   }[];
+  rooms: {
+    id: string;
+    name: string;
+    description?: string;
+    image?: string;
+    roomsCount: number;
+    guestsCount: number;
+    price: number;
+  }[];
   location: ILocation;
   createdBy: UserDTO;
   address?: string;

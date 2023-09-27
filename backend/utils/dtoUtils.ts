@@ -5,6 +5,7 @@ import { IReview } from "../models/IReview";
 import { IUser } from "../models/IUser";
 import { IPlace } from "../models/IPlace";
 import BusinessDTO from "../dtos/BusinessDTO";
+import { IRoom } from "../models/IRoom";
 
 export const getPlaceDTO = (place: PlaceDTO): PlaceDTO => {
   const placeDTO: PlaceDTO = {
@@ -16,6 +17,7 @@ export const getPlaceDTO = (place: PlaceDTO): PlaceDTO => {
     rating: place.rating,
     reviews: place.reviews,
     menu: place.menu,
+    rooms: place.rooms,
     services: place.services,
     location: place.location,
     createdBy: place.createdBy,
@@ -48,6 +50,18 @@ export const getReviewDTO = (review: IReview) => {
   };
 };
 
+export const getRoomDTO = (room: IRoom) => {
+  return {
+    id: room._id,
+    name: room.name,
+    description: room.description,
+    image: room.image,
+    roomsCount: room.roomsCount,
+    guestsCount: room.guestsCount,
+    price: room.price,
+  };
+};
+
 export const getPlaceFromBusinessDTO = (
   business: BusinessDTO,
   {
@@ -72,6 +86,7 @@ export const getPlaceFromBusinessDTO = (
     tags: business.tags,
     menu: [],
     services: [],
+    rooms: [],
     reservations: [],
     reviews: [],
     images,

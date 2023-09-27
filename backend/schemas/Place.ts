@@ -39,14 +39,29 @@ const PlaceSchema: Schema = new Schema({
   ],
   reservations: [
     {
-      service: {
-        type: Schema.Types.ObjectId,
-        required: true,
-      },
       user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-      reservationTime: {
-        from: { type: Date, required: true },
-        to: { type: Date, required: true },
+      type: { type: String, required: true },
+      serviceReservation: {
+        type: {
+          service: {
+            type: Schema.Types.ObjectId,
+            required: true,
+          },
+          reservationTime: {
+            from: { type: Date, required: true },
+            to: { type: Date, required: true },
+          },
+        },
+      },
+      roomReservation: {
+        type: {
+          room: {
+            type: Schema.Types.ObjectId,
+            required: true,
+          },
+          date: { type: Date, required: true },
+          length: { type: Number, required: true },
+        },
       },
     },
   ],
@@ -62,6 +77,16 @@ const PlaceSchema: Schema = new Schema({
       dayOfWeek: { type: Number, required: true },
       from: { type: String, required: true },
       to: { type: String, required: true },
+    },
+  ],
+  rooms: [
+    {
+      name: { type: String, required: true },
+      description: String,
+      image: String,
+      roomsCount: { type: Number, required: true },
+      guestsCount: { type: Number, required: true },
+      price: { type: Number, required: true },
     },
   ],
 });

@@ -9,9 +9,9 @@ export const addServiceToPlace = async (req: IRequest, res: Response) => {
   const { placeId } = req.params;
   let data;
   try {
-    data = JSON.parse(req.body.menu);
+    data = JSON.parse(req.body.service);
   } catch (error) {
-    return res.status(400).json({ message: "Invalid menu data" });
+    return res.status(400).json({ message: "Invalid service data" });
   }
   const { name, description, price, duration } = data;
   if (!placeId || !name || !price || typeof duration === "undefined") {
@@ -113,7 +113,8 @@ export const deleteServiceFromPlace = async (req: IRequest, res: Response) => {
       (service) => service._id.toString() !== serviceId
     );
     place.reservations = place.reservations.filter(
-      (reservation) => reservation.service.toString() !== serviceId
+      (reservation) =>
+        reservation.serviceReservation?.service.toString() !== serviceId
     );
     await place.save();
     res.status(200).json({ message: "Service deleted successfully" });

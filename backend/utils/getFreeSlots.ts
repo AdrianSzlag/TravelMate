@@ -68,11 +68,14 @@ export const getFreeSlots = (
       });
       const allSlots = getSlots(opening, closing, duration);
       allSlots.forEach((slot) => {
-        const isFree = reservations.every(
-          (reservation) =>
-            slot.start.toMillis() >= reservation.reservationTime.to.getTime() ||
-            slot.end.toMillis() <= reservation.reservationTime.from.getTime()
-        );
+        const isFree = reservations.every((reservation) => {
+          const rt = reservation.serviceReservation?.reservationTime;
+          if (!rt) return true;
+          return (
+            slot.start.toMillis() >= rt.to.getTime() ||
+            slot.end.toMillis() <= rt.from.getTime()
+          );
+        });
         if (isFree && slot.start > now) {
           freeSlots.push(slot.start.toJSDate().toISOString());
         }
