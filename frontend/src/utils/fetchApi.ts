@@ -1,6 +1,8 @@
 import { getToken } from "./auth";
 
-export const apiURL = "http://192.168.101.11:5000";
+const hostname = window.location.hostname;
+
+export const apiURL = `http://${hostname}:5000`;
 
 const fetchApi = (path: string, options: RequestInit) => {
   if (!options.headers) {
