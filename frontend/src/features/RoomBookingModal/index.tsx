@@ -39,7 +39,6 @@ const RoomBookingModal = () => {
       onBackdropClick={onCancelClickHandler}
       className="flex h-full w-full flex-col gap-4 overflow-y-auto border bg-white p-4 shadow-xl xs:h-fit xs:w-[25rem] xs:rounded-xl"
     >
-      <h1 className="px-2 text-xl font-semibold text-black">Select dates</h1>
       <Calendar />
       <RoomOverview />
       {errorMessage && <ErrorMessage />}

@@ -28,7 +28,7 @@ interface Props {
 export const Carousel = ({ children, className }: Props) => {
   return (
     <div
-      className={`z-10 flex flex-none snap-start justify-end bg-transparent  ${
+      className={`z-10 flex flex-none snap-start scroll-mb-4 justify-end bg-transparent ${
         className ? className : " "
       }`}
     >

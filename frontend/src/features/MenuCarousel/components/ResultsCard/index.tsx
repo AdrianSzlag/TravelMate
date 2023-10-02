@@ -25,7 +25,7 @@ const Result = ({
 }: ResultProps) => {
   return (
     <div
-      className="flex cursor-pointer justify-between text-gray-600 hover:bg-gray-50"
+      className="flex cursor-pointer justify-between gap-4 text-gray-600 hover:bg-gray-50"
       onClick={onClick}
     >
       <div>
@@ -34,10 +34,12 @@ const Result = ({
           <Rating rating={rating} numberOfReviews={numberOfReviews} />
         )}
         {numberOfReviews === 0 && (
-          <div className="text-gray-400">No reviews yet!</div>
+          <div className="pb-1 text-sm font-medium text-gray-400">
+            No reviews yet!
+          </div>
         )}
         {description && (
-          <div className="mt-0.5 text-sm font-semibold text-gray-400">
+          <div className="mt-0.5 text-xs font-medium text-gray-400 line-clamp-2">
             {description}
           </div>
         )}

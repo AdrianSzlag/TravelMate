@@ -53,13 +53,13 @@ const HoursOverview = ({ openingHours }: { openingHours: IOpeningHours[] }) => {
       <div className="flex items-center text-gray-500">
         <FaRegClock className="mr-4 inline-block text-xl text-blue-500" />
         {isOpenNow && (
-          <span className="mr-2 font-semibold">
+          <span className="mr-2 font-medium">
             <span className="mr-1 text-green-500">Open</span>
             {todayTime && <span>⋅ Closing: {todayTime.to}</span>}
           </span>
         )}
         {!isOpenNow && (
-          <span className="mr-2 font-semibold">
+          <span className="mr-2 font-medium">
             <span className="mr-1 text-red-500">Closed</span>
             {nextDayOpen && (
               <span className="">
@@ -78,7 +78,7 @@ const HoursOverview = ({ openingHours }: { openingHours: IOpeningHours[] }) => {
         className={`${
           isOpen ? "" : "hidden"
         } flex flex-col gap-2 overflow-hidden text-sm
-        font-semibold text-gray-500 transition-all`}
+        font-medium text-gray-500 transition-all`}
       >
         {openingHours.map((hour) => {
           return (
@@ -210,7 +210,7 @@ const Overview = () => {
         <div className="flex cursor-pointer items-center py-2">
           <RiMapPinLine className="mr-4 inline-block text-xl text-blue-500" />
           <a
-            className="font-semibold text-gray-500"
+            className="font-medium text-gray-500"
             href={`http://maps.google.com/?q=${address}`}
             target="_blank"
           >
@@ -222,7 +222,7 @@ const Overview = () => {
       {phone && (
         <div className="flex cursor-pointer items-center py-2">
           <FiPhone className="mr-4 inline-block text-xl text-blue-500" />
-          <a className="font-semibold text-gray-500" href={`tel:${phone}`}>
+          <a className="font-medium text-gray-500" href={`tel:${phone}`}>
             {phone}
           </a>
         </div>
@@ -230,13 +230,13 @@ const Overview = () => {
       {email && (
         <div className="flex cursor-pointer items-center py-2">
           <AiOutlineMail className="mr-4 inline-block text-xl text-blue-500" />
-          <span className="font-semibold text-gray-500">{email}</span>
+          <span className="font-medium text-gray-500">{email}</span>
         </div>
       )}
       {tags && (
         <div className="mt-2 flex flex-wrap gap-2">
           {tags.map((tag) => (
-            <span className="text-sm font-semibold text-gray-300" key={tag}>
+            <span className="text-sm font-medium text-gray-300" key={tag}>
               {tag}
             </span>
           ))}

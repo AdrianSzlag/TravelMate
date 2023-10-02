@@ -109,12 +109,12 @@ const Menu = ({ minimized, maximize, setScrollLock }: Props) => {
           className="w-full xs:h-full xs:w-[400px]"
           onClick={onMaximizeHandler}
         >
-          <div className="h-full sm:px-2 sm:py-3">
+          <div className=" h-full sm:px-2 sm:py-3">
             <div className="relative bg-white xs:h-full xs:overflow-auto sm:rounded-xl sm:border sm:shadow-xl">
               <button
                 onClick={onClosePreviewHandler}
                 className={
-                  "absolute top-4 left-4 rounded-full border bg-white p-0.5 font-bold text-gray-500 shadow-xl drop-shadow-[0_0_4px_rgba(0,0,0,0.3)] hover:text-gray-800 " +
+                  "absolute top-4 left-4 z-20 rounded-full border bg-white p-0.5 font-bold text-gray-500 shadow-xl drop-shadow-[0_0_4px_rgba(0,0,0,0.3)] hover:text-gray-800 " +
                   (minimized ? "hidden xs:flex" : "flex")
                 }
               >
@@ -123,7 +123,7 @@ const Menu = ({ minimized, maximize, setScrollLock }: Props) => {
               <button
                 onClick={onMaximizeHandler}
                 className={
-                  "absolute top-4 right-4 font-bold text-gray-500 hover:text-gray-800 " +
+                  "absolute top-4 right-4 z-20 font-bold text-gray-500 hover:text-gray-800 " +
                   (minimized ? "flex xs:hidden" : "hidden")
                 }
               >

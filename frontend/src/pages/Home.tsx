@@ -24,15 +24,15 @@ export default function Home() {
   }, []);
 
   const scrollHandler = (e: React.UIEvent<HTMLDivElement>) => {
-    const current = contentRef.current;
-    if (!current) return;
     const scroll = e.currentTarget.scrollTop;
-    const height = current.offsetHeight;
-    if (scroll === undefined) return;
-    if (scroll / height > 0.6) {
+    const height = e.currentTarget.offsetHeight;
+    console.log(scroll / height);
+    if (scroll / height > 0.5 && menuMinimized) {
+      console.log("maximize");
       setMenuMinimized(false);
     }
-    if (scroll / height < 0.2) {
+    if (scroll / height < 0.3 && !menuMinimized) {
+      console.log("minimize");
       setMenuMinimized(true);
     }
   };
@@ -54,7 +54,7 @@ export default function Home() {
     const current = contentRef.current;
     if (current && lock) {
       contentRef.current?.scrollTo({
-        top: current.offsetHeight * 0.8,
+        top: current.clientHeight * 0.8,
         behavior: "instant",
       });
     }
@@ -66,11 +66,11 @@ export default function Home() {
         <Header />
         <div
           className={
-            "relative flex flex-1 snap-y snap-mandatory snap-always flex-col overscroll-none scroll-smooth xs:flex-row " +
-            (scrollLock ? "overflow-hidden " : "overflow-auto ")
+            "relative flex flex-1 snap-y snap-mandatory flex-col overscroll-none scroll-smooth xs:flex-row " +
+            (scrollLock ? "overflow-hidden" : "overflow-auto")
           }
-          onScroll={scrollHandler}
           ref={contentRef}
+          onScroll={scrollHandler}
         >
           <div className="h-[80%] min-h-0 w-full flex-none snap-start xs:h-full xs:flex-1 ">
             <Map />

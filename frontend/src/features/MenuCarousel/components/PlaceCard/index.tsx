@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import Services from "./ServicesCard";
 import Reviews from "./ReviewsCard";
 import Overview from "./Overview";
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import Menu from "./MenuCard";
 import Img from "components/Img";
 import { useAppDispatch, useAppSelector } from "hooks/redux-hooks";
@@ -77,21 +77,30 @@ const Place = ({ minimized, place }: Props) => {
   };
 
   return (
-    <div>
-      <Img
-        src={`/${place.thumbnail}`}
-        className={
-          "w-full object-cover transition-all " +
-          (minimized ? "h-0 xs:h-[200px]" : "h-[200px]")
-        }
-      />
+    <div
+      className={
+        "" +
+        (minimized
+          ? "pt-0 pb-[200px] xs:pt-[200px] xs:pb-0"
+          : "pb-0 pt-[200px]")
+      }
+    >
+      <div className="relative h-0 w-full">
+        <Img
+          src={`/${place.thumbnail}`}
+          className={
+            "absolute bottom-0 left-0 w-full object-cover" +
+            (minimized ? "h-0 xs:h-[200px]" : "h-[200px]")
+          }
+        />
+      </div>
       <div className="p-4">
         <h1 className="pb-1 text-2xl font-semibold text-gray-600">
           {place.name}
         </h1>
         {isOwner && (
           <button
-            className="flex cursor-pointer text-sm font-semibold text-blue-600"
+            className="flex cursor-pointer pb-1 text-sm font-semibold text-blue-600"
             onClick={onEditHandler}
           >
             Edit
@@ -104,8 +113,10 @@ const Place = ({ minimized, place }: Props) => {
           />
         )}
         {!place.rating && <div className="text-gray-400">No reviews yet!</div>}
-        <p className="mb-2 font-semibold text-gray-500">{place.description}</p>
-        <div className="-mx-4 flex justify-evenly overflow-auto border-b">
+        <p className="pt-1 text-sm font-medium text-gray-500">
+          {place.description}
+        </p>
+        <div className="-mx-4 flex justify-evenly overflow-auto border-b pt-1">
           <div className="w-4"></div>
           <CarouselButton
             text={"Overview"}

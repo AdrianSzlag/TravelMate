@@ -1,4 +1,6 @@
+import Img from "components/Img";
 import { useAppSelector } from "hooks/redux-hooks";
+import { Link } from "react-router-dom";
 import { getTime } from "utils/dateTime";
 
 const getEndTime = (time: string, duration: number) => {
@@ -21,19 +23,30 @@ const ServiceOverview = () => {
     selectedTime && duration ? getEndTime(selectedTime, duration) : undefined;
 
   return (
-    <div className="m-6 p-4 rounded-lg bg-gray-100">
-      <div className="flex justify-between">
-        <h1 className="text-lg font-bold text-gray-600">
-          {selectedService?.name}
-        </h1>
-        <div className="font-semibold text-gray-500">
-          {selectedService?.price} zl
-        </div>
+    <div className="m-6 flex flex-col gap-2 rounded-lg bg-gray-100 p-4">
+      <h1 className="text-lg font-bold text-gray-600">
+        {selectedService?.name}
+      </h1>
+      <p className="text-gray-600">{selectedService?.description}</p>
+      <div className=" font-semibold text-gray-500">
+        {selectedService?.price} zl
       </div>
-      <div className="flex h-10 justify-end text-sm text-gray-400 font-semibold">
+      <div className="ext-sm flex h-10 font-semibold text-gray-600">
         {selectedTime && `${selectedTime}`}
         {endTime && ` - ${endTime}`}
       </div>
+      <Link
+        className="flex flex-row items-center"
+        to={`/place/${selected?.id}?details=overview`}
+      >
+        {selected?.thumbnail && (
+          <Img
+            src={"/" + selected?.thumbnail}
+            className="mr-2 h-5 w-5 rounded-full"
+          />
+        )}
+        <h3 className="font-semibold text-gray-600">{selected?.name}</h3>
+      </Link>
     </div>
   );
 };

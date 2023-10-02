@@ -39,6 +39,7 @@ const Item = ({ reservation }: Props) => {
         serviceId={reservation.service.id}
         placeId={reservation.place.id}
         title={reservation.service.name}
+        description={reservation.service.description}
         address={reservation.place.address}
         name={reservation.place.name}
         selected={reservation.id === selectedReservation?.id}
