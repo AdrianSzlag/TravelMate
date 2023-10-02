@@ -1,19 +1,29 @@
 # Travel Mate
 
-![](/README/demo.png)
+![image](https://github.com/AdrianSzlag/TravelMate/assets/92638498/1210c3c0-bf1e-4f52-82f0-6da47b22fb33)
 
 Travel Mate is a MERN stack application that provides you with an all-in-one platform to book your travel experiences including hotels, restaurants, bars, barber shops, and various other services. Its intuitive design and seamless user interface make it easy for you to plan your travel itinerary with the convenience you've always wished for.
 
+
+
 ## Features
+* Responsive Design: Optimized for both desktop and mobile devices.
 * Book hotels, restaurants, bars, barber shops, and many more with just a few clicks.
-* View menus in various restaurants and bars.
+* View menus in restaurants and bars.
 * Compare and choose the best services based on ratings and reviews.
+* Geolocation and mapping through the MapLibre API.
 * JWT-based authentication system.
-* Robust and scalable design.
+* Scalable design.
 * State management using Redux.
 * Dockerized for easy setup and deployment.
 * Uses Tailwind CSS for a modern and responsive design.
 * Written in TypeScript for static typing.
+
+<p float:>
+  <img src="https://github.com/AdrianSzlag/TravelMate/assets/92638498/d7ffc29f-87e7-4c40-b8d4-fc36f09644a2" width="33%" />
+  <img src="https://github.com/AdrianSzlag/TravelMate/assets/92638498/03bdd609-b420-45db-858c-179a8d0e2a08" width="33%" /> 
+  <img src="https://github.com/AdrianSzlag/TravelMate/assets/92638498/04ca7ff2-9316-485a-9119-316c07962daf" width="33%" />
+</p>
 
 ## Technologies Used
 * MongoDB: A NoSQL database used for storing and retrieving data.
@@ -24,6 +34,7 @@ Travel Mate is a MERN stack application that provides you with an all-in-one pla
 * Tailwind CSS: A utility-first CSS framework that enables rapid and flexible UI development.
 * Redux: A predictable state container for JavaScript applications, used for efficient state management.
 * Docker: A platform that allows applications to be packaged and run in isolated containers, ensuring consistency across different environments.
+* MapLibre: An open-source mapping library for geolocation features.
 
 ## Setup & Installation
 The application is dockerized, so you can get it up and running with Docker installed.
