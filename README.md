@@ -19,10 +19,10 @@ Travel Mate is a MERN stack application that provides you with an all-in-one pla
 * Uses Tailwind CSS for a modern and responsive design.
 * Written in TypeScript for static typing.
 
-<p float:>
-  <img src="https://github.com/AdrianSzlag/TravelMate/assets/92638498/d7ffc29f-87e7-4c40-b8d4-fc36f09644a2" width="33%" />
-  <img src="https://github.com/AdrianSzlag/TravelMate/assets/92638498/03bdd609-b420-45db-858c-179a8d0e2a08" width="33%" /> 
-  <img src="https://github.com/AdrianSzlag/TravelMate/assets/92638498/04ca7ff2-9316-485a-9119-316c07962daf" width="33%" />
+<p float="left">
+  <img src="https://github.com/AdrianSzlag/TravelMate/assets/92638498/d7ffc29f-87e7-4c40-b8d4-fc36f09644a2" width="320px" />
+  <img src="https://github.com/AdrianSzlag/TravelMate/assets/92638498/03bdd609-b420-45db-858c-179a8d0e2a08" width="320px" /> 
+  <img src="https://github.com/AdrianSzlag/TravelMate/assets/92638498/04ca7ff2-9316-485a-9119-316c07962daf" width="320px" />
 </p>
 
 ## Technologies Used
