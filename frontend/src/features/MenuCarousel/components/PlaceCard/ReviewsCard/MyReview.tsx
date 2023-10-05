@@ -80,23 +80,26 @@ const MyReview = () => {
   };
 
   return (
-    <div className="border-b py-2">
-      <label className="text-sm font-semibold text-gray-400">
+    <div className="p-4">
+      <label className="font-medium text-gray-600">
         {edit && "Edit your review"}
-        {!edit && (rating ? "Your review:" : "Rate this place")}
+        {!edit && (rating ? "Your review:" : "Rate this place:")}
       </label>
-      <div className="flex w-full pt-1">
-        <UserAvatar name={userName ?? ""} image={user?.profileImage} />
-        <div className="pl-2">
-          <div className="font-semibold text-gray-600">{userName}</div>
+      <div className="mt-4 flex w-full">
+        <div className="flex-none">
+          <UserAvatar name={userName ?? ""} image={user?.profileImage} />
+        </div>
+
+        <div className="flex flex-col gap-1 pl-2">
+          <h3 className="-mt-1 font-medium text-gray-800">{userName}</h3>
           <Rating rating={currentRating} setRating={setCurrentRating} />
+          {!edit && currentComment && (
+            <div className="w-full pr-2 text-sm text-gray-800">
+              {currentComment}
+            </div>
+          )}
         </div>
       </div>
-      {!edit && currentComment && (
-        <div className="w-full px-1 pt-2 text-sm font-semibold text-gray-600">
-          {currentComment}
-        </div>
-      )}
       {edit && (
         <>
           <label

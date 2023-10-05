@@ -202,6 +202,7 @@ const Overview = () => {
   const email = place?.contactInfo.email;
   const tags = place?.tags;
   const hours = place?.openingHours;
+  const showOpeningHours = place?.showOpeningHours;
 
   return (
     <div className="py-2">
@@ -218,7 +219,7 @@ const Overview = () => {
           </a>
         </div>
       )}
-      {hours && <HoursOverview openingHours={hours} />}
+      {hours && showOpeningHours && <HoursOverview openingHours={hours} />}
       {phone && (
         <div className="flex cursor-pointer items-center py-2">
           <FiPhone className="mr-4 inline-block text-xl text-blue-500" />

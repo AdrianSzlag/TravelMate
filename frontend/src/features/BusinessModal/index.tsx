@@ -32,6 +32,7 @@ const BusinessModal = () => {
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
   const [tags, setTags] = useState("");
+  const [includeHours, setIncludeHours] = useState(true);
 
   const [openingHours, setOpeningHours] = useState<IOpeningHours[]>(
     [...Array(7)].map((_, i) => {
@@ -55,6 +56,7 @@ const BusinessModal = () => {
       setOpeningHours(editingBusiness.openingHours);
       const coordinates = editingBusiness.location.coordinates;
       setCoordinates([coordinates[1], coordinates[0]]);
+      setIncludeHours(editingBusiness.showOpeningHours);
     }
   }, []);
 
@@ -124,6 +126,7 @@ const BusinessModal = () => {
       phone: phone.trim(),
       tags: tags.split(" "),
       openingHours: hours,
+      showOpeningHours: includeHours,
       location: {
         type: "Point",
         coordinates: [coordinates[1], coordinates[0]],
@@ -203,6 +206,7 @@ const BusinessModal = () => {
           name="phone"
           title="Phone number"
         />
+
         <label className="mt-2 block text-sm font-medium text-gray-900">
           Select opening hours
         </label>
@@ -216,6 +220,21 @@ const BusinessModal = () => {
               />
             );
           })}
+        </div>
+        <div className="mt-2 flex items-center">
+          <label
+            htmlFor="default-checkbox"
+            className="mr-2 text-sm font-medium text-gray-900 "
+          >
+            Show opening hours
+          </label>
+          <input
+            id="default-checkbox"
+            type="checkbox"
+            checked={includeHours}
+            onChange={(event) => setIncludeHours(event.target.checked)}
+            className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 "
+          />
         </div>
       </div>
       <div className=" md:w-1/2">
