@@ -44,7 +44,7 @@ const Rating = ({ rating, setRating, numberOfReviews }: Props) => {
     <div className="flex items-center">
       <div className="relative flex w-5 items-center">
         <span className="absolute font-semibold text-gray-400">
-          {roundedToTenthString}
+          {roundedToTenth > 0 ? roundedToTenthString : ""}
         </span>
       </div>
       <div
