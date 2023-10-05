@@ -12,6 +12,7 @@ export interface IPlace {
   address?: string;
   reviews: IReview[];
   openingHours: IOpeningHours[];
+  showOpeningHours: boolean;
   location: {
     type: string;
     coordinates: number[];

@@ -10,6 +10,7 @@ interface BusinessDTO {
     coordinates: number[];
   };
   phone: string;
+  showOpeningHours: boolean;
   tags?: string[];
   openingHours: IOpeningHours[];
 }

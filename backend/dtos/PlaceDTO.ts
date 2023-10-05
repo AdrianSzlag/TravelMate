@@ -52,4 +52,5 @@ export type PlaceDTO = {
     from: string;
     to: string;
   }[];
+  showOpeningHours: boolean;
 };

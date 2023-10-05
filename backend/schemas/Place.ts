@@ -79,6 +79,7 @@ const PlaceSchema: Schema = new Schema({
       to: { type: String, required: true },
     },
   ],
+  showOpeningHours: { type: Boolean, required: true },
   rooms: [
     {
       name: { type: String, required: true },

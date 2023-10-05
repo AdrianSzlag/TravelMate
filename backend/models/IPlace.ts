@@ -25,5 +25,6 @@ export type IPlace = {
   reservations: IReservation[];
   reviews: IReview[];
   openingHours: IOpeningHours[];
+  showOpeningHours: boolean;
   rooms: IRoom[];
 };

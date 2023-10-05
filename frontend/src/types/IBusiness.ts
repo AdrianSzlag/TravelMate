@@ -12,6 +12,7 @@ interface IBusiness {
   phone: string;
   tags?: string[];
   openingHours: IOpeningHours[];
+  showOpeningHours: boolean;
 }
 
 export default IBusiness;

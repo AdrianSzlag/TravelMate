@@ -26,6 +26,7 @@ export const getPlaceDTO = (place: PlaceDTO): PlaceDTO => {
     contactInfo: place.contactInfo,
     tags: place.tags,
     openingHours: place.openingHours,
+    showOpeningHours: place.showOpeningHours,
   };
   return placeDTO;
 };
@@ -90,6 +91,7 @@ export const getPlaceFromBusinessDTO = (
     reservations: [],
     reviews: [],
     images,
+    showOpeningHours: business.showOpeningHours,
   };
   return placeObject;
 };
