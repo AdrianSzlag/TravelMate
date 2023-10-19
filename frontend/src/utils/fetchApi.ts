@@ -1,8 +1,11 @@
 import { getToken } from "./auth";
+const MODE = import.meta.env.MODE;
 
 const hostname = window.location.hostname;
+const origin = window.location.origin;
 
-export const apiURL = `http://${hostname}:5000`;
+export const apiURL =
+  !MODE || MODE === "development" ? `http://${hostname}:5000` : origin;
 
 const fetchApi = (path: string, options: RequestInit) => {
   if (!options.headers) {

@@ -19,6 +19,7 @@ export default function Home() {
   useEffect(() => {
     contentRef.current?.scrollTo({
       top: contentRef.current.offsetHeight * 0.8,
+      // @ts-ignore
       behavior: "instant",
     });
   }, []);
@@ -55,6 +56,7 @@ export default function Home() {
     if (current && lock) {
       contentRef.current?.scrollTo({
         top: current.clientHeight * 0.8,
+        // @ts-ignore
         behavior: "instant",
       });
     }

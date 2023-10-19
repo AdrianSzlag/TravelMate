@@ -23,9 +23,10 @@ const Header = () => {
     (state) => state.reservations.reservations
   );
   const noOfNotifications = reservations.reduce((acc, curr) => {
+    const minutes = curr.service ? curr.service.duration : 0;
+    const days = curr.room ? curr.room.length : 0;
     const isDone =
-      DateTime.fromISO(curr.date).plus({ minutes: curr.duration }) <
-      DateTime.now();
+      DateTime.fromISO(curr.date).plus({ minutes, days }) < DateTime.now();
     if (!isDone) acc++;
     return acc;
   }, 0);
