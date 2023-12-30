@@ -14,7 +14,7 @@ const NavBar = ({ children }: Props) => {
       <div className="mx-auto flex flex-wrap items-center justify-between">
         <Link to="/" reloadDocument>
           <div className="flex cursor-pointer items-center whitespace-nowrap text-xl font-semibold">
-            <Logo className="h-8 w-8" />
+            <Logo className="h-8 w-8 py-1" />
           </div>
         </Link>
         <ul className="flex items-center space-x-4 rounded-lg bg-blue-700 xs:space-x-6">
