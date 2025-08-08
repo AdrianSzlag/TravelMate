@@ -1,17 +1,19 @@
-FROM node:16-alpine 
+FROM node:20-alpine
 
 WORKDIR /app
 
+# Install only deps first for better layer caching
+COPY package*.json tsconfig.json ./
+RUN npm ci
+
+# Copy source
 COPY . .
 
-RUN npm ci 
-
+# Build TypeScript -> dist
 RUN npm run build
-
-COPY --from=frontend /app/dist ./dist
-
-ENV NODE_ENV production
 
 EXPOSE 5000
 
-CMD [ "npm", "start"]
+# Default to production runtime on compiled JS
+ENV NODE_ENV=production
+CMD ["node", "dist/main.js"]

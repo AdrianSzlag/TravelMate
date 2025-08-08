@@ -1,54 +1,25 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
 {
-  "name": "Node.js & TypeScript",
-  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-  //"image": "mcr.microsoft.com/devcontainers/universal:2-linux",
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:0-18",
+	"name": "Node.js & TypeScript",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
+	"features": {
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
+	}
 
-  // Features to add to the dev container. More info: https://containers.dev/features.
-  // "features": {},
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
 
-  // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  // "forwardPorts": [],
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
 
-  // Use 'postCreateCommand' to run commands after the container is created.
-  "updateContentCommand": "bash .devcontainer/install.sh",
-  //"postStartCommand": "npm run dev",
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "yarn install",
 
-  // Configure tool-specific properties.
-  "customizations": {
-    "vscode": {
-      "extensions": [
-		"eamodio.gitlens",
-		"GitHub.vscode-pull-request-github",
-		"dbaeumer.vscode-eslint",
-		"esbenp.prettier-vscode",
-		"bradlc.vscode-tailwindcss",
-		"ms-azuretools.vscode-docker",
-		"streetsidesoftware.code-spell-checker",
-		"VisualStudioExptTeam.vscodeintellicode",
-		"VisualStudioExptTeam.intellicode-api-usage-examples",
-		"GitHub.copilot-nightly",
-		"yoavbls.pretty-ts-errors"
-	]
-    }
-  },
-  "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
-  },
-  "portsAttributes": {
-    "27018": {
-      "label": "Database"
-    },
-    "5000": {
-      "label": "Backend"
-    },
-    "5173": {
-      "label": "Frontend dev"
-    }
-  }
+	// Configure tool-specific properties.
+	// "customizations": {},
 
-  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-  // "remoteUser": "root"
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
 }
